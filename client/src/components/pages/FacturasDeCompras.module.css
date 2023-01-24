@@ -1,0 +1,207 @@
+.container {
+  width: 90%;
+}
+
+#addBtn {
+  margin: 20px;
+  padding: 15px 50px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+#addBtn:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.grid {
+  border: 1px solid black;
+  margin: 20px;
+  margin-top: 5px;
+  height: 80vh;
+}
+
+.gridTitles {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 60px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.gridTitles p {
+  width: 200px;
+  text-align: center;
+}
+
+.gridLines {
+  border: 1px solid black;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 14px;
+  border-top: none;
+  text-align: center;
+}
+
+.gridLines p {
+  width: 200px;
+  text-align: center;
+  font-size: 15px;
+}
+
+.iva {
+  width: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#correspondeLink {
+  color: blue;
+}
+
+#correspondeLink:hover {
+  color: darkblue;
+  cursor: pointer;
+}
+
+.iva span {
+  font-size: 14px;
+  text-decoration: none;
+}
+
+#ivaPorcentaje {
+  font-size: 12px;
+}
+
+.lineModal {
+  background-color: rgba(0, 0, 0, 0.55);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 199px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lineModal .text {
+  border: 2px solid white;
+  border-radius: 20px;
+  width: 45vw;
+  padding: 25px;
+  font-size: 22px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.lineModal .text p {
+  font-size: 35px;
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  color: white;
+  transition: 0.3s;
+}
+
+.lineModal .text p:hover {
+  transition: 0.3s;
+  color: red;
+  cursor: pointer;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.55);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 199px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainer {
+  width: 45vw;
+  height: auto;
+  padding: 20px;
+}
+
+.modalContainer form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalContainer input {
+  padding: 10px;
+  padding-left: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+  border: 2px solid transparent;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.modalContainer input:focus {
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  background-color: white;
+}
+
+.modalContainer label {
+  margin: 5px;
+  margin-left: 0px;
+  color: white;
+  font-size: 20px;
+  font-size: bold;
+}
+
+.modalContainer textarea {
+  padding: 5px;
+  outline: none;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.modalContainer textarea:focus {
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  background-color: white;
+}
+
+.modalContainer button {
+  border-radius: 5px;
+  height: 50px;
+  border: none;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.modalContainer button:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
+.modalContainer p {
+  font-size: 35px;
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  color: white;
+  transition: 0.3s;
+}
+
+.modalContainer p:hover {
+  transition: 0.3s;
+  color: red;
+  cursor: pointer;
+}
