@@ -7,7 +7,7 @@ export default function NavBar({ toggleNav }) {
       {[
         "Facturas de Compras",
         "Aportes y Gastos",
-        "Ventas",
+        "Clientes",
         "Prendas",
         "Stock",
         "Gastos",
