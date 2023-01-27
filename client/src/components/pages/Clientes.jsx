@@ -12,7 +12,7 @@ export default function Clientes() {
   const dispatch = useDispatch();
 
   const allClients = useSelector((state) =>
-    state.allClients.sort((a, b) => a.name.localeCompare(b.name))
+    state.allClients.sort((a, b) => a.redSocial.localeCompare(b.redSocial))
   );
 
   console.log(allClients);
@@ -103,12 +103,12 @@ export default function Clientes() {
       </div>
       <div className={s.grid}>
         <div className={s.gridTitles}>
+          <p>Red Social</p>
           <p>Nombre</p>
           <p>Apellido</p>
           <p>Email</p>
           <p>Rubro</p>
           <p>Cargo</p>
-          <p>Red Social</p>
           <p>Direccion</p>
           <p>N°</p>
           <p>Localidad</p>
@@ -125,12 +125,12 @@ export default function Clientes() {
           ? allClients.map((el, index) => {
               return (
                 <div key={index} className={s.gridLines}>
+                  <p>{el.redSocial || "-"}</p>
                   <p>{el.name}</p>
                   <p>{el.lastName || "-"}</p>
                   <p>{el.email || "-"}</p>
                   <p>{el.rubro || "-"}</p>
                   <p>{el.cargo || "-"}</p>
-                  <p>{el.redSocial || "-"}</p>
                   <p>{el.direccion || "-"}</p>
                   <p>{el.ndireccion || "-"}</p>
                   <p>{el.localidad || "-"}</p>
@@ -141,7 +141,13 @@ export default function Clientes() {
                   <p>{el.celular || "-"}</p>
                   <p>{el.fax || "-"}</p>
                   <p>
-                    <a href={el.paginaWeb}>{el.paginaWeb || "-"}</a>
+                    <a
+                      href={`https://${el.paginaWeb.toLowerCase()}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {el.paginaWeb.toLowerCase() || "-"}
+                    </a>
                   </p>
                   <p id={s.obs}>{el.observaciones || "-"}</p>
                   <button id={s.editBtn} onClick={() => handleEditBtn(el.id)}>
@@ -158,17 +164,19 @@ export default function Clientes() {
             })
           : allClients
               .filter((client) =>
-                client.name.toLowerCase().includes(searchBarInput.toLowerCase())
+                client.redSocial
+                  .toLowerCase()
+                  .includes(searchBarInput.toLowerCase())
               )
               .map((el, index) => {
                 return (
                   <div key={index} className={s.gridLines}>
+                    <p>{el.redSocial || "-"}</p>
                     <p>{el.name}</p>
                     <p>{el.lastName || "-"}</p>
                     <p>{el.email || "-"}</p>
                     <p>{el.rubro || "-"}</p>
                     <p>{el.cargo || "-"}</p>
-                    <p>{el.redSocial || "-"}</p>
                     <p>{el.direccion || "-"}</p>
                     <p>{el.ndireccion || "-"}</p>
                     <p>{el.localidad || "-"}</p>

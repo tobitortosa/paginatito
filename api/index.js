@@ -7,7 +7,6 @@ const { uploadAllData } = require("./src/controllers/index");
 const main = async () => {
   try {
     conn.sync({ force: true }).then(async () => {
-      console.log(clients);
       uploadAllData(clients);
       server.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);

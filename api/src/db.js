@@ -2,6 +2,7 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
+const SubPedidos = require("./models/SubPedidos");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, POSTGRES_URL } =
   process.env;
 
@@ -37,7 +38,13 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Cliente } = sequelize.models;
+const { Cliente, Pedido, SubPedido, Producto } = sequelize.models;
+
+Cliente.hasMany(Pedido);
+Pedido.belongsTo(Cliente);
+Pedido.hasMany(SubPedido);
+SubPedido.belongsTo(Pedido);
+SubPedido.belongsTo(Producto);
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 

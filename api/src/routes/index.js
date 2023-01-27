@@ -1,6 +1,9 @@
 const { Router } = require("express");
 const router = Router();
 const clientes = require("./clientes");
+const pedidos = require("./pedidos");
+const subPedido = require("./subPedidos");
+const productos = require("./productos");
 
 router.get("/", async (req, res) => {
   try {
@@ -10,6 +13,9 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.use("/", productos);
+router.use("/", subPedido);
+router.use("/", pedidos);
 router.use("/", clientes);
 
 module.exports = router;
