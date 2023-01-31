@@ -14,12 +14,13 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
       type: {
-        type: DataTypes.STRING,
-      },
-      precio: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(["buso", "remera", "chaleco", "campera"]),
+        allowNull: false,
       },
       costs: {
+        type: DataTypes.JSON,
+      },
+      details: {
         type: DataTypes.JSON,
       },
     },

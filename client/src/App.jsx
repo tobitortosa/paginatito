@@ -6,9 +6,10 @@ import NavBar from "./components/NavBar";
 import FacturasDeCompras from "./components/pages/FacturasDeCompras";
 import AportesYGastos from "./components/pages/AportesYGastos";
 import Clientes from "./components/pages/Clientes";
-import Costos from "./components/pages/Costos";
+import Pedidos from "./components/pages/Pedidos";
+import Productos from "./components/pages/Productos";
 import DateComponent from "./components/DateComponent";
-import PrendaComponent from "./components/PrendaComponent";
+import ProductoComponent from "./components/ProductoComponent";
 
 function App() {
   return (
@@ -19,9 +20,9 @@ function App() {
         <Route path="/Facturas de Compras" element={<FacturasDeCompras />} />
         <Route path="/Aportes y Gastos" element={<AportesYGastos />} />
         <Route path="/Clientes" element={<Clientes />} />
-        <Route path="/Costos" element={<Costos />} />
-        <Route path="/Costos/:dateId" element={<DateComponent />} />
-        <Route path="/Costos/:dateId/:prendaId" element={<PrendaComponent />} />
+        <Route path="/Pedidos" element={<Pedidos />} />
+        <Route path="/Productos" element={<Productos />} />
+        <Route path="/Productos/:productoId" element={<ProductoComponent />} />
       </Routes>
     </div>
   );

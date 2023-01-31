@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Buzo Friza con Cierre",
+    "type": "buso",
+    "costs": {
+      "kilosComprados": "5",
+      "kilosXPrenda": "5",
+      "precioXKiloFinal": "100"
+    },
+    "details": {
+      "tela": "1400",
+      "corte": "70",
+      "costura": "202"
+    }
+  },
+  {
+    "name": "Chaleco Blanco",
+    "type": "chaleco",
+    "costs": {
+      "kilosComprados": "2",
+      "kilosXPrenda": "2",
+      "precioXKiloFinal": "50"
+    },
+    "details": {
+      "tela": "1300",
+      "corte": "20",
+      "costura": "100"
+    }
+  }
+]

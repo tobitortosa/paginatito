@@ -8,7 +8,7 @@ router.get("/subpedidos", async (req, res) => {
       include: [
         {
           model: Producto,
-          attibutes: ["name", "precio"],
+          attibutes: ["name", "cost"],
         },
       ],
     });

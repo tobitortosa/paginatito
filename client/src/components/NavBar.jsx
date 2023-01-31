@@ -1,5 +1,5 @@
 import s from "./NavBar.module.css";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export default function NavBar({ toggleNav }) {
   return (
@@ -8,20 +8,19 @@ export default function NavBar({ toggleNav }) {
         "Facturas de Compras",
         "Aportes y Gastos",
         "Clientes",
-        "Prendas",
+        "Pedidos",
         "Stock",
         "Gastos",
-        "Costos",
-      ].map((el) => {
+        "Productos",
+      ].map((el, index) => {
         return (
-          <Link to={el}>
-          <button
-            key={el}
-            className={s.btnElement}
-            >
-            {el}
-          </button>
+          <div key={index}>
+            <Link to={el}>
+              <button key={el} className={s.btnElement}>
+                {el}
+              </button>
             </Link>
+          </div>
         );
       })}
     </div>

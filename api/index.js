@@ -2,12 +2,17 @@ const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
 const PORT = process.env.PORT || 3001;
 const clients = require("./data/clients.json");
-const { uploadAllData } = require("./src/controllers/index");
+const products = require("./data/productos.json");
+const {
+  uploadAllClients,
+  uploadAllProducts,
+} = require("./src/controllers/index");
 
 const main = async () => {
   try {
     conn.sync({ force: true }).then(async () => {
-      uploadAllData(clients);
+      await uploadAllClients(clients);
+      await uploadAllProducts(products);
       server.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);
       });
