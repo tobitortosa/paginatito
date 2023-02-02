@@ -55,31 +55,6 @@
   font-size: 15px;
 }
 
-.iva {
-  width: 200px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-#correspondeLink {
-  color: blue;
-}
-
-#correspondeLink:hover {
-  color: darkblue;
-  cursor: pointer;
-}
-
-.iva span {
-  font-size: 14px;
-  text-decoration: none;
-}
-
-#ivaPorcentaje {
-  font-size: 12px;
-}
-
 .lineModal {
   background-color: rgba(0, 0, 0, 0.55);
   position: absolute;

@@ -10,7 +10,19 @@
     "details": {
       "tela": "1400",
       "corte": "70",
-      "costura": "202"
+      "costura": "202",
+      "cierreDeCuello": "2",
+      "ribsPuñoCuello": "2",
+      "tancaYCordon": "2",
+      "velcro": "2",
+      "cordonElastico": "2",
+      "hebillasLaterales": "2",
+      "cierreLateral": "2",
+      "bolsa": "2",
+      "estampado": "2",
+      "bordado": "2",
+      "cintaReflexiva": "2",
+      "peliculas": "2"
     }
   },
   {
@@ -24,7 +36,19 @@
     "details": {
       "tela": "1300",
       "corte": "20",
-      "costura": "100"
+      "costura": "100",
+      "cierreDeCuello": "2",
+      "ribsPuñoCuello": "2",
+      "tancaYCordon": "2",
+      "velcro": "2",
+      "cordonElastico": "2",
+      "hebillasLaterales": "2",
+      "cierreLateral": "2",
+      "bolsa": "2",
+      "estampado": "2",
+      "bordado": "2",
+      "cintaReflexiva": "2",
+      "peliculas": "2"
     }
   }
 ]

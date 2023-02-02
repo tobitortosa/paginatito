@@ -11,7 +11,7 @@ export default function Productos() {
 
   useEffect(() => {
     dispatch(getAllProducts());
-  }, []);
+  }, [modalBtnState]);
 
   const handleAdd = (e) => {
     e.preventDefault();

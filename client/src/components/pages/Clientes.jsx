@@ -17,10 +17,6 @@ export default function Clientes() {
 
   console.log(allClients);
 
-  useEffect(() => {
-    dispatch(getAllClients());
-  }, []);
-
   const [searchBarInput, setSearchBarInput] = useState("");
   const handleClientSearchInput = (e) => {
     setSearchBarInput(e.target.value);
@@ -50,6 +46,10 @@ export default function Clientes() {
   const [editBtnState, setEditBtnState] = useState(false);
   const [editBtnObj, setEditBtnObj] = useState({});
 
+  useEffect(() => {
+    dispatch(getAllClients());
+  }, [editBtnState, btnState, btnLineState, editBtnObj]);
+
   const handleInputChange = (e) => {
     setInput({
       ...input,
@@ -63,8 +63,6 @@ export default function Clientes() {
       [e.target.name]: e.target.value,
     });
   };
-
-  console.log(editBtnObj);
 
   const handleAdd = (e) => {
     e.preventDefault();

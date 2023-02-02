@@ -1,16 +1,30 @@
 .container {
   width: 90%;
+  display: flex;
+  flex-direction: column;
 }
 
-.container h2{
+.container h2 {
   text-align: center;
   margin: 20px 0px;
 }
 
-.container h3{
-  margin: 5px 20px; 
+.container h3 {
+  margin: 5px 20px;
 }
 
+.line {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  border-right: 1px solid black;
+}
+
+.box {
+  display: flex;
+  border-top: 2px solid black;
+  align-items: flex-start;
+}
 
 #addBtn {
   margin: 20px;
@@ -28,7 +42,7 @@
 
 .grid {
   margin: 20px;
-  margin-top: 5px;
+  margin-top: 20px;
   height: auto;
   width: fit-content;
   display: flex;
@@ -41,8 +55,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  word-wrap: break-word;
+  position: relative;
   border: 2px solid black;
+  word-wrap: break-word;
 }
 
 .gridTitles p {
@@ -74,11 +89,26 @@
   border-bottom: 1px solid black;
 }
 
+.participacion p {
+  width: 35px;
+  border-right: none;
+}
+
+#participacionTitle {
+  position: absolute;
+  top: -31px;
+  width: auto;
+  left: -3px;
+  border: none;
+  padding: 0;
+  font-size: 11px;
+}
+
 .modal {
   background-color: rgba(0, 0, 0, 0.55);
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: -50px;
   right: 0;
   left: 0;
   display: flex;
@@ -90,13 +120,20 @@
   margin: 20px;
   margin-top: 5px;
   height: auto;
-  width: fit-content;
+  width: 50vw;
+  min-width: 800px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: start;
+  align-items: center;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
   padding: 20px;
+}
+
+.modalContainer h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
 #x {
@@ -118,15 +155,24 @@
   color: red;
 }
 
+#total {
+  background-color: rgba(255, 255, 0, 0.5);
+}
+
 .modalTitles {
   text-align: center;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-around;
   word-wrap: break-word;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  margin: 20px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
 }
 
 .modalTitles p {
@@ -170,6 +216,21 @@
   border-bottom-right-radius: 15px;
 }
 
+.inputsContainer {
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 20px;
+}
+
+.inputContainer {
+  display: flex;
+  margin: 20px;
+}
+
+.inputContainer h4 {
+  text-align: center;
+}
+
 .modalLines input {
   font-size: 18px;
   border: none;
@@ -190,6 +251,9 @@
   transition: 0.3s;
   border: 1px solid black;
   font-size: 17px;
+  margin-top: 20px;
+  width: 500px;
+  margin-bottom: 30px;
 }
 
 .modalContainer button:hover {
