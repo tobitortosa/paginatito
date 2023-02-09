@@ -30,9 +30,20 @@ router.put("/productos", async (req, res) => {
       },
       { where: { id: id } }
     );
-    res.status(200).send(`Cliente con el id ${id} modificado correctamente`);
+    res.status(200).send(`Producto con el id ${id} modificado correctamente`);
   } catch (error) {
     res.status(400).send(error.message);
+  }
+});
+
+router.post("/productos/delete", async (req, res) => {
+  const { id } = req.body;
+  console.log(id);
+  try {
+    Producto.destroy({ where: { id: id } });
+    res.status(200).send(`Producto con el id ${id} eliminado correctamente`);
+  } catch (error) {
+    res.status(400).send("error");
   }
 });
 

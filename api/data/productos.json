@@ -5,7 +5,8 @@
     "costs": {
       "kilosComprados": "5",
       "kilosXPrenda": "5",
-      "precioXKiloFinal": "100"
+      "precioXKiloFinal": "100",
+      "costoFinal": 605
     },
     "details": {
       "tela": "1400",
@@ -31,7 +32,8 @@
     "costs": {
       "kilosComprados": "2",
       "kilosXPrenda": "2",
-      "precioXKiloFinal": "50"
+      "precioXKiloFinal": "50",
+      "costoFinal": 121
     },
     "details": {
       "tela": "1300",

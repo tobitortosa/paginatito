@@ -7,6 +7,7 @@ import FacturasDeCompras from "./components/pages/FacturasDeCompras";
 import AportesYGastos from "./components/pages/AportesYGastos";
 import Clientes from "./components/pages/Clientes";
 import Pedidos from "./components/pages/Pedidos";
+import SubPedidos from "./components/pages/SubPedidos";
 import Productos from "./components/pages/Productos";
 import DateComponent from "./components/DateComponent";
 import ProductoComponent from "./components/ProductoComponent";
@@ -21,6 +22,7 @@ function App() {
         <Route path="/Aportes y Gastos" element={<AportesYGastos />} />
         <Route path="/Clientes" element={<Clientes />} />
         <Route path="/Pedidos" element={<Pedidos />} />
+        <Route path="/Sub Pedidos" element={<SubPedidos />} />
         <Route path="/Productos" element={<Productos />} />
         <Route path="/Productos/:productoId" element={<ProductoComponent />} />
       </Routes>

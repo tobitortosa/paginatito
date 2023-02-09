@@ -6,6 +6,9 @@ import {
   GET_ALL_PRODUCTS,
   CREATE_PRODUCT,
   EDIT_PRODUCT,
+  DELETE_PRODUCT,
+  GET_ALL_PEDIDOS,
+  CREATE_PEDIDO,
 } from "./actionsTypes";
 import axios from "axios";
 
@@ -45,7 +48,25 @@ export const createNewProduct = (obj) => async (dispatch) => {
   return dispatch({ type: CREATE_PRODUCT });
 };
 
-export const editProduct = (id) => async (dispatch) => {
-  await axios.put(`${url}/productos`, id);
+export const editProduct = (obj) => async (dispatch) => {
+  await axios.put(`${url}/productos`, obj);
   return dispatch({ type: EDIT_PRODUCT });
+};
+
+export const deleteProduct = (id) => async (dispatch) => {
+  console.log(id);
+  await axios.post(`${url}/productos/delete`, { id: id });
+  return dispatch({ type: DELETE_PRODUCT });
+};
+
+// Pedidos actions
+
+export const getAllPedidos = () => async (dispatch) => {
+  let allPedidos = await axios.get(`${url}/pedidos`);
+  return dispatch({ type: GET_ALL_PEDIDOS, payload: allPedidos.data });
+};
+
+export const createPedido = (obj) => async (dispatch) => {
+  await axios.post(`${url}/pedidos`, obj);
+  return dispatch({ type: CREATE_PEDIDO });
 };

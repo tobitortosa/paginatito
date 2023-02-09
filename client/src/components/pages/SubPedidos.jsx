@@ -1,4 +1,4 @@
-import s from "./Clientes.module.css";
+import s from "./SubPedidos.module.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,21 +6,18 @@ import {
   createNewClient,
   editClient,
   deleteClient,
-  createPedido,
-  getAllPedidos,
 } from "../../redux/actions";
 
-export default function Pedidos() {
+export default function SubPedidos() {
   const dispatch = useDispatch();
 
-  const allPedidos = useSelector((state) => state.allPedidos);
-  const allClients = useSelector((state) => state.allClients);
+  const allClients = useSelector((state) =>
+    state.allClients.sort((a, b) => a.redSocial.localeCompare(b.redSocial))
+  );
 
-  console.log(allPedidos);
-  // console.log(allClients);
+  console.log(allClients);
 
   useEffect(() => {
-    dispatch(getAllPedidos());
     dispatch(getAllClients());
   }, []);
 
@@ -30,10 +27,9 @@ export default function Pedidos() {
   };
 
   const [input, setInput] = useState({
-    idCliente: "",
-    pedidoDate: "",
-    entregaDate: "",
-    seña: "",
+    cliente: "",
+    producto: "",
+    cantidad: "",
     entrego: false,
   });
 
@@ -49,8 +45,6 @@ export default function Pedidos() {
     });
   };
 
-  console.log(input);
-
   const handleEditInputChange = (e) => {
     setEditBtnObj({
       ...editBtnObj,
@@ -58,10 +52,12 @@ export default function Pedidos() {
     });
   };
 
+  console.log(editBtnObj);
+
   const handleAdd = (e) => {
     e.preventDefault();
     setBtnState(false);
-    dispatch(createPedido(input));
+    dispatch(createNewClient(input));
   };
 
   const handleEdit = (e) => {
@@ -72,7 +68,7 @@ export default function Pedidos() {
 
   const handleEditBtn = (id) => {
     setEditBtnState(true);
-    setEditBtnObj({ ...allPedidos.filter((client) => client.id === id)[0] });
+    setEditBtnObj({ ...allClients.filter((client) => client.id === id)[0] });
   };
 
   const handleDeleteBtn = (id) => {
@@ -80,26 +76,24 @@ export default function Pedidos() {
     console.log(id);
   };
 
-  const handleEntrego = () => {
-
-  }
+  console.log(editBtnObj);
 
   return (
     <div className={s.container}>
       <div className={s.searchContainer}>
         <div className={s.sbar}>
           <input type="text" onChange={(e) => handleClientSearchInput(e)} />
-          <button>Buscar Pedido</button>
+          <button>Buscar Cliente</button>
         </div>
         <button onClick={() => setBtnState(true)} id={s.addBtn}>
-          Agregar Nuevo Pedido
+          Agregar Cliente
         </button>
       </div>
       <div className={s.grid}>
         <div className={s.gridTitles}>
-          <p>Cliente</p>
           <p>Fecha de Pedido</p>
           <p>Fecha de Entrega</p>
+          <p>Cliente</p>
           <p>Direccion</p>
           <p>Localidad</p>
           <p>Tel</p>
@@ -109,19 +103,34 @@ export default function Pedidos() {
           <p>Entrego</p>
         </div>
         {searchBarInput.length === 0
-          ? allPedidos.map((el, index) => {
+          ? allClients.map((el, index) => {
               return (
                 <div key={index} className={s.gridLines}>
-                  <p>{el.cliente.redSocial || "-"}</p>
-                  <p>{el.pedidoDate}</p>
-                  <p>{el.entregaDate || "-"}</p>
-                  <p>{el.cliente.direccion || "-"}</p>
-                  <p>{el.cliente.localidad || "-"}</p>
-                  <p>{el.cliente.tel1 || "-"}</p>
-                  <p>{el.subPedidos.total || "-"}</p>
-                  <p>{el.seña || "-"}</p>
-                  <p>{el.subPedidos.total - el.seña || "-"}</p>
-                  <button onClick={() =>  handleEntrego(el.entrego)}>{el.entrego ? "entrego" : "no entrego"}</button>
+                  <p>{el.redSocial || "-"}</p>
+                  <p>{el.name}</p>
+                  <p>{el.lastName || "-"}</p>
+                  <p>{el.email || "-"}</p>
+                  <p>{el.rubro || "-"}</p>
+                  <p>{el.cargo || "-"}</p>
+                  <p>{el.direccion || "-"}</p>
+                  <p>{el.ndireccion || "-"}</p>
+                  <p>{el.localidad || "-"}</p>
+                  <p>{el.cp || "-"}</p>
+                  <p>{el.provincia || "-"}</p>
+                  <p>{el.tel1 || "-"}</p>
+                  <p>{el.tel2 || "-"}</p>
+                  <p>{el.celular || "-"}</p>
+                  <p>{el.fax || "-"}</p>
+                  <p>
+                    <a
+                      href={`https://${el.paginaWeb.toLowerCase()}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {el.paginaWeb.toLowerCase() || "-"}
+                    </a>
+                  </p>
+                  <p id={s.obs}>{el.observaciones || "-"}</p>
                   <button id={s.editBtn} onClick={() => handleEditBtn(el.id)}>
                     Editar
                   </button>
@@ -134,7 +143,7 @@ export default function Pedidos() {
                 </div>
               );
             })
-          : allPedidos
+          : allClients
               .filter((client) =>
                 client.redSocial
                   .toLowerCase()
@@ -188,43 +197,117 @@ export default function Pedidos() {
             <p onClick={() => setBtnState(false)}>✖</p>
             <form>
               <div className={s.lineForm}>
-                <label>Cliente</label>
-                <select
-                  onChange={(e) => handleInputChange(e)}
-                  defaultValue="Elegir Cliente..."
-                  name="idCliente"
-                >
-                  <option disabled>Elegir Cliente...</option>
-                  {allClients.length &&
-                    allClients.map((el, index) => {
-                      return (
-                        <option key={index} value={el.id}>
-                          {el.redSocial}
-                        </option>
-                      );
-                    })}
-                </select>
-                <label>Fecha de Pedido</label>
+                <label>Nombre</label>
                 <input
                   onChange={(e) => handleInputChange(e)}
-                  type="date"
-                  name="pedidoDate"
+                  type="text"
+                  name="name"
                 />
-                <label>Fecha de Entrega</label>
+                <label>Apellido</label>
                 <input
                   onChange={(e) => handleInputChange(e)}
-                  type="date"
-                  name="entregaDate"
+                  type="text"
+                  name="lastName"
                 />
-                <label>Seña</label>
+                <label>Email</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="email"
+                />
+                <label>Rubro</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="rubro"
+                />
+                <label>Cargo</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="cargo"
+                />
+
+                <label>Red Social</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="redSocial"
+                />
+
+                <label>Direccion</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="direccion"
+                />
+
+                <label>N°</label>
                 <input
                   onChange={(e) => handleInputChange(e)}
                   type="number"
-                  name="seña"
+                  name="ndireccion"
+                />
+                <label>Localidad</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="localidad"
                 />
               </div>
+              <div className={s.lineForm}>
+                <label>CP</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="number"
+                  name="cp"
+                />
+                <label>Provincia</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="provincia"
+                />
+                <label>Tel1</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="tel1"
+                />
+                <label>Tel2</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="tel2"
+                />
+                <label>Celular</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="celular"
+                />
+
+                <label>Fax</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="fax"
+                />
+                <label>Pagina Web</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="paginaWeb"
+                />
+
+                <label>Observaciones</label>
+                <textarea
+                  onChange={(e) => handleInputChange(e)}
+                  name="observaciones"
+                ></textarea>
+              </div>
             </form>
-            <button onClick={(e) => handleAdd(e)}>Agregar Pedido</button>
+            <button onClick={(e) => handleAdd(e)}>Agregar Cliente</button>
           </div>
         </div>
       )}

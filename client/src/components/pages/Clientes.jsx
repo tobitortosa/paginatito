@@ -46,10 +46,6 @@ export default function Clientes() {
   const [editBtnState, setEditBtnState] = useState(false);
   const [editBtnObj, setEditBtnObj] = useState({});
 
-  useEffect(() => {
-    dispatch(getAllClients());
-  }, [editBtnState, btnState, btnLineState, editBtnObj]);
-
   const handleInputChange = (e) => {
     setInput({
       ...input,
@@ -83,10 +79,11 @@ export default function Clientes() {
 
   const handleDeleteBtn = (id) => {
     dispatch(deleteClient(id));
-    console.log(id);
   };
 
-  console.log(editBtnObj);
+  useEffect(() => {
+    dispatch(getAllClients());
+  }, [editBtnState, btnState, btnLineState, editBtnObj]);
 
   return (
     <div className={s.container}>

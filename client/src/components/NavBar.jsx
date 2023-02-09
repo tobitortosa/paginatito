@@ -9,6 +9,7 @@ export default function NavBar({ toggleNav }) {
         "Aportes y Gastos",
         "Clientes",
         "Pedidos",
+        "Sub Pedidos",
         "Stock",
         "Gastos",
         "Productos",

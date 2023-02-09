@@ -17,9 +17,15 @@ export default function ProductoComponent() {
   const [editDetailsInput, setEditDetailsInput] = useState({});
   const [editCostsInput, setEditCostsInput] = useState({});
 
+  const precioFinal =
+    product?.costs?.kilosComprados && product?.costs?.precioXKiloFinal
+      ? product?.costs?.kilosComprados *
+        (product?.costs?.precioXKiloFinal * 1.21)
+      : "-";
+
   useEffect(() => {
     dispatch(getAllProducts());
-  }, [btnState, costsBtnState]);
+  }, [btnState, costsBtnState, editDetailsInput, editCostsInput]);
 
   const handleCostsInputChange = (e) => {
     setEditCostsInput({
@@ -35,7 +41,7 @@ export default function ProductoComponent() {
     });
   };
 
-  console.log(editCostsInput);
+  console.log(product);
 
   const handleEditBtn = () => {
     setBtnState(true);
@@ -64,7 +70,13 @@ export default function ProductoComponent() {
     dispatch(
       editProduct({
         ...product,
-        costs: editCostsInput,
+        costs: {
+          ...editCostsInput,
+          costoFinal:
+            (editCostsInput.kilosComprados *
+              (editCostsInput.precioXKiloFinal * 1.21)) /
+            (editCostsInput.kilosComprados / editCostsInput.kilosXPrenda),
+        },
       })
     );
   };
@@ -88,15 +100,12 @@ export default function ProductoComponent() {
       ? product?.costs?.kilosComprados / product?.costs?.kilosXPrenda
       : "-";
 
-  const precioFinal =
-    product?.costs?.kilosComprados && product?.costs?.precioXKiloFinal
-      ? product?.costs?.kilosComprados *
-        (product?.costs?.precioXKiloFinal * 1.21)
-      : "-";
+  console.log(precioFinal / salen);
 
   return (
     <div className={s.container}>
       <h2>{product?.name}</h2>
+      <h4>{product?.type.charAt(0).toUpperCase() + product?.type.slice(1)}</h4>
       <div className={s.box}>
         <div className={s.line}>
           <h3>Costos de Produccion</h3>
@@ -110,7 +119,7 @@ export default function ProductoComponent() {
                 {product?.details?.tela
                   ? `${String((product?.details?.tela / total) * 100).slice(
                       0,
-                      2
+                      3
                     )}%`
                   : "-"}
               </p>
@@ -118,7 +127,7 @@ export default function ProductoComponent() {
                 {product?.details?.corte
                   ? `${String((product?.details?.corte / total) * 100).slice(
                       0,
-                      2
+                      3
                     )}%`
                   : "-"}
               </p>
@@ -126,7 +135,7 @@ export default function ProductoComponent() {
                 {product?.details?.costura
                   ? `${String((product?.details?.costura / total) * 100).slice(
                       0,
-                      2
+                      3
                     )}%`
                   : "-"}
               </p>
@@ -134,28 +143,28 @@ export default function ProductoComponent() {
                 {product?.details?.cierreDeCuello
                   ? `${String(
                       (product?.details?.cierreDeCuello / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p>
                 {product?.details?.ribsPuñoCuello
                   ? `${String(
                       (product?.details?.ribsPuñoCuello / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p>
                 {product?.details?.tancaYCordon
                   ? `${String(
                       (product?.details?.tancaYCordon / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p>
                 {product?.details?.velcro
                   ? `${String((product?.details?.velcro / total) * 100).slice(
                       0,
-                      2
+                      3
                     )}%`
                   : "-"}
               </p>
@@ -163,28 +172,28 @@ export default function ProductoComponent() {
                 {product?.details?.cordonElastico
                   ? `${String(
                       (product?.details?.cordonElastico / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p>
                 {product?.details?.hebillasLaterales
                   ? `${String(
                       (product?.details?.hebillasLaterales / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p>
                 {product?.details?.cierreLateral
                   ? `${String(
                       (product?.details?.cierreLateral / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p>
                 {product?.details?.bolsa
                   ? `${String((product?.details?.bolsa / total) * 100).slice(
                       0,
-                      2
+                      3
                     )}%`
                   : "-"}
               </p>
@@ -193,14 +202,14 @@ export default function ProductoComponent() {
                 {product?.details?.estampado
                   ? `${String(
                       (product?.details?.estampado / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p>
                 {product?.details?.bordado
                   ? `${String((product?.details?.bordado / total) * 100).slice(
                       0,
-                      2
+                      3
                     )}%`
                   : "-"}
               </p>
@@ -208,14 +217,14 @@ export default function ProductoComponent() {
                 {product?.details?.cintaReflexiva
                   ? `${String(
                       (product?.details?.cintaReflexiva / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p>
                 {product?.details?.peliculas
                   ? `${String(
                       (product?.details?.peliculas / total) * 100
-                    ).slice(0, 2)}%`
+                    ).slice(0, 3)}%`
                   : "-"}
               </p>
               <p id={s.total}></p>
@@ -292,7 +301,7 @@ export default function ProductoComponent() {
                 {product?.details?.bolsa ? `$${product?.details?.bolsa}` : "-"}
               </p>
               <p id={s.total}>{`$${
-                total === null ? "-" : total - mediaSuma
+                total === null ? "-" : Math.ceil(total) - mediaSuma
               }`}</p>
               <p>
                 {product?.details?.estampado
@@ -314,8 +323,12 @@ export default function ProductoComponent() {
                   ? `$${product?.details?.peliculas}`
                   : "-"}
               </p>
-              <p id={s.total}>{`$${total === null ? "-" : total}`}</p>
-              <p id={s.total}>{`$${total === null ? "-" : total * 1.21}`}</p>
+              <p id={s.total}>{`$${
+                total === null ? "-" : Math.ceil(total)
+              }`}</p>
+              <p id={s.total}>{`$${
+                total === null ? "-" : Math.ceil(total * 1.21)
+              }`}</p>
             </div>
           </div>
         </div>
@@ -331,7 +344,7 @@ export default function ProductoComponent() {
               <p>Precio por Kilo Final</p>
               <p>Costo con Iva por Unidad</p>
               <p>Salen</p>
-              <p>Precio Final Total</p>
+              <p id={s.total}>Precio Final Total</p>
             </div>
             <div className={s.gridLines}>
               <p>
@@ -354,8 +367,10 @@ export default function ProductoComponent() {
                   ? "-"
                   : `$${precioFinal / salen}`}
               </p>
-              <p id={s.salen}>{salen || "-"}</p>
-              <p>{precioFinal !== "-" ? `$${precioFinal}` : "-"}</p>
+              <p id={s.salen}>{Math.floor(salen) || "-"}</p>
+              <p id={s.total}>
+                {precioFinal !== "-" ? `$${precioFinal}` : "-"}
+              </p>
             </div>
           </div>
         </div>

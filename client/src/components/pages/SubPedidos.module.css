@@ -1,0 +1,304 @@
+.container {
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 90vw;
+}
+
+.sbar {
+  border: 1px solid black;
+  border-radius: 10px;
+  position: relative;
+}
+
+.sbar input {
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  width: 300px;
+}
+.sbar button {
+  padding: 11px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.sbar button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#buscarCliente {
+}
+
+#addBtn {
+  margin: 20px;
+  padding: 15px 50px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+#addBtn:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.grid {
+  border: 1px solid black;
+  margin: 20px;
+  margin-top: 5px;
+  width: 87vw;
+  max-height: 87vh;
+  overflow: auto;
+}
+
+.gridTitles {
+  display: flex;
+  text-align: center;
+}
+
+.gridTitles p {
+  min-width: 150px;
+  max-width: 150px;
+  padding: 10px;
+  margin: 10px 30px;
+  font-weight: 600;
+}
+
+#objTitle {
+  max-width: 300px;
+  min-width: 300px;
+}
+#obs {
+  word-wrap: break-word;
+  max-width: 300px;
+  min-width: 300px;
+}
+
+.gridLines {
+  border-top: 1px solid black;
+  display: flex;
+  text-align: center;
+  width: max-content;
+}
+
+.gridLines p {
+  max-width: 150px;
+  min-width: 150px;
+  padding: 10px;
+  margin: 10px 30px;
+  font-size: 13px;
+  word-wrap: break-word;
+}
+
+.iva {
+  width: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.gridLines a {
+  text-decoration: none;
+  color: blue;
+}
+
+.gridLines a:hover {
+  color: darkblue;
+  cursor: pointer;
+}
+
+.iva span {
+  font-size: 14px;
+  text-decoration: none;
+}
+
+#ivaPorcentaje {
+  font-size: 12px;
+}
+
+.lineModal {
+  background-color: rgba(0, 0, 0, 0.55);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 199px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lineModal .text {
+  border: 2px solid white;
+  border-radius: 20px;
+  width: 45vw;
+  padding: 25px;
+  font-size: 22px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.lineModal .text p {
+  font-size: 35px;
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  color: white;
+  transition: 0.3s;
+}
+
+.lineModal .text p:hover {
+  transition: 0.3s;
+  color: red;
+  cursor: pointer;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.55);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainer {
+  padding: 30px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.lineForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalContainer form {
+  display: flex;
+  justify-content: center;
+}
+
+#editBtn {
+  min-width: 100px;
+  max-width: 100px;
+  padding: 10px;
+  margin: 10px 30px;
+  font-weight: 600;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+#editBtn:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#deleteBtn {
+  min-width: 100px;
+  max-width: 100px;
+  padding: 10px;
+  margin: 10px 30px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: rgba(255, 0, 0, 0.7);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+#deleteBtn:hover {
+  background-color: rgba(255, 0, 0, 0.9);
+  cursor: pointer;
+}
+
+.modalContainer input {
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+  border: 2px solid transparent;
+  background-color: rgba(255, 255, 255, 0.9);
+  height: 20px;
+  width: 300px;
+  margin: 10px 0px;
+  margin-right: 20px;
+}
+
+.modalContainer input:focus {
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  background-color: white;
+}
+
+.modalContainer label {
+  margin-left: 0px;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.modalContainer textarea {
+  padding: 5px;
+  outline: none;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-color: rgba(255, 255, 255, 0.9);
+  resize: none;
+  height: 100px;
+  width: 300px;
+  margin: 10px 0px;
+}
+
+.modalContainer textarea:focus {
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  background-color: white;
+}
+
+.modalContainer button {
+  border-radius: 5px;
+  height: 50px;
+  border: none;
+  margin-top: 30px;
+  font-size: 18px;
+  width: 100%;
+}
+
+.modalContainer button:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
+.modalContainer p {
+  font-size: 35px;
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  color: white;
+  transition: 0.3s;
+}
+
+.modalContainer p:hover {
+  transition: 0.3s;
+  color: red;
+  cursor: pointer;
+}
