@@ -21,6 +21,8 @@ router.get("/subpedidos", async (req, res) => {
 router.post("/subpedidos", async (req, res) => {
   const { idPedido, idProducto, cantidad, total } = req.body;
 
+  console.log(req.body);
+
   try {
     const nuevoSubPedido = await SubPedido.create({
       productoId: idProducto,
@@ -34,6 +36,32 @@ router.post("/subpedidos", async (req, res) => {
     res.status(200).json(nuevoSubPedido);
   } catch (error) {
     res.status(400).send(error.message);
+  }
+});
+
+router.put("/subpedidos", async (req, res) => {
+  const { id } = req.body;
+  console.log(req.body);
+  try {
+    SubPedido.update(
+      {
+        ...req.body,
+      },
+      { where: { id: id } }
+    );
+    res.status(200).send(`Cliente con el id ${id} modificado correctamente`);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+router.post("/subpedidos/delete", async (req, res) => {
+  const { id } = req.body;
+  try {
+    SubPedido.destroy({ where: { id: id } });
+    res.status(200).send(`SubPedido con el id ${id} eliminado correctamente`);
+  } catch (error) {
+    res.status(400).send("error");
   }
 });
 

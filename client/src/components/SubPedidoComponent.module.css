@@ -5,43 +5,16 @@
   align-items: center;
 }
 
+.container h2 {
+  width: max-content;
+  padding: 10px;
+  text-align: center;
+}
+
 .searchContainer {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  justify-content: start;
   width: 90vw;
-}
-
-.sbar {
-  border: 1px solid black;
-  border-radius: 10px;
-  position: relative;
-}
-
-.sbar input {
-  border-radius: 10px;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-size: 18px;
-  width: 300px;
-}
-.sbar button {
-  padding: 11px;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.sbar button:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-#buscarCliente {
 }
 
 #addBtn {
@@ -62,7 +35,7 @@
   border: 1px solid black;
   margin: 20px;
   margin-top: 5px;
-  width: 87vw;
+  width: auto;
   max-height: 87vh;
   overflow: auto;
 }
@@ -75,8 +48,7 @@
 .gridTitles p {
   min-width: 150px;
   max-width: 150px;
-  padding: 10px;
-  margin: 10px 30px;
+  padding: 10px 0px;
   font-weight: 600;
 }
 
@@ -100,10 +72,11 @@
 .gridLines p {
   max-width: 150px;
   min-width: 150px;
-  padding: 10px;
-  margin: 10px 30px;
   font-size: 13px;
   word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .iva {

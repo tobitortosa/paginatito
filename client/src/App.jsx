@@ -11,6 +11,7 @@ import SubPedidos from "./components/pages/SubPedidos";
 import Productos from "./components/pages/Productos";
 import DateComponent from "./components/DateComponent";
 import ProductoComponent from "./components/ProductoComponent";
+import SubPedidoComponent from "./components/SubPedidoComponent";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/Sub Pedidos" element={<SubPedidos />} />
         <Route path="/Productos" element={<Productos />} />
         <Route path="/Productos/:productoId" element={<ProductoComponent />} />
+        <Route path="/Pedidos/:pedidoId" element={<SubPedidoComponent />} />
       </Routes>
     </div>
   );

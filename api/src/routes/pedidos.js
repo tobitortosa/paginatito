@@ -12,7 +12,6 @@ router.get("/pedidos", async (req, res) => {
         },
         {
           model: SubPedido,
-          attributes: ["total"],
         },
       ],
     });
@@ -43,6 +42,31 @@ router.post("/pedidos", async (req, res) => {
     res.status(200).send(nuevoPedido);
   } catch (error) {
     res.status(400).send(error.message);
+  }
+});
+
+router.put("/pedidos", async (req, res) => {
+  const { id } = req.body;
+  try {
+    Pedido.update(
+      {
+        ...req.body,
+      },
+      { where: { id: id } }
+    );
+    res.status(200).send(`Pedido con el id ${id} modificado correctamente`);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+router.post("/pedidos/delete", async (req, res) => {
+  const { id } = req.body;
+  try {
+    Pedido.destroy({ where: { id: id } });
+    res.status(200).send(`Pedido con el id ${id} eliminado correctamente`);
+  } catch (error) {
+    res.status(400).send("error");
   }
 });
 

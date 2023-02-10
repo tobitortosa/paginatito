@@ -13,7 +13,6 @@ router.get("/clientes", async (req, res) => {
 
 router.post("/clientes", async (req, res) => {
   try {
-    console.log(req.body);
     let newClient = await Cliente.create({ ...req.body });
     res.status(200).json(newClient);
   } catch (error) {
@@ -38,7 +37,6 @@ router.put("/clientes", async (req, res) => {
 
 router.post("/clientes/delete", async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   try {
     Cliente.destroy({ where: { id: id } });
     res.status(200).send(`Cliente con el id ${id} eliminado correctamente`);

@@ -2,12 +2,14 @@ import {
   GET_ALL_CLIENTS,
   GET_ALL_PRODUCTS,
   GET_ALL_PEDIDOS,
+  GET_ALL_SUBPEDIDOS,
 } from "../actions/actionsTypes";
 
 export const initialState = {
   allClients: [],
   allProducts: [],
   allPedidos: [],
+  allSubPedidos: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -26,6 +28,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         allPedidos: action.payload,
+      };
+    case GET_ALL_SUBPEDIDOS:
+      return {
+        ...state,
+        allSubPedidos: action.payload,
       };
     default:
       return {

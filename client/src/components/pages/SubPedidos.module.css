@@ -1,53 +1,11 @@
 .container {
-  width: 90vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.searchContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 90vw;
-}
-
-.sbar {
-  border: 1px solid black;
-  border-radius: 10px;
-  position: relative;
-}
-
-.sbar input {
-  border-radius: 10px;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-size: 18px;
-  width: 300px;
-}
-.sbar button {
-  padding: 11px;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.sbar button:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-#buscarCliente {
+  width: 90%;
 }
 
 #addBtn {
   margin: 20px;
   padding: 15px 50px;
-  font-size: 18px;
+  font-size: 16px;
   border-radius: 10px;
   border: none;
   background-color: rgba(0, 0, 0, 0.2);
@@ -61,75 +19,40 @@
 .grid {
   border: 1px solid black;
   margin: 20px;
-  margin-top: 5px;
-  width: 87vw;
-  max-height: 87vh;
-  overflow: auto;
+  margin-top: 30px;
+  height: 80vh;
 }
 
 .gridTitles {
+  border: 1px solid black;
   display: flex;
-  text-align: center;
-}
-
-.gridTitles p {
-  min-width: 150px;
-  max-width: 150px;
-  padding: 10px;
-  margin: 10px 30px;
+  align-items: center;
+  justify-content: space-around;
+  height: 60px;
+  font-size: 16px;
   font-weight: 600;
 }
 
-#objTitle {
-  max-width: 300px;
-  min-width: 300px;
-}
-#obs {
-  word-wrap: break-word;
-  max-width: 300px;
-  min-width: 300px;
+.gridTitles p {
+  width: 200px;
+  text-align: center;
 }
 
 .gridLines {
-  border-top: 1px solid black;
+  border: 1px solid black;
+  height: 50px;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 14px;
+  border-top: none;
   text-align: center;
-  width: max-content;
 }
 
 .gridLines p {
-  max-width: 150px;
-  min-width: 150px;
-  padding: 10px;
-  margin: 10px 30px;
-  font-size: 13px;
-  word-wrap: break-word;
-}
-
-.iva {
   width: 200px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.gridLines a {
-  text-decoration: none;
-  color: blue;
-}
-
-.gridLines a:hover {
-  color: darkblue;
-  cursor: pointer;
-}
-
-.iva span {
-  font-size: 14px;
-  text-decoration: none;
-}
-
-#ivaPorcentaje {
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .lineModal {
@@ -182,67 +105,26 @@
 }
 
 .modalContainer {
-  padding: 30px;
-  border-radius: 30px;
-  background-color: rgba(255, 255, 255, 0.6);
-}
-.lineForm {
-  display: flex;
-  flex-direction: column;
+  width: 45vw;
+  height: auto;
+  padding: 20px;
 }
 
 .modalContainer form {
   display: flex;
-  justify-content: center;
-}
-
-#editBtn {
-  min-width: 100px;
-  max-width: 100px;
-  padding: 10px;
-  margin: 10px 30px;
-  font-weight: 600;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-}
-
-#editBtn:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-#deleteBtn {
-  min-width: 100px;
-  max-width: 100px;
-  padding: 10px;
-  margin: 10px 30px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  background-color: rgba(255, 0, 0, 0.7);
-  border: 2px solid rgba(0, 0, 0, 0.2);
-}
-
-#deleteBtn:hover {
-  background-color: rgba(255, 0, 0, 0.9);
-  cursor: pointer;
+  flex-direction: column;
 }
 
 .modalContainer input {
-  padding: 5px;
-  font-size: 14px;
+  padding: 10px;
+  padding-left: 10px;
+  font-size: 16px;
   border-radius: 5px;
   border: none;
   outline: none;
   margin-bottom: 10px;
   border: 2px solid transparent;
   background-color: rgba(255, 255, 255, 0.9);
-  height: 20px;
-  width: 300px;
-  margin: 10px 0px;
-  margin-right: 20px;
 }
 
 .modalContainer input:focus {
@@ -251,10 +133,10 @@
 }
 
 .modalContainer label {
+  margin: 5px;
   margin-left: 0px;
-  color: rgba(0, 0, 0, 0.8);
+  color: white;
   font-size: 20px;
-  font-weight: 600;
 }
 
 .modalContainer textarea {
@@ -263,10 +145,6 @@
   border-radius: 5px;
   border: 2px solid transparent;
   background-color: rgba(255, 255, 255, 0.9);
-  resize: none;
-  height: 100px;
-  width: 300px;
-  margin: 10px 0px;
 }
 
 .modalContainer textarea:focus {
@@ -278,9 +156,16 @@
   border-radius: 5px;
   height: 50px;
   border: none;
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 18px;
-  width: 100%;
+}
+
+.modalContainer form select {
+  height: 45px;
+  padding-left: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
 }
 
 .modalContainer button:hover {
@@ -301,4 +186,108 @@
   transition: 0.3s;
   color: red;
   cursor: pointer;
+}
+
+.verContainer {
+  margin: 20px;
+  height: 60vh;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.verProductos {
+  display: flex;
+  flex-direction: column;
+}
+
+.productoContainer {
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  height: auto;
+  margin: 10px;
+  border-radius: 15px;
+}
+
+.productoContainer a {
+  width: 45vw;
+  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btns {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btns button {
+  font-size: 20px;
+  padding: 5px 15px;
+  margin: 0;
+  border-radius: 0;
+  font-weight: 600;
+  border-left: 2px solid black;
+}
+
+#eliminar {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+#eliminar:hover {
+  background-color: rgba(207, 0, 0, 0.7);
+}
+
+#btn {
+  padding: 10px 30px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  transition: 0.2s;
+}
+
+#btn:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: 0.2s;
+}
+
+#link {
+  border-radius: 10px;
+}
+
+.verContainer label {
+  color: black;
+}
+
+.verContainer input {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.verContainer input:focus {
+  border: none;
+  transition: 0.3s;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.verContainer button {
+  transition: 0.3s;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.verContainer button:hover {
+  background-color: rgba(0, 0, 0, 0.3);
 }

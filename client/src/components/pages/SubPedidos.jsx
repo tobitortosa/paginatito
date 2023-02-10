@@ -1,450 +1,151 @@
 import s from "./SubPedidos.module.css";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllClients,
-  createNewClient,
-  editClient,
-  deleteClient,
+  getAllProducts,
+  deleteProduct,
+  editProduct,
+  getAllPedidos,
+  getAllSubPedidos,
+  createSubPedido,
 } from "../../redux/actions";
 
-export default function SubPedidos() {
+export default function Productos() {
   const dispatch = useDispatch();
-
-  const allClients = useSelector((state) =>
-    state.allClients.sort((a, b) => a.redSocial.localeCompare(b.redSocial))
-  );
-
-  console.log(allClients);
-
-  useEffect(() => {
-    dispatch(getAllClients());
-  }, []);
-
-  const [searchBarInput, setSearchBarInput] = useState("");
-  const handleClientSearchInput = (e) => {
-    setSearchBarInput(e.target.value);
-  };
-
-  const [input, setInput] = useState({
-    cliente: "",
-    producto: "",
-    cantidad: "",
-    entrego: false,
+  const allSubPedidos = useSelector((state) => state.allSubPedidos);
+  const allPedidos = useSelector((state) => state.allPedidos);
+  const [modalBtnState, setModalBtnState] = useState(false);
+  const [verBtnState, setVerBtnState] = useState(false);
+  const [modificarBtnState, setModificarBtnState] = useState(false);
+  const [modificarBtnObj, setModificarBtnObj] = useState({});
+  const [formInput, setFormInput] = useState({
+    idPedido: "",
   });
 
-  const [btnState, setBtnState] = useState(false);
-  const [btnLineState, setBtnLineState] = useState(false);
-  const [editBtnState, setEditBtnState] = useState(false);
-  const [editBtnObj, setEditBtnObj] = useState({});
+  console.log(allSubPedidos);
+  console.log(allPedidos);
 
-  const handleInputChange = (e) => {
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleEditInputChange = (e) => {
-    setEditBtnObj({
-      ...editBtnObj,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  console.log(editBtnObj);
+  useEffect(() => {
+    dispatch(getAllSubPedidos());
+    dispatch(getAllPedidos());
+  }, [modalBtnState, verBtnState, modificarBtnState, modificarBtnObj]);
 
   const handleAdd = (e) => {
+    setModalBtnState(false);
+  };
+
+  const handleModificarBtn = (id) => {
+    setVerBtnState(false);
+    setModificarBtnState(true);
+    setModificarBtnObj({
+      ...allSubPedidos.filter((product) => product.id === id)[0],
+    });
+  };
+
+  const handleDelete = (e, id) => {
     e.preventDefault();
-    setBtnState(false);
-    dispatch(createNewClient(input));
+    setVerBtnState(false);
+    let productId = allSubPedidos.filter((p) => p.id === id)[0].id;
+    dispatch(deleteProduct(productId));
   };
 
-  const handleEdit = (e) => {
+  const handleModificar = (e) => {
     e.preventDefault();
-    setEditBtnState(false);
-    dispatch(editClient(editBtnObj));
+    dispatch(editProduct(modificarBtnObj));
+    setModificarBtnState(false);
   };
 
-  const handleEditBtn = (id) => {
-    setEditBtnState(true);
-    setEditBtnObj({ ...allClients.filter((client) => client.id === id)[0] });
+  const handleFormInputChange = (e) => {
+    setFormInput({
+      ...formInput,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleDeleteBtn = (id) => {
-    dispatch(deleteClient(id));
-    console.log(id);
+  const handleModificarInputChange = (e) => {
+    setModificarBtnObj({
+      ...modificarBtnObj,
+      [e.target.name]: e.target.value,
+    });
   };
-
-  console.log(editBtnObj);
 
   return (
     <div className={s.container}>
-      <div className={s.searchContainer}>
-        <div className={s.sbar}>
-          <input type="text" onChange={(e) => handleClientSearchInput(e)} />
-          <button>Buscar Cliente</button>
-        </div>
-        <button onClick={() => setBtnState(true)} id={s.addBtn}>
-          Agregar Cliente
-        </button>
-      </div>
       <div className={s.grid}>
         <div className={s.gridTitles}>
-          <p>Fecha de Pedido</p>
-          <p>Fecha de Entrega</p>
-          <p>Cliente</p>
-          <p>Direccion</p>
-          <p>Localidad</p>
-          <p>Tel</p>
-          <p>Total</p>
-          <p>Seña</p>
-          <p>Total sin Seña</p>
-          <p>Entrego</p>
+          <p>Sub Pedidos</p>
         </div>
-        {searchBarInput.length === 0
-          ? allClients.map((el, index) => {
-              return (
-                <div key={index} className={s.gridLines}>
-                  <p>{el.redSocial || "-"}</p>
-                  <p>{el.name}</p>
-                  <p>{el.lastName || "-"}</p>
-                  <p>{el.email || "-"}</p>
-                  <p>{el.rubro || "-"}</p>
-                  <p>{el.cargo || "-"}</p>
-                  <p>{el.direccion || "-"}</p>
-                  <p>{el.ndireccion || "-"}</p>
-                  <p>{el.localidad || "-"}</p>
-                  <p>{el.cp || "-"}</p>
-                  <p>{el.provincia || "-"}</p>
-                  <p>{el.tel1 || "-"}</p>
-                  <p>{el.tel2 || "-"}</p>
-                  <p>{el.celular || "-"}</p>
-                  <p>{el.fax || "-"}</p>
-                  <p>
-                    <a
-                      href={`https://${el.paginaWeb.toLowerCase()}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {el.paginaWeb.toLowerCase() || "-"}
-                    </a>
-                  </p>
-                  <p id={s.obs}>{el.observaciones || "-"}</p>
-                  <button id={s.editBtn} onClick={() => handleEditBtn(el.id)}>
-                    Editar
-                  </button>
-                  <button
-                    id={s.deleteBtn}
-                    onClick={() => handleDeleteBtn(el.id)}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              );
-            })
-          : allClients
-              .filter((client) =>
-                client.redSocial
-                  .toLowerCase()
-                  .includes(searchBarInput.toLowerCase())
-              )
-              .map((el, index) => {
-                return (
-                  <div key={index} className={s.gridLines}>
-                    <p>{el.redSocial || "-"}</p>
-                    <p>{el.name}</p>
-                    <p>{el.lastName || "-"}</p>
-                    <p>{el.email || "-"}</p>
-                    <p>{el.rubro || "-"}</p>
-                    <p>{el.cargo || "-"}</p>
-                    <p>{el.direccion || "-"}</p>
-                    <p>{el.ndireccion || "-"}</p>
-                    <p>{el.localidad || "-"}</p>
-                    <p>{el.cp || "-"}</p>
-                    <p>{el.provincia || "-"}</p>
-                    <p>{el.tel1 || "-"}</p>
-                    <p>{el.tel2 || "-"}</p>
-                    <p>{el.celular || "-"}</p>
-                    <p>{el.fax || "-"}</p>
-                    <p>
-                      <a href={el.paginaWeb}>{el.paginaWeb || "-"}</a>
-                    </p>
-                    <p id={s.obs}>{el.observaciones || "-"}</p>
-                    <button id={s.editBtn} onClick={() => handleEditBtn(el.id)}>
-                      Editar
-                    </button>
-                    <button
-                      id={s.deleteBtn}
-                      onClick={() => handleDeleteBtn(el.id)}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                );
-              })}
+        {allPedidos.map((el, index) => {
+          return (
+            <div key={index} className={s.gridLines}>
+              <Link id={s.link} to={`/Pedidos/${el.id}`}>
+                <button id={s.btn}>{el.cliente?.redSocial}</button>
+              </Link>
+            </div>
+          );
+        })}
       </div>
-      {btnLineState && (
-        <div className={s.lineModal}>
-          <div className={s.text}>
-            <p onClick={() => setBtnLineState(false)}>✖</p>
+      {modalBtnState && (
+        <div className={s.modal}>
+          <div className={s.modalContainer}>
+            <p onClick={() => setModalBtnState(false)}>✖</p>
+            <form>
+              <label>Pedido</label>
+              <select
+                onChange={(e) => handleFormInputChange(e)}
+                defaultValue="Elegir Pedido..."
+                name="idPedido"
+              >
+                <option disabled>Elegir Pedido...</option>
+                {allPedidos.length &&
+                  allPedidos.map((el, index) => {
+                    return (
+                      <option key={index} value={el.id}>
+                        {el.cliente.redSocial}
+                      </option>
+                    );
+                  })}
+              </select>
+              <button onClick={(e) => handleAdd(e)}>
+                Agregar Nuevo SubPedido
+              </button>
+            </form>
           </div>
         </div>
       )}
-      {btnState && (
+
+      {modificarBtnState && (
         <div className={s.modal}>
           <div className={s.modalContainer}>
-            <p onClick={() => setBtnState(false)}>✖</p>
-            <form>
-              <div className={s.lineForm}>
-                <label>Nombre</label>
+            <p onClick={() => setModificarBtnState(false)}>✖</p>
+            <div className={s.verContainer}>
+              <form>
+                <label>Modificar Nombre</label>
                 <input
-                  onChange={(e) => handleInputChange(e)}
+                  onChange={(e) => handleModificarInputChange(e)}
                   type="text"
                   name="name"
+                  value={modificarBtnObj.name || ""}
                 />
-                <label>Apellido</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="lastName"
-                />
-                <label>Email</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="email"
-                />
-                <label>Rubro</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="rubro"
-                />
-                <label>Cargo</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="cargo"
-                />
-
-                <label>Red Social</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="redSocial"
-                />
-
-                <label>Direccion</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="direccion"
-                />
-
-                <label>N°</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="number"
-                  name="ndireccion"
-                />
-                <label>Localidad</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="localidad"
-                />
-              </div>
-              <div className={s.lineForm}>
-                <label>CP</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="number"
-                  name="cp"
-                />
-                <label>Provincia</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="provincia"
-                />
-                <label>Tel1</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="tel1"
-                />
-                <label>Tel2</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="tel2"
-                />
-                <label>Celular</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="celular"
-                />
-
-                <label>Fax</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="fax"
-                />
-                <label>Pagina Web</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="paginaWeb"
-                />
-
-                <label>Observaciones</label>
-                <textarea
-                  onChange={(e) => handleInputChange(e)}
-                  name="observaciones"
-                ></textarea>
-              </div>
-            </form>
-            <button onClick={(e) => handleAdd(e)}>Agregar Cliente</button>
-          </div>
-        </div>
-      )}
-      {editBtnState && (
-        <div className={s.modal}>
-          <div className={s.modalContainer}>
-            <p onClick={() => setEditBtnState(false)}>✖</p>
-            <form>
-              <div className={s.lineForm}>
-                <label>Nombre</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="name"
-                  value={editBtnObj.name || ""}
-                />
-                <label>Apellido</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="lastName"
-                  value={editBtnObj.lastName || ""}
-                />
-                <label>Email</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="email"
-                  value={editBtnObj.email || ""}
-                />
-                <label>Rubro</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="rubro"
-                  value={editBtnObj.rubro || ""}
-                />
-                <label>Cargo</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="cargo"
-                  value={editBtnObj.cargo || ""}
-                />
-
-                <label>Red Social</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="redSocial"
-                  value={editBtnObj.redSocial || ""}
-                />
-
-                <label>Direccion</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="direccion"
-                  value={editBtnObj.direccion || ""}
-                />
-
-                <label>N°</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="number"
-                  name="ndireccion"
-                  value={editBtnObj.ndireccion || ""}
-                />
-                <label>Localidad</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="localidad"
-                  value={editBtnObj.localidad || ""}
-                />
-              </div>
-              <div className={s.lineForm}>
-                <label>CP</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="number"
-                  name="cp"
-                  value={editBtnObj.cp || ""}
-                />
-                <label>Provincia</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="provincia"
-                  value={editBtnObj.provincia || ""}
-                />
-                <label>Tel1</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="tel1"
-                  value={editBtnObj.tel1 || ""}
-                />
-                <label>Tel2</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="tel2"
-                  value={editBtnObj.tel2 || ""}
-                />
-                <label>Celular</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="celular"
-                  value={editBtnObj.celular || ""}
-                />
-
-                <label>Fax</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="fax"
-                  value={editBtnObj.fax || ""}
-                />
-                <label>Pagina Web</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="paginaWeb"
-                  value={editBtnObj.paginaWeb || ""}
-                />
-
-                <label>Observaciones</label>
-                <textarea
-                  onChange={(e) => handleEditInputChange(e)}
-                  name="observaciones"
-                  value={editBtnObj.observaciones || ""}
-                ></textarea>
-              </div>
-            </form>
-            <button onClick={(e) => handleEdit(e)}>Editar Cliente</button>
+                <label>Modificar Tipo de Producto</label>
+                <select
+                  defaultValue="Tipo de Producto..."
+                  name="type"
+                  onChange={(e) => handleModificarInputChange(e)}
+                  value={modificarBtnObj.type || ""}
+                >
+                  <option disabled>Tipo de Producto...</option>
+                  <option value="buso">Buso</option>
+                  <option value="remera">Remera</option>
+                  <option value="chaleco">Chaleco</option>
+                  <option value="campera">Campera</option>
+                </select>
+                <button onClick={(e) => handleModificar(e)}>
+                  Modificar Producto
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}
