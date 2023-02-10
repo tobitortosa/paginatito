@@ -1,7 +1,14 @@
 import s from "./NavBar.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function NavBar({ toggleNav }) {
+export default function NavBar() {
+  const navigate = useNavigate();
+  const handleCerrarSesion = () => {
+    navigate("/");
+    localStorage.removeItem("logged");
+    location.reload();
+  };
+
   return (
     <div className={s.container}>
       {[
@@ -24,6 +31,9 @@ export default function NavBar({ toggleNav }) {
           </div>
         );
       })}
+      <button id={s.btn} onClick={() => handleCerrarSesion()}>
+        Cerrar Sesion
+      </button>
     </div>
   );
 }

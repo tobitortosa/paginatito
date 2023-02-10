@@ -3,9 +3,11 @@ import {
   GET_ALL_PRODUCTS,
   GET_ALL_PEDIDOS,
   GET_ALL_SUBPEDIDOS,
+  LOGIN,
 } from "../actions/actionsTypes";
 
 export const initialState = {
+  loginObj: {},
   allClients: [],
   allProducts: [],
   allPedidos: [],
@@ -14,6 +16,11 @@ export const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOGIN:
+      return {
+        ...state,
+        loginObj: action.payload,
+      };
     case GET_ALL_CLIENTS:
       return {
         ...state,

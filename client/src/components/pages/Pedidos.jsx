@@ -7,7 +7,7 @@ import {
   createPedido,
   getAllPedidos,
   editPedido,
-  deletePedido
+  deletePedido,
 } from "../../redux/actions";
 
 export default function Pedidos() {
@@ -32,15 +32,30 @@ export default function Pedidos() {
     entrego: false,
   });
 
+  const [btnEntrego, setBtnEntrego] = useState();
   const [btnState, setBtnState] = useState(false);
   const [btnLineState, setBtnLineState] = useState(false);
   const [editBtnState, setEditBtnState] = useState(false);
   const [editBtnObj, setEditBtnObj] = useState({});
 
+  const handleEntrego = (el, entrego) => {
+    console.log(!entrego);
+    setBtnEntrego(!entrego);
+    dispatch(
+      editPedido({
+        ...el,
+        entrego: !entrego,
+      })
+    );
+  };
+
+  useEffect(() => {
+    dispatch(getAllClients());
+  }, []);
+
   useEffect(() => {
     dispatch(getAllPedidos());
-    dispatch(getAllClients());
-  }, [btnState, editBtnState, editBtnObj]);
+  }, [btnState, editBtnState, editBtnObj, btnEntrego]);
 
   const handleInputChange = (e) => {
     setInput({
@@ -74,17 +89,8 @@ export default function Pedidos() {
   };
 
   const handleDeleteBtn = (id) => {
+    setEditBtnObj({})
     dispatch(deletePedido(id));
-  };
-
-  const handleEntrego = (el, entrego) => {
-    console.log(entrego);
-    dispatch(
-      editPedido({
-        ...el,
-        entrego: !entrego,
-      })
-    );
   };
 
   return (

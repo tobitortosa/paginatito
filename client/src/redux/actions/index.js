@@ -14,11 +14,19 @@ import {
   CREATE_SUBPEDIDO,
   EDIT_SUBPEDIDO,
   DELETE_SUBPEDIDO,
-  DELETE_PEDIDO
+  DELETE_PEDIDO,
+  LOGIN,
 } from "./actionsTypes";
 import axios from "axios";
 
 const url = "http://localhost:3001";
+
+// Login
+
+export const login = (obj) => async (dispatch) => {
+  const loginObj = await axios.post(`${url}/login`, obj);
+  return dispatch({ type: LOGIN, payload: loginObj.data });
+};
 
 //Clients actions
 
@@ -41,7 +49,6 @@ export const deleteClient = (id) => async (dispatch) => {
   await axios.post(`${url}/clientes/delete`, { id: id });
   return dispatch({ type: DELETE_CLIENT });
 };
-
 
 // Products actions
 
@@ -66,7 +73,6 @@ export const deleteProduct = (id) => async (dispatch) => {
   return dispatch({ type: DELETE_PRODUCT });
 };
 
-
 // Pedidos actions
 
 export const getAllPedidos = () => async (dispatch) => {
@@ -88,7 +94,6 @@ export const deletePedido = (id) => async (dispatch) => {
   await axios.post(`${url}/pedidos/delete`, { id: id });
   return dispatch({ type: DELETE_PEDIDO });
 };
-
 
 // Sub Pedidos actions
 

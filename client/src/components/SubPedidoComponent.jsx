@@ -30,12 +30,15 @@ export default function SubPedidosComponent() {
 
   const [btnState, setBtnState] = useState(false);
   const [editBtnState, setEditBtnState] = useState(false);
-  const [editBtnObj, setEditBtnObj] = useState({});
+  const [editBtnObj, setEditBtnObj] = useState({a:"a"});
 
   useEffect(() => {
     dispatch(getAllPedidos());
-    dispatch(getAllProducts());
   }, [btnState, editBtnState, editBtnObj]);
+
+  useEffect(() => {
+    dispatch(getAllProducts());
+  }, []);
 
   const handleInputChange = (e) => {
     setInput({
@@ -79,6 +82,7 @@ export default function SubPedidosComponent() {
   };
 
   const handleDeleteBtn = (id) => {
+    setEditBtnObj({});
     dispatch(deleteSubPedido(id));
   };
 
