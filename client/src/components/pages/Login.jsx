@@ -21,8 +21,6 @@ export default function Login() {
     });
   };
 
-  console.log(loginObj);
-  console.log(input);
   const handleLogin = () => {
     if (input.name.length < 1 || input.password.length < 1) {
       alert("Ingrese su nombre y contraseña");

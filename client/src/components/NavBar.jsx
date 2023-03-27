@@ -11,29 +11,29 @@ export default function NavBar() {
 
   return (
     <div className={s.container}>
-      {[
-        "Facturas de Compras",
-        "Aportes y Gastos",
-        "Clientes",
-        "Pedidos",
-        "Sub Pedidos",
-        "Stock",
-        "Gastos",
-        "Productos",
-      ].map((el, index) => {
-        return (
-          <div key={index}>
-            <Link to={el}>
-              <button key={el} className={s.btnElement}>
-                {el}
-              </button>
-            </Link>
-          </div>
-        );
-      })}
-      <button id={s.btn} onClick={() => handleCerrarSesion()}>
-        Cerrar Sesion
-      </button>
+      <div className={s.navContainer}>
+        {[
+          "Facturas de Compras",
+          "Aportes y Gastos",
+          "Clientes",
+          "Pedidos",
+          "Stock",
+          "Productos",
+        ].map((el, index) => {
+          return (
+            <div key={index}>
+              <Link to={el}>
+                <button key={el} className={s.btnElement}>
+                  {el}
+                </button>
+              </Link>
+            </div>
+          );
+        })}
+        <button id={s.btn} onClick={() => handleCerrarSesion()}>
+          Cerrar Sesion
+        </button>
+      </div>
     </div>
   );
 }

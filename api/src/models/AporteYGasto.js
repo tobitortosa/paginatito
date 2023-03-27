@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "pedido",
+    "aporteYGasto",
     {
       id: {
         type: DataTypes.UUID,
@@ -10,22 +10,23 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
-      pedidoDate: {
-        type: DataTypes.STRING,
-      },
-      entregaDate: {
-        type: DataTypes.STRING,
-      },
-      seña: {
-        type: DataTypes.STRING,
-      },
       deleted: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
-      entrego: {
-        type: DataTypes.BOOLEAN,
+      cost: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.TEXT,
+      },
+      date: {
+        type: DataTypes.STRING,
+      },
+      type: {
+        type: DataTypes.ENUM(["Aporte", "Gasto"]),
       },
     },
     {

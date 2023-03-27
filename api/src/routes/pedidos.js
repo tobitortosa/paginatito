@@ -63,7 +63,7 @@ router.put("/pedidos", async (req, res) => {
 router.post("/pedidos/delete", async (req, res) => {
   const { id } = req.body;
   try {
-    Pedido.destroy({ where: { id: id } });
+    Pedido.update({ deleted: true }, { where: { id: id } });
     res.status(200).send(`Pedido con el id ${id} eliminado correctamente`);
   } catch (error) {
     res.status(400).send("error");

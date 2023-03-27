@@ -11,7 +11,7 @@ import {
 
 export default function Productos() {
   const dispatch = useDispatch();
-  const allProducts = useSelector((state) => state.allProducts);
+  const allProducts = useSelector((state) => state.allProducts.filter((c) => !c.deleted));
   const [modalBtnState, setModalBtnState] = useState(false);
   const [verBtnState, setVerBtnState] = useState(false);
   const [modificarBtnState, setModificarBtnState] = useState(false);
@@ -68,6 +68,8 @@ export default function Productos() {
       [e.target.name]: e.target.value,
     });
   };
+
+  console.log(allProducts)
 
   return (
     <div className={s.container}>

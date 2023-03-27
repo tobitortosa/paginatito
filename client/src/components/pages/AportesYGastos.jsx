@@ -1,21 +1,31 @@
 import s from "./AportesYGastos.module.css";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getAllAporteYGasto,
+  createAporteYGasto,
+  deleteAporteYGasto,
+} from "../../redux/actions";
+import { useEffect } from "react";
 
 export default function AportesYGastos() {
-  const [input, setInput] = useState({
-    fecha: "",
-    descripcion: "",
-    aportes: 0,
-    compras: 0,
-    gastos: 0,
-    saldos: 0,
-    deben: 0,
-  });
+  const dispatch = useDispatch();
 
-  const [aportesYGastos, setAportesYGastos] = useState([]);
-  const [correspondeAState, setCorrespondeAState] = useState("");
   const [btnState, setBtnState] = useState(false);
-  const [btnLineState, setBtnLineState] = useState(false);
+  const allAportesYGastos = useSelector((state) =>
+    state.allAportesYGastos.filter((a) => !a.deleted)
+  );
+
+  useEffect(() => {
+    dispatch(getAllAporteYGasto());
+  }, []);
+
+  const [input, setInput] = useState({
+    type: "",
+    cost: "",
+    date: "",
+    description: "",
+  });
 
   const handleInputChange = (e) => {
     setInput({
@@ -24,117 +34,111 @@ export default function AportesYGastos() {
     });
   };
 
-  const handleCorrespondeState = (el) => {
-    setBtnLineState(true);
-    setCorrespondeAState(el);
-  };
-
   const handleAdd = (e) => {
     e.preventDefault();
     setBtnState(false);
-    setAportesYGastos([...aportesYGastos, input]);
-    setInput({
-      fecha: "",
-      descripcion: "",
-      aportes: 0,
-      compras: 0,
-      gastos: 0,
-      saldos: 0,
-      deben: 0,
-    });
+    dispatch(createAporteYGasto(input));
+  };
+
+  const handleDelete = (e, id) => {
+    e.preventDefault();
+    dispatch(deleteAporteYGasto(id));
   };
 
   console.log(input);
+  console.log(allAportesYGastos);
+
+  let aportes = allAportesYGastos
+    .filter((a) => a.type === "Aporte")
+    .reduce((acc, el) => {
+      return (acc += parseFloat(el.cost));
+    }, 0);
+
+  let gastos = allAportesYGastos
+    .filter((a) => a.type === "Gasto")
+    .reduce((acc, el) => {
+      return (acc += parseFloat(el.cost));
+    }, 0);
+
+  console.log(aportes);
+  console.log(gastos);
 
   return (
     <div className={s.container}>
       <button onClick={() => setBtnState(true)} id={s.addBtn}>
         Agregar Aporte o Gasto
       </button>
-      <div className={s.grid}>
-        <div className={s.gridTitles}>
+
+      <div className={s.table}>
+        <div className={s.tableTitles}>
+          <p>Tipo</p>
           <p>Fecha</p>
-          <p>Descripcion</p>
-          <p>Aporte</p>
-          <p>Compras</p>
-          <p>Gastos</p>
-          <p>Saldos</p>
-          <p>Deben</p>
+          <p id={s.descriptionTitle}>Descripcion</p>
+          <p>Costo</p>
+          <p></p>
         </div>
-        {aportesYGastos.map((el) => {
+        {allAportesYGastos.map((el, index) => {
+          console.log(el.id);
           return (
-            <div className={s.gridLines}>
-              <p>{el["fecha"]}</p>
-              <p
-                onClick={() => handleCorrespondeState(el["Corresponde a"])}
-                id={s.correspondeLink}
-              >
-                {`${el["descripcion"].slice(0, 10)}...`}
-              </p>
-              <p>{`$ ${el["aportes"]}`}</p>
-              <p>{`$ ${el["compras"]}`}</p>
-              <p>{`$ ${el["gastos"]}`}</p>
-              <p>{`$ ${el["saldos"]}`}</p>
-              <p>{`$ ${el["deben"]}`}</p>
+            <div key={index} className={s.tableLine}>
+              <p>{el.type}</p>
+              <p>{el.date}</p>
+              <p className={s.descriptionTitle}>{el.description}</p>
+              <p>{`$${el.cost}`}</p>
+              <button onClick={(e) => handleDelete(e, el.id)}>Eliminar</button>
             </div>
           );
         })}
-      </div>
-      {btnLineState && (
-        <div className={s.lineModal}>
-          <div className={s.text}>
-            <p onClick={() => setBtnLineState(false)}>✖</p>
-            {correspondeAState}
-          </div>
+        <div className={s.tableTitles}>
+          <p></p>
+          <p></p>
+          <p id={s.total} className={s.descriptionTitle}>
+            Total :
+          </p>
+          <p id={s.total}>{`$${aportes - gastos}`}</p>
+          <p></p>
         </div>
-      )}
+      </div>
+
       {btnState && (
         <div className={s.modal}>
           <div className={s.modalContainer}>
-            <p onClick={() => setBtnState(false)}>✖</p>
+            <p id={s.x} onClick={() => setBtnState(false)}>
+              ✖
+            </p>
             <form>
+              <label>Tipo</label>
+              <select
+                onChange={(e) => handleInputChange(e)}
+                defaultValue="Elegir Aporte o Gasto..."
+                name="type"
+              >
+                <option disabled>Elegir Aporte o Gasto...</option>
+                <option value="Aporte">Aporte</option>
+                <option value="Gasto">Gasto</option>
+              </select>
               <label>Fecha</label>
               <input
                 onChange={(e) => handleInputChange(e)}
                 type="date"
-                name="fecha"
+                name="date"
               />
               <label>Descripcion</label>
               <textarea
                 onChange={(e) => handleInputChange(e)}
-                name="descripcion"
+                name="description"
+                id={s.descripcion}
               ></textarea>
-              <label>Aporte</label>
+
+              <label>Costo</label>
               <input
                 onChange={(e) => handleInputChange(e)}
                 type="number"
-                name="aportes"
+                name="cost"
               />
-              <label>Compras</label>
-              <input
-                onChange={(e) => handleInputChange(e)}
-                type="number"
-                name="compras"
-              />
-              <label>Gastos</label>
-              <input
-                onChange={(e) => handleInputChange(e)}
-                type="number"
-                name="gastos"
-              />
-              <label>Saldos</label>
-              <input
-                onChange={(e) => handleInputChange(e)}
-                type="number"
-                name="saldos"
-              />
-              <label>Deben</label>
-              <input
-                onChange={(e) => handleInputChange(e)}
-                type="number"
-                name="deben"
-              />
-              <button onClick={(e) => handleAdd(e)}>Agregar Aporte o Gasto</button>
+              <button onClick={(e) => handleAdd(e)}>
+                Agregar Aporte o Gasto
+              </button>
             </form>
           </div>
         </div>

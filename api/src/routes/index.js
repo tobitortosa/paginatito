@@ -5,6 +5,7 @@ const pedidos = require("./pedidos");
 const subPedido = require("./subPedidos");
 const productos = require("./productos");
 const login = require("./login");
+const aporteYGasto = require("./aporteYGasto");
 
 router.get("/", async (req, res) => {
   try {
@@ -19,5 +20,6 @@ router.use("/", subPedido);
 router.use("/", pedidos);
 router.use("/", clientes);
 router.use("/", login);
+router.use("/", aporteYGasto);
 
 module.exports = router;

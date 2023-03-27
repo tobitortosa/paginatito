@@ -3,6 +3,7 @@ import {
   GET_ALL_PRODUCTS,
   GET_ALL_PEDIDOS,
   GET_ALL_SUBPEDIDOS,
+  GET_ALL_APORTESYGASTOS,
   LOGIN,
 } from "../actions/actionsTypes";
 
@@ -12,6 +13,7 @@ export const initialState = {
   allProducts: [],
   allPedidos: [],
   allSubPedidos: [],
+  allAportesYGastos: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -40,6 +42,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         allSubPedidos: action.payload,
+      };
+    case GET_ALL_APORTESYGASTOS:
+      return {
+        ...state,
+        allAportesYGastos: action.payload,
       };
     default:
       return {

@@ -64,6 +64,12 @@ export default function ProductoComponent() {
     );
   };
 
+  const total =
+    product?.details &&
+    Object.keys(product?.details).reduce((acc, el) => {
+      return parseInt(product?.details[`${el}`]) + acc;
+    }, 0);
+
   const handleCostsEdit = (e) => {
     setBtnState(false);
     setCostsBtnState(false);
@@ -72,10 +78,10 @@ export default function ProductoComponent() {
         ...product,
         costs: {
           ...editCostsInput,
-          costoFinal:
-            (editCostsInput.kilosComprados *
-              (editCostsInput.precioXKiloFinal * 1.21)) /
-            (editCostsInput.kilosComprados / editCostsInput.kilosXPrenda),
+          costoFinal: Math.ceil(
+            (total * 1.21 * product?.costs?.porcentajeDeBeneficio) / 100 +
+              total * 1.21
+          ),
         },
       })
     );
@@ -89,18 +95,10 @@ export default function ProductoComponent() {
 
   console.log(mediaSuma);
 
-  const total =
-    product?.details &&
-    Object.keys(product?.details).reduce((acc, el) => {
-      return parseInt(product?.details[`${el}`]) + acc;
-    }, 0);
-
   const salen =
     product?.costs?.kilosComprados && product?.costs?.kilosXPrenda
       ? product?.costs?.kilosComprados / product?.costs?.kilosXPrenda
       : "-";
-
-  console.log(precioFinal / salen);
 
   return (
     <div className={s.container}>
@@ -344,7 +342,10 @@ export default function ProductoComponent() {
               <p>Precio por Kilo Final</p>
               <p>Costo con Iva por Unidad</p>
               <p>Salen</p>
-              <p id={s.total}>Precio Final Total</p>
+              <p id={s.total}>Precio Final Tela</p>
+              <p>Porcentaje De Beneficio</p>
+              <p id={s.total}>Precio Final</p>
+              <p id={s.total}>Precio Final con Iva</p>
             </div>
             <div className={s.gridLines}>
               <p>
@@ -371,6 +372,28 @@ export default function ProductoComponent() {
               <p id={s.total}>
                 {precioFinal !== "-" ? `$${precioFinal}` : "-"}
               </p>
+              <p>
+                {product?.costs?.porcentajeDeBeneficio
+                  ? `${product?.costs?.porcentajeDeBeneficio}%`
+                  : "-"}
+              </p>
+              <p id={s.total}>{`$${
+                total === null || !product?.costs?.porcentajeDeBeneficio
+                  ? "-"
+                  : Math.ceil(
+                      (total * product?.costs?.porcentajeDeBeneficio) / 100 +
+                        total
+                    )
+              }`}</p>
+              <p id={s.total}>{`$${
+                total === null || !product?.costs?.porcentajeDeBeneficio
+                  ? "-"
+                  : Math.ceil(
+                      (total * 1.21 * product?.costs?.porcentajeDeBeneficio) /
+                        100 +
+                        total * 1.21
+                    )
+              }`}</p>
             </div>
           </div>
         </div>
@@ -525,6 +548,7 @@ export default function ProductoComponent() {
                     <p>Kilos Comprados</p>
                     <p>Kilos por Prenda</p>
                     <p>Precio por Kilo Final</p>
+                    <p>Porcentaje de Beneficio</p>
                   </div>
                   <div className={s.modalLines}>
                     <input
@@ -544,6 +568,12 @@ export default function ProductoComponent() {
                       type="text"
                       onChange={(e) => handleCostsInputChange(e)}
                       value={editCostsInput?.precioXKiloFinal || ""}
+                    />
+                    <input
+                      name="porcentajeDeBeneficio"
+                      type="text"
+                      onChange={(e) => handleCostsInputChange(e)}
+                      value={editCostsInput?.porcentajeDeBeneficio || ""}
                     />
                   </div>
                 </div>

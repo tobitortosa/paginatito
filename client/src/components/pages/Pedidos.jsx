@@ -1,28 +1,39 @@
 import s from "./Pedidos.module.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   getAllClients,
   createPedido,
   getAllPedidos,
   editPedido,
+  editSubPedido,
   deletePedido,
+  getAllProducts,
+  createSubPedido,
+  deleteSubPedido,
+  editProductStock,
 } from "../../redux/actions";
 
 export default function Pedidos() {
   const dispatch = useDispatch();
 
-  const allPedidos = useSelector((state) => state.allPedidos);
-  const allClients = useSelector((state) => state.allClients);
-
+  const allPedidos = useSelector((state) =>
+    state.allPedidos.filter((c) => !c.deleted)
+  );
+  const allClients = useSelector((state) =>
+    state.allClients.filter((c) => !c.deleted)
+  );
+  const allProducts = useSelector((state) =>
+    state.allProducts.filter((c) => !c.deleted)
+  );
   console.log(allPedidos);
-  // console.log(allClients);
 
   const [searchBarInput, setSearchBarInput] = useState("");
   const handleClientSearchInput = (e) => {
     setSearchBarInput(e.target.value);
   };
+
+  console.log(allPedidos);
 
   const [input, setInput] = useState({
     idCliente: "",
@@ -32,11 +43,26 @@ export default function Pedidos() {
     entrego: false,
   });
 
+  const [subInput, setSubInput] = useState({
+    idPedido: "",
+    idProducto: "",
+    cantidad: "",
+    total: "",
+  });
+
   const [btnEntrego, setBtnEntrego] = useState();
   const [btnState, setBtnState] = useState(false);
-  const [btnLineState, setBtnLineState] = useState(false);
   const [editBtnState, setEditBtnState] = useState(false);
+  const [editProductBtnState, setEditProductBtnState] = useState(false);
   const [editBtnObj, setEditBtnObj] = useState({});
+  const [editBtnProductObj, setEditBtnProductObj] = useState({});
+  const [btnProductoState, setBtnProductoState] = useState(false);
+  const [btnProductoStateContainer, setBtnProductoStateContainer] =
+    useState(false);
+
+  const [stockInsuficiente, setStockInsuficiente] = useState(false);
+
+  const [reload, setReload] = useState(0);
 
   const handleEntrego = (el, entrego) => {
     console.log(!entrego);
@@ -51,11 +77,9 @@ export default function Pedidos() {
 
   useEffect(() => {
     dispatch(getAllClients());
-  }, []);
-
-  useEffect(() => {
     dispatch(getAllPedidos());
-  }, [btnState, editBtnState, editBtnObj, btnEntrego]);
+    dispatch(getAllProducts());
+  }, [reload, btnEntrego, btnState]);
 
   const handleInputChange = (e) => {
     setInput({
@@ -71,26 +95,114 @@ export default function Pedidos() {
     });
   };
 
+  const handleEditProductInputChange = (e) => {
+    setEditBtnProductObj({
+      ...editBtnProductObj,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleProductoInputChange = (e) => {
+    setSubInput({
+      ...subInput,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleAdd = (e) => {
     e.preventDefault();
     setBtnState(false);
-    dispatch(createPedido(input));
+    setReload(1);
+    dispatch(
+      createPedido({
+        ...input,
+        subPedido: subInput,
+      })
+    );
   };
 
   const handleEdit = (e) => {
     e.preventDefault();
     setEditBtnState(false);
     dispatch(editPedido(editBtnObj));
+    setReload(2);
   };
 
-  const handleEditBtn = (id) => {
-    setEditBtnState(true);
-    setEditBtnObj({ ...allPedidos.filter((client) => client.id === id)[0] });
+  const handleProductEdit = (e) => {
+    e.preventDefault();
+    setEditProductBtnState(false);
+    let totalstr;
+    totalstr =
+      editBtnProductObj.cantidad *
+      allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0].costs
+        .costoFinal;
+    totalstr = totalstr.toString();
+    dispatch(editSubPedido({ ...editBtnProductObj, total: totalstr }));
+    setReload(3);
+  };
+
+  const handleAddProductoState = (e) => {
+    e.preventDefault();
+    setBtnProductoStateContainer(true);
+  };
+
+  const handleAddProducto = (e) => {
+    if (
+      subInput.cantidad -
+        allProducts.filter((p) => p.id !== subInput.idProducto)[0].stock <
+      0
+    ) {
+      e.preventDefault();
+      setBtnProductoStateContainer(false);
+      dispatch(
+        createSubPedido({
+          ...subInput,
+          total:
+            subInput.cantidad *
+            allProducts.filter((p) => p.id === subInput.idProducto)[0].costs
+              .costoFinal,
+        })
+      );
+      dispatch(editProductStock(subInput.idProducto, subInput.cantidad));
+      setReload(4);
+    } else {
+      setStockInsuficiente(true);
+    }
   };
 
   const handleDeleteBtn = (id) => {
-    setEditBtnObj({})
+    setEditBtnObj({});
     dispatch(deletePedido(id));
+    setReload(5);
+  };
+
+  const handleDeleteProductBtn = (id) => {
+    dispatch(deleteSubPedido(id));
+    setEditBtnObj({});
+    setReload(6);
+  };
+
+  console.log(allProducts);
+
+  const handleAddInputState = (id) => {
+    setBtnProductoState(true);
+    subInput.idPedido = id;
+  };
+
+  const handleEditProductList = (id, pedidoId) => {
+    setEditProductBtnState(true);
+    setEditBtnProductObj({
+      ...allPedidos
+        .filter((p) => p.id === pedidoId)[0]
+        .subPedidos.filter((s) => s.id === id)[0],
+    });
+  };
+
+  console.log(editBtnProductObj);
+
+  const handleEditBtn = (id) => {
+    setEditBtnState(true);
+    setEditBtnObj(allPedidos.filter((p) => p.id === id)[0]);
   };
 
   return (
@@ -120,29 +232,37 @@ export default function Pedidos() {
         </div>
         {allPedidos.length
           ? allPedidos.map((el, index) => {
+              console.log(el);
               return (
                 <div key={index} className={s.gridLines}>
                   <p>{el.cliente?.redSocial || "-"}</p>
-                  <Link to={`/Pedidos/${el.id}`}>
-                    <p>Ver Productos</p>
-                  </Link>
+                  <p
+                    id={s.verProductos}
+                    onClick={() => handleAddInputState(el.id)}
+                  >
+                    VER PRODUCTOS
+                  </p>
                   <p>{el.pedidoDate}</p>
                   <p>{el.entregaDate || "-"}</p>
                   <p>{el.cliente?.direccion || "-"}</p>
                   <p>{el.cliente?.localidad || "-"}</p>
                   <p>{el.cliente?.tel1 || "-"}</p>
                   <p>
-                    {`$${el.subPedidos.reduce((acc, el) => {
-                      return el.total * el.cantidad + acc;
-                    }, 0)}` || "-"}
+                    {`$${el.subPedidos
+                      .filter((sp) => !sp.deleted)
+                      .reduce((acc, el) => {
+                        return el.total * el.cantidad + acc;
+                      }, 0)}` || "-"}
                   </p>
-                  <p>{`$${el.seña}` || "-"}</p>
+                  <p>{el.seña !== "" ? `$${el.seña}` : "-"}</p>
                   <p>
                     {el.subPedidos.length
                       ? `$${
-                          el.subPedidos.reduce((acc, el) => {
-                            return el.total * el.cantidad + acc;
-                          }, 0) - el.seña
+                          el.subPedidos
+                            .filter((sp) => !sp.deleted)
+                            .reduce((acc, el) => {
+                              return el.total * el.cantidad + acc;
+                            }, 0) - el.seña
                         }`
                       : "-"}
                   </p>
@@ -164,17 +284,13 @@ export default function Pedidos() {
             })
           : null}
       </div>
-      {btnLineState && (
-        <div className={s.lineModal}>
-          <div className={s.text}>
-            <p onClick={() => setBtnLineState(false)}>✖</p>
-          </div>
-        </div>
-      )}
+
       {btnState && (
         <div className={s.modal}>
           <div className={s.modalContainer}>
-            <p onClick={() => setBtnState(false)}>✖</p>
+            <p id={s.xProducto} onClick={() => setBtnState(false)}>
+              ✖
+            </p>
             <form>
               <div className={s.lineForm}>
                 <label>Cliente</label>
@@ -217,10 +333,186 @@ export default function Pedidos() {
           </div>
         </div>
       )}
+
+      {btnProductoState && (
+        <div>
+          <div className={s.modal}>
+            <div className={s.modalContainer}>
+              <p id={s.xProducto} onClick={() => setBtnProductoState(false)}>
+                ✖
+              </p>
+              <div className={s.productosContainer}>
+                <button onClick={(e) => handleAddProductoState(e)}>
+                  Agregar Producto
+                </button>
+                <div className={s.divContainer}>
+                  <div className={s.boxLine}>
+                    <p>Nombre</p>
+                    <p>Cantidad</p>
+                    <p>Precio</p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                  </div>
+                  {allPedidos
+                    .filter((p) => p.id === subInput.idPedido)[0]
+                    .subPedidos.filter((sp) => !sp.deleted)
+                    .map((el) => {
+                      console.log(el);
+                      return (
+                        <div className={s.productsLine}>
+                          <div className={s.txtContainer}>
+                            <p>
+                              {
+                                allProducts.filter(
+                                  (p) => p.id === el.productoId
+                                )[0].name
+                              }
+                            </p>
+                            <p>{el.cantidad}</p>
+                            <p>
+                              {`$${
+                                allProducts.filter(
+                                  (p) => p.id === el.productoId
+                                )[0].costs.costoFinal
+                              }`}
+                            </p>
+                          </div>
+                          <div className={s.btnContainer}>
+                            <button
+                              id={s.editPBtn}
+                              onClick={() =>
+                                handleEditProductList(el.id, el.pedidoId)
+                              }
+                            >
+                              Editar
+                            </button>
+
+                            <button
+                              id={s.deletePBtn}
+                              onClick={() => handleDeleteProductBtn(el.id)}
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {editProductBtnState && (
+        <div className={s.modal}>
+          <div className={s.modalContainer}>
+            <p id={s.xProducto} onClick={() => setEditProductBtnState(false)}>
+              ✖
+            </p>
+            <form>
+              <div className={s.lineForm}>
+                <label>Producto</label>
+                <select
+                  onChange={(e) => handleEditProductInputChange(e)}
+                  defaultValue="Elegir Producto..."
+                  name="productoId"
+                  value={editBtnProductObj.productoId || ""}
+                >
+                  <option disabled>Elegir Producto...</option>
+                  {allProducts.length &&
+                    allProducts.map((el, index) => {
+                      return (
+                        <option key={index} value={el.id}>
+                          {el.name}
+                        </option>
+                      );
+                    })}
+                </select>
+                <label>Cantidad</label>
+                <input
+                  onChange={(e) => handleEditProductInputChange(e)}
+                  type="number"
+                  name="cantidad"
+                  value={editBtnProductObj.cantidad || ""}
+                />
+              </div>
+            </form>
+            <button onClick={(e) => handleProductEdit(e)}>Editar Pedido</button>
+          </div>
+        </div>
+      )}
+
+      {btnProductoStateContainer && (
+        <div className={s.modal}>
+          <div className={s.modalContainer}>
+            <p
+              id={s.xProducto}
+              onClick={() => setBtnProductoStateContainer(false)}
+            >
+              ✖
+            </p>
+            <form>
+              <div className={s.lineForm}>
+                <label>Producto</label>
+                <select
+                  onChange={(e) => handleProductoInputChange(e)}
+                  defaultValue="Elegir Producto..."
+                  name="idProducto"
+                >
+                  <option disabled>Elegir Producto...</option>
+                  {allProducts.length &&
+                    allProducts.map((el, index) => {
+                      return (
+                        <option key={index} value={el.id}>
+                          {el.name}
+                        </option>
+                      );
+                    })}
+                </select>
+                <label>Cantidad</label>
+                <input
+                  onChange={(e) => handleProductoInputChange(e)}
+                  type="number"
+                  name="cantidad"
+                />
+                <p>{`Stock: ${
+                  allProducts.filter((p) => p.id === subInput.idProducto)[0]
+                    ?.stock
+                    ? allProducts.filter((p) => p.id === subInput.idProducto)[0]
+                        .stock
+                    : "..."
+                }`}</p>
+              </div>
+            </form>
+            <button onClick={(e) => handleAddProducto(e)}>
+              Agregar Producto
+            </button>
+          </div>
+        </div>
+      )}
+
+      {stockInsuficiente && (
+        <div className={s.modal}>
+          <div className={s.modalContainer}>
+            <p
+              id={s.xProducto}
+              onClick={() => setStockInsuficiente(false)}
+            >
+              ✖
+            </p>
+            <p id={s.stockInsuficiente}>STOCK INSUFICIENTE</p>
+          </div>
+        </div>
+      )}
+
       {editBtnState && (
         <div className={s.modal}>
           <div className={s.modalContainer}>
-            <p onClick={() => setEditBtnState(false)}>✖</p>
+            <p id={s.xProducto} onClick={() => setEditBtnState(false)}>
+              ✖
+            </p>
             <form>
               <div className={s.lineForm}>
                 <label>Fecha de Pedido</label>

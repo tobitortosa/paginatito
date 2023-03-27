@@ -1,0 +1,125 @@
+.container {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+}
+
+.tableContainer {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  margin: 100px 0px;
+}
+
+.tableTitles {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+}
+
+.tableTitles p {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  justify-content: center;
+}
+
+.line {
+  height: auto;
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid black;
+  height: 40px;
+}
+
+.line p {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  justify-content: center;
+  border: 1px solid black;
+}
+
+.line input {
+  outline: none;
+  padding: 10px;
+  font-size: 20px;
+  width: 100px;
+  margin: 5px;
+}
+
+.line button {
+  padding: 5px 30px;
+  border-radius: 5px;
+  border: 1px solid black;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.line button:hover {
+  cursor: pointer;
+  background-color: white;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.55);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainer {
+  padding: 30px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  width: auto;
+  height: auto;
+}
+
+#x {
+  color: black;
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  transition: 0.3s;
+  font-size: 26px;
+}
+
+#x:hover {
+  color: red;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.formContainer {
+  display: flex;
+  margin: 20px;
+  flex-direction: column;
+}
+
+.formContainer label {
+  font-size: 20px;
+  margin: 5px 0px;
+}
+
+.formContainer input {
+  padding: 10px;
+  margin: 5px 0px;
+  font-size: 18px;
+  outline: none;
+}
+
+.formContainer button {
+  padding: 6px 0px;
+  font-size: 18px;
+  margin: 10px 0px;
+}

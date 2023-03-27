@@ -13,6 +13,11 @@ module.exports = (sequelize) => {
       cantidad: {
         type: DataTypes.STRING,
       },
+      deleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       total: {
         type: DataTypes.STRING,
       },

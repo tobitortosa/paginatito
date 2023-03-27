@@ -6,7 +6,8 @@
       "kilosComprados": "5",
       "kilosXPrenda": "5",
       "precioXKiloFinal": "100",
-      "costoFinal": 605
+      "costoFinal": 605,
+      "porcentajeDeBeneficio": 20
     },
     "details": {
       "tela": "1400",
@@ -33,7 +34,8 @@
       "kilosComprados": "2",
       "kilosXPrenda": "2",
       "precioXKiloFinal": "50",
-      "costoFinal": 121
+      "costoFinal": 121,
+      "porcentajeDeBeneficio": 20
     },
     "details": {
       "tela": "1300",

@@ -38,7 +38,12 @@ router.put("/clientes", async (req, res) => {
 router.post("/clientes/delete", async (req, res) => {
   const { id } = req.body;
   try {
-    Cliente.destroy({ where: { id: id } });
+    Cliente.update(
+      {
+        deleted: true,
+      },
+      { where: { id: id } }
+    );
     res.status(200).send(`Cliente con el id ${id} eliminado correctamente`);
   } catch (error) {
     res.status(400).send("error");

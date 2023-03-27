@@ -16,6 +16,11 @@ import {
   DELETE_SUBPEDIDO,
   DELETE_PEDIDO,
   LOGIN,
+  GET_ALL_APORTESYGASTOS,
+  CREATE_APORTEYGASTO,
+  EDIT_APORTEYGASTO,
+  DELETE_APORTEYGASTO,
+  EDIT_PRODUCT_STOCK,
 } from "./actionsTypes";
 import axios from "axios";
 
@@ -68,9 +73,13 @@ export const editProduct = (obj) => async (dispatch) => {
 };
 
 export const deleteProduct = (id) => async (dispatch) => {
-  console.log(id);
   await axios.post(`${url}/productos/delete`, { id: id });
   return dispatch({ type: DELETE_PRODUCT });
+};
+
+export const editProductStock = (id, stock) => async (dispatch) => {
+  await axios.put(`${url}/productos/stock`, { id, stock });
+  return dispatch({ type: EDIT_PRODUCT_STOCK });
 };
 
 // Pedidos actions
@@ -115,4 +124,29 @@ export const editSubPedido = (obj) => async (dispatch) => {
 export const deleteSubPedido = (id) => async (dispatch) => {
   await axios.post(`${url}/subpedidos/delete`, { id: id });
   return dispatch({ type: DELETE_SUBPEDIDO });
+};
+
+// Aportes y Gastos actions
+
+export const getAllAporteYGasto = () => async (dispatch) => {
+  let allSubPedidos = await axios.get(`${url}/aporteYGasto`);
+  return dispatch({
+    type: GET_ALL_APORTESYGASTOS,
+    payload: allSubPedidos.data,
+  });
+};
+
+export const createAporteYGasto = (obj) => async (dispatch) => {
+  await axios.post(`${url}/aporteYGasto`, obj);
+  return dispatch({ type: CREATE_APORTEYGASTO });
+};
+
+export const editAporteYGasto = (obj) => async (dispatch) => {
+  await axios.put(`${url}/aporteYGasto`, obj);
+  return dispatch({ type: EDIT_APORTEYGASTO });
+};
+
+export const deleteAporteYGasto = (id) => async (dispatch) => {
+  await axios.post(`${url}/aporteYGasto/delete`, { id: id });
+  return dispatch({ type: DELETE_APORTEYGASTO });
 };

@@ -7,18 +7,16 @@ import FacturasDeCompras from "./components/pages/FacturasDeCompras";
 import AportesYGastos from "./components/pages/AportesYGastos";
 import Clientes from "./components/pages/Clientes";
 import Pedidos from "./components/pages/Pedidos";
-import SubPedidos from "./components/pages/SubPedidos";
 import Productos from "./components/pages/Productos";
 import DateComponent from "./components/DateComponent";
 import ProductoComponent from "./components/ProductoComponent";
 import SubPedidoComponent from "./components/SubPedidoComponent";
 import Login from "./components/pages/Login";
+import Stock from "./components/pages/Stock";
 
 function App() {
   let logged = localStorage.getItem("logged");
   logged = JSON.parse(logged);
-
-  console.log(logged)
 
   return (
     <div className={s.container}>
@@ -34,8 +32,8 @@ function App() {
             <Route path="/Aportes y Gastos" element={<AportesYGastos />} />
             <Route path="/Clientes" element={<Clientes />} />
             <Route path="/Pedidos" element={<Pedidos />} />
-            <Route path="/Sub Pedidos" element={<SubPedidos />} />
             <Route path="/Productos" element={<Productos />} />
+            <Route path="/Stock" element={<Stock />} />
             <Route
               path="/Productos/:productoId"
               element={<ProductoComponent />}

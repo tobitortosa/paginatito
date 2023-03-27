@@ -12,7 +12,9 @@ export default function Clientes() {
   const dispatch = useDispatch();
 
   const allClients = useSelector((state) =>
-    state.allClients.sort((a, b) => a.redSocial.localeCompare(b.redSocial))
+    state.allClients
+      .filter((c) => !c.deleted)
+      .sort((a, b) => a.redSocial.localeCompare(b.redSocial))
   );
 
   console.log(allClients);

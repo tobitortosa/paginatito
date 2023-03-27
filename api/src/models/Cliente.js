@@ -10,6 +10,11 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
+      deleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,

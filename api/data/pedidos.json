@@ -1,0 +1,26 @@
+[
+  {
+    "cliente": {
+      "direccion": "",
+      "localidad": "",
+      "redSocial": "AGROFARM",
+      "tel1": ""
+    },
+    "clienteId": "",
+    "deleted": false,
+    "entregaDate": "2008-12-20",
+    "entrego": false,
+    "pedidoDate": "2008-11-21",
+    "seña": "",
+    "subPedidos": [
+      {
+        "cantidad": "",
+        "deleted": "",
+        "id": "",
+        "pedidoId": "",
+        "productoId": "",
+        "total": ""
+      }
+    ]
+  }
+]

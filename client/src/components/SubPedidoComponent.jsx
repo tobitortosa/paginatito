@@ -17,7 +17,6 @@ export default function SubPedidosComponent() {
 
   const { pedidoId } = useParams();
   const allProducts = useSelector((state) => state.allProducts);
-  const allPedidos = useSelector((state) => state.allPedidos);
   const pedido = useSelector(
     (state) => state.allPedidos.filter((p) => p.id === pedidoId)[0]
   );
@@ -30,7 +29,7 @@ export default function SubPedidosComponent() {
 
   const [btnState, setBtnState] = useState(false);
   const [editBtnState, setEditBtnState] = useState(false);
-  const [editBtnObj, setEditBtnObj] = useState({a:"a"});
+  const [editBtnObj, setEditBtnObj] = useState({ a: "a" });
 
   useEffect(() => {
     dispatch(getAllPedidos());
@@ -150,7 +149,7 @@ export default function SubPedidosComponent() {
                 </select>
                 <label>Cantidad</label>
                 <input
-                  onChange={(e) => handleInputChange(e)}
+                  onChange={(e) => handleInputChange(e, )}
                   type="number"
                   name="cantidad"
                 />

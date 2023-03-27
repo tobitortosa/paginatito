@@ -14,9 +14,19 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      stock: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "0",
+      },
       type: {
         type: DataTypes.ENUM(["buso", "remera", "chaleco", "campera"]),
         allowNull: false,
+      },
+      deleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       costs: {
         type: DataTypes.JSON,

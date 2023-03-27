@@ -45,6 +45,12 @@ Pedido.belongsTo(Cliente);
 Pedido.hasMany(SubPedido);
 SubPedido.belongsTo(Pedido);
 SubPedido.belongsTo(Producto);
+
+
+
+
+
+
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 

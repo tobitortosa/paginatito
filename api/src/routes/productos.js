@@ -36,11 +36,26 @@ router.put("/productos", async (req, res) => {
   }
 });
 
+router.put("/productos/stock", async (req, res) => {
+  const { id, stock } = req.body;
+  console.log(req.body);
+  try {
+    Producto.update(
+      {
+        stock,
+      },
+      { where: { id: id } }
+    );
+    res.status(200).send(`Producto con el id ${id} modificado correctamente`);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
 router.post("/productos/delete", async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   try {
-    Producto.destroy({ where: { id: id } });
+    Producto.update({ deleted: true }, { where: { id: id } });
     res.status(200).send(`Producto con el id ${id} eliminado correctamente`);
   } catch (error) {
     res.status(400).send("error");
