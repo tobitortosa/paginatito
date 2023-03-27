@@ -7,6 +7,7 @@ import {
   deleteAporteYGasto,
 } from "../../redux/actions";
 import { useEffect } from "react";
+import Loader from "../Loader";
 
 export default function AportesYGastos() {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ export default function AportesYGastos() {
           <p>Costo</p>
           <p></p>
         </div>
-        {allAportesYGastos.map((el, index) => {
+        {allAportesYGastos.length ? allAportesYGastos.map((el, index) => {
           console.log(el.id);
           return (
             <div key={index} className={s.tableLine}>
@@ -88,7 +89,7 @@ export default function AportesYGastos() {
               <button onClick={(e) => handleDelete(e, el.id)}>Eliminar</button>
             </div>
           );
-        })}
+        }) : <Loader />}
         <div className={s.tableTitles}>
           <p></p>
           <p></p>

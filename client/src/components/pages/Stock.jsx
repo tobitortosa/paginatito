@@ -6,6 +6,7 @@ import {
   editProduct,
   editProductStock,
 } from "../../redux/actions";
+import Loader from "../Loader";
 
 export default function Stock() {
   const dispatch = useDispatch();
@@ -50,17 +51,21 @@ export default function Stock() {
           <p>Stock</p>
           <p></p>
         </div>
-        {allProducts.map((el, index) => {
-          return (
-            <div key={index} className={s.line}>
-              <p>{el.name}</p>
-              <p>{el.stock}</p>
-              <p>
-                <button onClick={(e) => handleEdit(e, el)}>Modificar</button>
-              </p>
-            </div>
-          );
-        })}
+        {allProducts.length ? (
+          allProducts.map((el, index) => {
+            return (
+              <div key={index} className={s.line}>
+                <p>{el.name}</p>
+                <p>{el.stock}</p>
+                <p>
+                  <button onClick={(e) => handleEdit(e, el)}>Modificar</button>
+                </p>
+              </div>
+            );
+          })
+        ) : (
+          <Loader />
+        )}
       </div>
       {editBtnState && (
         <div className={s.modal}>

@@ -1,6 +1,7 @@
 import s from "./Clientes.module.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../Loader";
 import {
   getAllClients,
   createNewClient,
@@ -118,8 +119,9 @@ export default function Clientes() {
           <p>Pagina Web</p>
           <p id={s.objTitle}>Observaciones</p>
         </div>
-        {searchBarInput.length === 0
-          ? allClients.map((el, index) => {
+        {searchBarInput.length === 0 ? (
+          allClients.length ? (
+            allClients.map((el, index) => {
               return (
                 <div key={index} className={s.gridLines}>
                   <p>{el.redSocial || "-"}</p>
@@ -159,46 +161,51 @@ export default function Clientes() {
                 </div>
               );
             })
-          : allClients
-              .filter((client) =>
-                client.redSocial
-                  .toLowerCase()
-                  .includes(searchBarInput.toLowerCase())
-              )
-              .map((el, index) => {
-                return (
-                  <div key={index} className={s.gridLines}>
-                    <p>{el.redSocial || "-"}</p>
-                    <p>{el.name}</p>
-                    <p>{el.lastName || "-"}</p>
-                    <p>{el.email || "-"}</p>
-                    <p>{el.rubro || "-"}</p>
-                    <p>{el.cargo || "-"}</p>
-                    <p>{el.direccion || "-"}</p>
-                    <p>{el.ndireccion || "-"}</p>
-                    <p>{el.localidad || "-"}</p>
-                    <p>{el.cp || "-"}</p>
-                    <p>{el.provincia || "-"}</p>
-                    <p>{el.tel1 || "-"}</p>
-                    <p>{el.tel2 || "-"}</p>
-                    <p>{el.celular || "-"}</p>
-                    <p>{el.fax || "-"}</p>
-                    <p>
-                      <a href={el.paginaWeb}>{el.paginaWeb || "-"}</a>
-                    </p>
-                    <p id={s.obs}>{el.observaciones || "-"}</p>
-                    <button id={s.editBtn} onClick={() => handleEditBtn(el.id)}>
-                      Editar
-                    </button>
-                    <button
-                      id={s.deleteBtn}
-                      onClick={() => handleDeleteBtn(el.id)}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                );
-              })}
+          ) : (
+            <Loader />
+          )
+        ) : (
+          allClients
+            .filter((client) =>
+              client.redSocial
+                .toLowerCase()
+                .includes(searchBarInput.toLowerCase())
+            )
+            .map((el, index) => {
+              return (
+                <div key={index} className={s.gridLines}>
+                  <p>{el.redSocial || "-"}</p>
+                  <p>{el.name}</p>
+                  <p>{el.lastName || "-"}</p>
+                  <p>{el.email || "-"}</p>
+                  <p>{el.rubro || "-"}</p>
+                  <p>{el.cargo || "-"}</p>
+                  <p>{el.direccion || "-"}</p>
+                  <p>{el.ndireccion || "-"}</p>
+                  <p>{el.localidad || "-"}</p>
+                  <p>{el.cp || "-"}</p>
+                  <p>{el.provincia || "-"}</p>
+                  <p>{el.tel1 || "-"}</p>
+                  <p>{el.tel2 || "-"}</p>
+                  <p>{el.celular || "-"}</p>
+                  <p>{el.fax || "-"}</p>
+                  <p>
+                    <a href={el.paginaWeb}>{el.paginaWeb || "-"}</a>
+                  </p>
+                  <p id={s.obs}>{el.observaciones || "-"}</p>
+                  <button id={s.editBtn} onClick={() => handleEditBtn(el.id)}>
+                    Editar
+                  </button>
+                  <button
+                    id={s.deleteBtn}
+                    onClick={() => handleDeleteBtn(el.id)}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              );
+            })
+        )}
       </div>
       {btnLineState && (
         <div className={s.lineModal}>

@@ -13,6 +13,7 @@ import {
   deleteSubPedido,
   editProductStock,
 } from "../../redux/actions";
+import Loader from "../Loader";
 
 export default function Pedidos() {
   const dispatch = useDispatch();
@@ -230,59 +231,58 @@ export default function Pedidos() {
           <p>Total sin Seña</p>
           <p>Entrego</p>
         </div>
-        {allPedidos.length
-          ? allPedidos.map((el, index) => {
-              console.log(el);
-              return (
-                <div key={index} className={s.gridLines}>
-                  <p>{el.cliente?.redSocial || "-"}</p>
-                  <p
-                    id={s.verProductos}
-                    onClick={() => handleAddInputState(el.id)}
-                  >
-                    VER PRODUCTOS
-                  </p>
-                  <p>{el.pedidoDate}</p>
-                  <p>{el.entregaDate || "-"}</p>
-                  <p>{el.cliente?.direccion || "-"}</p>
-                  <p>{el.cliente?.localidad || "-"}</p>
-                  <p>{el.cliente?.tel1 || "-"}</p>
-                  <p>
-                    {`$${el.subPedidos
-                      .filter((sp) => !sp.deleted)
-                      .reduce((acc, el) => {
-                        return el.total * el.cantidad + acc;
-                      }, 0)}` || "-"}
-                  </p>
-                  <p>{el.seña !== "" ? `$${el.seña}` : "-"}</p>
-                  <p>
-                    {el.subPedidos.length
-                      ? `$${
-                          el.subPedidos
-                            .filter((sp) => !sp.deleted)
-                            .reduce((acc, el) => {
-                              return el.total * el.cantidad + acc;
-                            }, 0) - el.seña
-                        }`
-                      : "-"}
-                  </p>
-                  <button
-                    id={el.entrego ? s.entrego : s.noEntrego}
-                    onClick={() => handleEntrego(el, el.entrego)}
-                  ></button>
-                  <button id={s.editBtn} onClick={() => handleEditBtn(el.id)}>
-                    Editar
-                  </button>
-                  <button
-                    id={s.deleteBtn}
-                    onClick={() => handleDeleteBtn(el.id)}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              );
-            })
-          : null}
+        {allPedidos.length ? (
+          allPedidos.map((el, index) => {
+            console.log(el);
+            return (
+              <div key={index} className={s.gridLines}>
+                <p>{el.cliente?.redSocial || "-"}</p>
+                <p
+                  id={s.verProductos}
+                  onClick={() => handleAddInputState(el.id)}
+                >
+                  VER PRODUCTOS
+                </p>
+                <p>{el.pedidoDate}</p>
+                <p>{el.entregaDate || "-"}</p>
+                <p>{el.cliente?.direccion || "-"}</p>
+                <p>{el.cliente?.localidad || "-"}</p>
+                <p>{el.cliente?.tel1 || "-"}</p>
+                <p>
+                  {`$${el.subPedidos
+                    .filter((sp) => !sp.deleted)
+                    .reduce((acc, el) => {
+                      return el.total * el.cantidad + acc;
+                    }, 0)}` || "-"}
+                </p>
+                <p>{el.seña !== "" ? `$${el.seña}` : "-"}</p>
+                <p>
+                  {el.subPedidos.length
+                    ? `$${
+                        el.subPedidos
+                          .filter((sp) => !sp.deleted)
+                          .reduce((acc, el) => {
+                            return el.total * el.cantidad + acc;
+                          }, 0) - el.seña
+                      }`
+                    : "-"}
+                </p>
+                <button
+                  id={el.entrego ? s.entrego : s.noEntrego}
+                  onClick={() => handleEntrego(el, el.entrego)}
+                ></button>
+                <button id={s.editBtn} onClick={() => handleEditBtn(el.id)}>
+                  Editar
+                </button>
+                <button id={s.deleteBtn} onClick={() => handleDeleteBtn(el.id)}>
+                  Eliminar
+                </button>
+              </div>
+            );
+          })
+        ) : (
+          <Loader />
+        )}
       </div>
 
       {btnState && (

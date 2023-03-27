@@ -8,6 +8,7 @@ import {
   deleteProduct,
   editProduct,
 } from "../../redux/actions";
+import Loader from "../Loader";
 
 export default function Productos() {
   const dispatch = useDispatch();
@@ -83,7 +84,7 @@ export default function Productos() {
         <div className={s.gridTitles}>
           <p>Productos</p>
         </div>
-        {allProducts.map((el, index) => {
+        {allProducts.length ? allProducts.map((el, index) => {
           return (
             <div key={index} className={s.gridLines}>
               <Link id={s.link} to={`/Productos/${el.id}`}>
@@ -91,7 +92,7 @@ export default function Productos() {
               </Link>
             </div>
           );
-        })}
+        }) : <Loader />}
       </div>
       {modalBtnState && (
         <div className={s.modal}>
