@@ -7,7 +7,8 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, POSTGRES_URL } =
   process.env;
 
 const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+  POSTGRES_URL,
+  // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
   {
     logging: false, // set to console.log to see the raw SQL queries
   }
@@ -45,11 +46,6 @@ Pedido.belongsTo(Cliente);
 Pedido.hasMany(SubPedido);
 SubPedido.belongsTo(Pedido);
 SubPedido.belongsTo(Producto);
-
-
-
-
-
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);

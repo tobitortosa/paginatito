@@ -33,8 +33,6 @@ export default function Pedidos() {
     setSearchBarInput(e.target.value);
   };
 
-  console.log(allPedidos);
-
   const [input, setInput] = useState({
     idCliente: "",
     pedidoDate: "",
@@ -62,6 +60,7 @@ export default function Pedidos() {
 
   const [stockInsuficiente, setStockInsuficiente] = useState(false);
 
+  console.log(subInput);
   const [reload, setReload] = useState(0);
 
   const handleEntrego = (el, entrego) => {
@@ -148,9 +147,9 @@ export default function Pedidos() {
 
   const handleAddProducto = (e) => {
     if (
-      subInput.cantidad -
-        allProducts.filter((p) => p.id !== subInput.idProducto)[0].stock <
-      0
+      allProducts.filter((p) => p.id !== subInput.idProducto)[0].stock -
+        subInput.cantidad <
+      1
     ) {
       e.preventDefault();
       setBtnProductoStateContainer(false);
@@ -166,6 +165,7 @@ export default function Pedidos() {
       dispatch(editProductStock(subInput.idProducto, subInput.cantidad));
       setReload(4);
     } else {
+      console.log("!");
       setStockInsuficiente(true);
     }
   };
@@ -496,10 +496,7 @@ export default function Pedidos() {
       {stockInsuficiente && (
         <div className={s.modal}>
           <div className={s.modalContainer}>
-            <p
-              id={s.xProducto}
-              onClick={() => setStockInsuficiente(false)}
-            >
+            <p id={s.xProducto} onClick={() => setStockInsuficiente(false)}>
               ✖
             </p>
             <p id={s.stockInsuficiente}>STOCK INSUFICIENTE</p>
