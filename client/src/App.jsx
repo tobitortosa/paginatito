@@ -25,22 +25,19 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<FacturasDeCompras />} />
+            <Route path="/facturas" element={<FacturasDeCompras />} />
+            <Route path="/aportesygastos" element={<AportesYGastos />} />
+            <Route path="/clientes" element={<Clientes />} />
+            <Route path="/pedidos" element={<Pedidos />} />
+            <Route path="/productos" element={<Productos />} />
+            <Route path="/stock" element={<Stock />} />
             <Route
-              path="/Facturas de Compras"
-              element={<FacturasDeCompras />}
-            />
-            <Route path="/Aportes y Gastos" element={<AportesYGastos />} />
-            <Route path="/Clientes" element={<Clientes />} />
-            <Route path="/Pedidos" element={<Pedidos />} />
-            <Route path="/Productos" element={<Productos />} />
-            <Route path="/Stock" element={<Stock />} />
-            <Route
-              path="/Productos/:productoId"
+              path="/productos/:productoId"
               element={<ProductoComponent />}
             />
-            <Route path="/Pedidos/:pedidoId" element={<SubPedidoComponent />} />
+            <Route path="/pedidos/:pedidoId" element={<SubPedidoComponent />} />
             <Route path="/login" element={<Login />} />
-          </Routes>{" "}
+          </Routes>
         </>
       ) : (
         <div>
