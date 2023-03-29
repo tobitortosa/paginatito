@@ -78,18 +78,24 @@ export default function AportesYGastos() {
           <p>Costo</p>
           <p></p>
         </div>
-        {allAportesYGastos.length ? allAportesYGastos.map((el, index) => {
-          console.log(el.id);
-          return (
-            <div key={index} className={s.tableLine}>
-              <p>{el.type}</p>
-              <p>{el.date}</p>
-              <p className={s.descriptionTitle}>{el.description}</p>
-              <p>{`$${el.cost}`}</p>
-              <button onClick={(e) => handleDelete(e, el.id)}>Eliminar</button>
-            </div>
-          );
-        }) : <Loader />}
+        {allAportesYGastos.length ? (
+          allAportesYGastos.map((el, index) => {
+            console.log(el.id);
+            return (
+              <div key={index} className={s.tableLine}>
+                <p>{el.type}</p>
+                <p>{el.date}</p>
+                <p className={s.descriptionTitle}>{el.description}</p>
+                <p>{`$${el.cost}`}</p>
+                <button onClick={(e) => handleDelete(e, el.id)}>
+                  Eliminar
+                </button>
+              </div>
+            );
+          })
+        ) : (
+          <Loader />
+        )}
         <div className={s.tableTitles}>
           <p></p>
           <p></p>

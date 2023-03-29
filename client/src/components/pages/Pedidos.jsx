@@ -147,11 +147,12 @@ export default function Pedidos() {
   };
 
   const handleAddProducto = (e) => {
-    if (
-      allProducts.filter((p) => p.id !== subInput.idProducto)[0].stock -
-        subInput.cantidad <
-      1
-    ) {
+    let can =
+      parseInt(
+        allProducts.filter((p) => p.id === subInput.idProducto)[0]?.stock
+      ) - subInput.cantidad;
+    can = parseInt(can);
+    if (can >= 0) {
       e.preventDefault();
       setBtnProductoStateContainer(false);
       dispatch(
@@ -163,7 +164,7 @@ export default function Pedidos() {
               .costoFinal,
         })
       );
-      dispatch(editProductStock(subInput.idProducto, subInput.cantidad));
+      dispatch(editProductStock(subInput.idProducto, can));
       setReload(4);
     } else {
       console.log("!");
