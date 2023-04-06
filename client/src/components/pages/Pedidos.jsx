@@ -127,7 +127,7 @@ export default function Pedidos() {
     let totalstr;
     totalstr =
       editBtnProductObj.cantidad *
-      allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0].costs
+      allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]?.costs
         .costoFinal;
     totalstr = totalstr.toString();
 
