@@ -456,7 +456,7 @@ export default function Pedidos() {
                               {`$${
                                 allProducts.filter(
                                   (p) => p.id === el.productoId
-                                )[0].costs.costoFinal
+                                )[0]?.costs.costoFinal
                               }`}
                             </p>
                             <button
@@ -729,7 +729,7 @@ export default function Pedidos() {
                               {`$${
                                 allProducts.filter(
                                   (p) => p.id === el.productoId
-                                )[0].costs.costoFinal
+                                )[0]?.costs.costoFinal
                               }`}
                             </p>
                             <p>{`$${el.total}`}</p>
