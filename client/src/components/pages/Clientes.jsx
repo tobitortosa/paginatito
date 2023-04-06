@@ -18,8 +18,6 @@ export default function Clientes() {
       .sort((a, b) => a.redSocial.localeCompare(b.redSocial))
   );
 
-  console.log(allClients);
-
   const [searchBarInput, setSearchBarInput] = useState("");
   const handleClientSearchInput = (e) => {
     setSearchBarInput(e.target.value);

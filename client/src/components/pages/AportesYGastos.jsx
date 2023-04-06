@@ -46,9 +46,6 @@ export default function AportesYGastos() {
     dispatch(deleteAporteYGasto(id));
   };
 
-  console.log(input);
-  console.log(allAportesYGastos);
-
   let aportes = allAportesYGastos
     .filter((a) => a.type === "Aporte")
     .reduce((acc, el) => {
@@ -60,9 +57,6 @@ export default function AportesYGastos() {
     .reduce((acc, el) => {
       return (acc += parseFloat(el.cost));
     }, 0);
-
-  console.log(aportes);
-  console.log(gastos);
 
   return (
     <div className={s.container}>

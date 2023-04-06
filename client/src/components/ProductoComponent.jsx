@@ -17,8 +17,6 @@ export default function ProductoComponent() {
   const [editDetailsInput, setEditDetailsInput] = useState({});
   const [editCostsInput, setEditCostsInput] = useState({});
 
-  console.log(product)
-
   const precioFinal =
     product?.costs?.kilosComprados && product?.costs?.precioXKiloFinal
       ? product?.costs?.kilosComprados *
@@ -86,8 +84,6 @@ export default function ProductoComponent() {
       })
     );
   };
-
-  console.log();
 
   const mediaSuma =
     parseInt(product?.details?.estampado) +
@@ -419,43 +415,43 @@ export default function ProductoComponent() {
                   <div className={s.modalLines}>
                     <input
                       name="tela"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.tela || ""}
                     />
                     <input
                       name="corte"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.corte || ""}
                     />
                     <input
                       name="costura"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.costura || ""}
                     />
                     <input
                       name="cierreDeCuello"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.cierreDeCuello || ""}
                     />
                     <input
                       name="ribsPuñoCuello"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.ribsPuñoCuello || ""}
                     />
                     <input
                       name="tancaYCordon"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.tancaYCordon || ""}
                     />
                     <input
                       name="velcro"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.velcro || ""}
                     />
@@ -475,49 +471,49 @@ export default function ProductoComponent() {
                   <div className={s.modalLines}>
                     <input
                       name="cordonElastico"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.cordonElastico || ""}
                     />
                     <input
                       name="hebillasLaterales"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.hebillasLaterales || ""}
                     />
                     <input
                       name="cierreLateral"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.cierreLateral || ""}
                     />
                     <input
                       name="bolsa"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.bolsa || ""}
                     />
                     <input
                       name="estampado"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.estampado || ""}
                     />
                     <input
                       name="bordado"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.bordado || ""}
                     />
                     <input
                       name="cintaReflexiva"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.cintaReflexiva || ""}
                     />
                     <input
                       name="peliculas"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleInputChange(e)}
                       value={editDetailsInput?.peliculas || ""}
                     />
@@ -551,25 +547,25 @@ export default function ProductoComponent() {
                   <div className={s.modalLines}>
                     <input
                       name="kilosComprados"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleCostsInputChange(e)}
                       value={editCostsInput?.kilosComprados || ""}
                     />
                     <input
                       name="kilosXPrenda"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleCostsInputChange(e)}
                       value={editCostsInput?.kilosXPrenda || ""}
                     />
                     <input
                       name="precioXKiloFinal"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleCostsInputChange(e)}
                       value={editCostsInput?.precioXKiloFinal || ""}
                     />
                     <input
                       name="porcentajeDeBeneficio"
-                      type="text"
+                      type="number"
                       onChange={(e) => handleCostsInputChange(e)}
                       value={editCostsInput?.porcentajeDeBeneficio || ""}
                     />

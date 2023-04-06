@@ -308,11 +308,13 @@ export default function Pedidos() {
                 <p>{el.cliente?.localidad || "-"}</p>
                 <p>{el.cliente?.tel1 || "-"}</p>
                 <p>
-                  {`$${el.subPedidos
-                    .filter((sp) => !sp.deleted)
-                    .reduce((acc, el) => {
-                      return parseInt(el.total) + acc;
-                    }, 0)}` || "-"}
+                  {`$${
+                    el.subPedidos
+                      .filter((sp) => !sp.deleted)
+                      .reduce((acc, el) => {
+                        return parseFloat(el.total) + acc;
+                      }, 0) * 1.21
+                  }` || "-"}
                 </p>
                 <p>{el.seña !== "" ? `$${el.seña}` : "-"}</p>
                 <p>
@@ -322,7 +324,9 @@ export default function Pedidos() {
                           .filter((sp) => !sp.deleted)
                           .reduce((acc, el) => {
                             return parseInt(el.total) + acc;
-                          }, 0) - el.seña
+                          }, 0) *
+                          1.21 -
+                        el.seña
                       }`
                     : "-"}
                 </p>

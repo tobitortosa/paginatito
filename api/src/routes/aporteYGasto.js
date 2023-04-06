@@ -22,7 +22,6 @@ router.post("/aporteYGasto", async (req, res) => {
 
 router.put("/aporteYGasto", async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   try {
     AporteYGasto.update(
       {
@@ -38,7 +37,6 @@ router.put("/aporteYGasto", async (req, res) => {
 
 router.post("/aporteYGasto/delete", async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   try {
     AporteYGasto.update({ deleted: true }, { where: { id: id } });
     res.status(200).send(`Producto con el id ${id} eliminado correctamente`);

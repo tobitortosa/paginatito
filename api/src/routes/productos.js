@@ -33,7 +33,6 @@ router.post("/productos", async (req, res) => {
   ];
 
   try {
-    console.log(req.body);
     if (req.body.type === "pantalon" || req.body.type === "camisa") {
       for (let i = 0; i < colores.length; i++) {
         for (let j = 0; j < tallesPantalonCamisa.length; j++) {
@@ -63,7 +62,6 @@ router.post("/productos", async (req, res) => {
 router.put("/productos", async (req, res) => {
   const { details, costs, name } = req.body;
 
-  console.log(req.body);
 
   try {
     let total = Object.keys(details).reduce((acc, el) => {
@@ -79,7 +77,6 @@ router.put("/productos", async (req, res) => {
     allProducts
       .filter((p) => p.name === name)
       .forEach(async (el) => {
-        console.log(el.id);
         await Producto.update(
           {
             details: details,
@@ -102,7 +99,6 @@ router.put("/productos", async (req, res) => {
 
 router.put("/productos/stock", async (req, res) => {
   const { id, stock } = req.body;
-  console.log(req.body);
   try {
     await Producto.update(
       {

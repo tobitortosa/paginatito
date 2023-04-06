@@ -3,7 +3,6 @@ import s from "./Login.module.css";
 import { useState } from "react";
 import { login } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -48,7 +47,7 @@ export default function Login() {
           <input
             name="password"
             onChange={(e) => handleInputChange(e)}
-            type="text"
+            type="password"
           />
         </form>
         <button onClick={() => handleLogin()}>Iniciar Sesion</button>

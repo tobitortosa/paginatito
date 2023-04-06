@@ -21,7 +21,6 @@ router.get("/subpedidos", async (req, res) => {
 router.post("/subpedidos", async (req, res) => {
   const { idPedido, idProducto, cantidad, total } = req.body;
 
-  console.log(req.body);
 
   try {
     const nuevoSubPedido = await SubPedido.create({
@@ -41,7 +40,6 @@ router.post("/subpedidos", async (req, res) => {
 
 router.put("/subpedidos", async (req, res) => {
   const { id } = req.body;
-  console.log(req.body);
   try {
     SubPedido.update(
       {

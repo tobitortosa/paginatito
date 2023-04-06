@@ -6,13 +6,9 @@ module.exports = {
     return dbClients;
   },
   uploadAllClients: async (array) => {
-    Cliente.bulkCreate(array)
-      .then(() => console.log("Clients uploaded successfully"))
-      .catch((error) => console.log(error));
+    Cliente.bulkCreate(array).catch((error) => console.log(error));
   },
   uploadAllProducts: async (array) => {
-    Producto.bulkCreate(array)
-      .then(() => console.log("Products uploaded successfully"))
-      .catch((error) => console.log(error));
+    Producto.bulkCreate(array).catch((error) => console.log(error));
   },
 };

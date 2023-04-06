@@ -6,7 +6,6 @@ import {
   getAllProducts,
   createNewProduct,
   deleteProduct,
-  editProduct,
   editAumento,
 } from "../../redux/actions";
 import Loader from "../Loader";
@@ -44,19 +43,10 @@ export default function Productos() {
     }
   };
 
-  const handleModificarBtn = (id) => {
-    setVerBtnState(false);
-    setModificarBtnState(true);
-    setModificarBtnObj({
-      ...allProducts.filter((product) => product.id === id)[0],
-    });
-  };
-
   const handleDelete = (e, name) => {
     e.preventDefault();
     setVerBtnState(false);
     let productName = allProducts.filter((p) => p.name === name)[0].name;
-    console.log(productName);
     dispatch(deleteProduct(productName));
   };
 
@@ -74,7 +64,6 @@ export default function Productos() {
   const handleModificarAumento = (e) => {
     e.preventDefault();
     if (inflacionInput > 0 && inflacionInput < 100) {
-      console.log(inflacionInput);
       dispatch(editAumento(parseFloat(`1.${inflacionInput}`)));
     }
   };

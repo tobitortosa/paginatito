@@ -3,12 +3,10 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
-  getAllClients,
   getAllProducts,
   getAllPedidos,
   editSubPedido,
   createSubPedido,
-  getAllSubPedidos,
   deleteSubPedido,
 } from "../redux/actions/index";
 
@@ -72,8 +70,6 @@ export default function SubPedidosComponent() {
     setEditBtnState(false);
     dispatch(editSubPedido(editBtnObj));
   };
-
-  console.log(pedido);
 
   const handleEditBtn = (id) => {
     setEditBtnState(true);
@@ -149,7 +145,7 @@ export default function SubPedidosComponent() {
                 </select>
                 <label>Cantidad</label>
                 <input
-                  onChange={(e) => handleInputChange(e, )}
+                  onChange={(e) => handleInputChange(e)}
                   type="number"
                   name="cantidad"
                 />
@@ -192,30 +188,6 @@ export default function SubPedidosComponent() {
                   name="cantidad"
                 />
               </div>
-
-              {/* <div className={s.lineForm}>
-                <label>Producto</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="date"
-                  name="pedidoDate"
-                  value={editBtnObj.pedidoDate || ""}
-                />
-                <label>Fecha de Entrega</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="date"
-                  name="entregaDate"
-                  value={editBtnObj.entregaDate || ""}
-                />
-                <label>Seña</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="number"
-                  name="seña"
-                  value={editBtnObj.seña || ""}
-                />
-              </div> */}
             </form>
             <button onClick={(e) => handleEdit(e)}>Editar Pedido</button>
           </div>
