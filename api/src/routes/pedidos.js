@@ -8,7 +8,14 @@ router.get("/pedidos", async (req, res) => {
       include: [
         {
           model: Cliente,
-          attributes: ["redSocial", "direccion", "localidad", "tel1"],
+          attributes: [
+            "redSocial",
+            "direccion",
+            "localidad",
+            "tel1",
+            "observaciones",
+            "celular",
+          ],
         },
         {
           model: SubPedido,

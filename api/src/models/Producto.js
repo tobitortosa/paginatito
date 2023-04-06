@@ -19,8 +19,31 @@ module.exports = (sequelize) => {
         allowNull: false,
         defaultValue: "0",
       },
+      color: {
+        type: DataTypes.ENUM([
+          "blanco",
+          "negro",
+          "gris",
+          "azul marino",
+          "otro",
+        ]),
+      },
+      talle: {
+        type: DataTypes.STRING,
+      },
       type: {
-        type: DataTypes.ENUM(["buso", "remera", "chaleco", "campera"]),
+        type: DataTypes.ENUM([
+          "buzo",
+          "chaleco",
+          "chomba",
+          "articulo varios",
+          "gorra",
+          "camisa",
+          "pantalon",
+          "campera",
+          "remera",
+          "otro",
+        ]),
         allowNull: false,
       },
       deleted: {

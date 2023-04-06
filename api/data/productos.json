@@ -1,7 +1,9 @@
 [
   {
     "name": "Buzo Friza con Cierre",
-    "type": "buso",
+    "type": "buzo",
+    "color": "gris",
+    "talle": "xxl",
     "costs": {
       "kilosComprados": "5",
       "kilosXPrenda": "5",
@@ -30,6 +32,8 @@
   {
     "name": "Chaleco Blanco",
     "type": "chaleco",
+    "color": "blanco",
+    "talle": "xs",
     "costs": {
       "kilosComprados": "2",
       "kilosXPrenda": "2",
