@@ -101,8 +101,6 @@ export default function Pedidos() {
     });
   };
 
-  console.log("editPrduct: ", editBtnProductObj);
-
   const handleAdd = (e) => {
     e.preventDefault();
     setBtnState(false);
@@ -128,7 +126,7 @@ export default function Pedidos() {
     totalstr =
       editBtnProductObj.cantidad *
       allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]?.costs
-        .costoFinal;
+        ?.costoFinal;
     totalstr = totalstr.toString();
 
     let can =
@@ -269,8 +267,6 @@ export default function Pedidos() {
     setFacturaState(true);
     setFacturaObj(obj);
   };
-
-  console.log(facturaObj);
 
   return (
     <div className={s.container}>
@@ -456,7 +452,7 @@ export default function Pedidos() {
                               {`$${
                                 allProducts.filter(
                                   (p) => p.id === el.productoId
-                                )[0]?.costs.costoFinal
+                                )[0].costs?.costoFinal
                               }`}
                             </p>
                             <button
@@ -729,7 +725,7 @@ export default function Pedidos() {
                               {`$${
                                 allProducts.filter(
                                   (p) => p.id === el.productoId
-                                )[0]?.costs.costoFinal
+                                )[0]?.costs?.costoFinal
                               }`}
                             </p>
                             <p>{`$${el.total}`}</p>
