@@ -194,7 +194,7 @@
   width: 50vw;
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255);
   border-radius: 15px;
   padding: 20px;
 }
@@ -290,4 +290,34 @@
 
 .verContainer button:hover {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.porcentajeContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.porcentajeContainer input {
+  margin: 0;
+}
+
+.porcentajeContainer p {
+  margin: 0;
+  position: relative;
+  top: 0;
+  right: 0;
+  color: black;
+  margin-right: 10px;
+}
+
+.porcentajeContainer p:hover {
+  color: black;
+  cursor: default;
+}
+
+#entre {
+  padding: 5px 0px;
+  font-weight: bold;
+  font-size: 18px;
 }

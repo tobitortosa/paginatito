@@ -12,9 +12,6 @@ export default function NavBar() {
   return (
     <div className={s.container}>
       <div className={s.navContainer}>
-        <Link to={"/facturas"}>
-          <button className={s.btnElement}>Facturas de Compras</button>
-        </Link>
         <Link to={"/aportesygastos"}>
           <button className={s.btnElement}>Aportes y Gastos</button>
         </Link>

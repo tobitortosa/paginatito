@@ -7,29 +7,38 @@ import {
   createNewProduct,
   deleteProduct,
   editProduct,
+  editAumento,
 } from "../../redux/actions";
 import Loader from "../Loader";
 
 export default function Productos() {
   const dispatch = useDispatch();
-  const allProducts = useSelector((state) => state.allProducts.filter((c) => !c.deleted));
+  const allProducts = useSelector((state) =>
+    state.allProducts
+      .filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.name === value.name)
+      )
+      .filter((c) => !c.deleted)
+  );
+
   const [modalBtnState, setModalBtnState] = useState(false);
   const [verBtnState, setVerBtnState] = useState(false);
-  const [modificarBtnState, setModificarBtnState] = useState(false);
-  const [modificarBtnObj, setModificarBtnObj] = useState({});
   const [formInput, setFormInput] = useState({
     name: "",
     type: "",
   });
 
+  const [inflacionState, setInflacionState] = useState(false);
+  const [inflacionInput, setInflacionInput] = useState("");
+
   useEffect(() => {
     dispatch(getAllProducts());
-  }, [modalBtnState, verBtnState, modificarBtnState, modificarBtnObj]);
+  }, [modalBtnState, verBtnState]);
 
   const handleAdd = (e) => {
     e.preventDefault();
     if (formInput.name.length) {
-      e.preventDefault();
       setModalBtnState(false);
       dispatch(createNewProduct(formInput));
     }
@@ -43,17 +52,12 @@ export default function Productos() {
     });
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, name) => {
     e.preventDefault();
     setVerBtnState(false);
-    let productId = allProducts.filter((p) => p.id === id)[0].id;
-    dispatch(deleteProduct(productId));
-  };
-
-  const handleModificar = (e) => {
-    e.preventDefault();
-    dispatch(editProduct(modificarBtnObj));
-    setModificarBtnState(false);
+    let productName = allProducts.filter((p) => p.name === name)[0].name;
+    console.log(productName);
+    dispatch(deleteProduct(productName));
   };
 
   const handleFormInputChange = (e) => {
@@ -63,14 +67,17 @@ export default function Productos() {
     });
   };
 
-  const handleModificarInputChange = (e) => {
-    setModificarBtnObj({
-      ...modificarBtnObj,
-      [e.target.name]: e.target.value,
-    });
+  const handleAumentoInputChange = (e) => {
+    setInflacionInput(e.target.value);
   };
 
-  console.log(allProducts)
+  const handleModificarAumento = (e) => {
+    e.preventDefault();
+    if (inflacionInput > 0 && inflacionInput < 100) {
+      console.log(inflacionInput);
+      dispatch(editAumento(parseFloat(`1.${inflacionInput}`)));
+    }
+  };
 
   return (
     <div className={s.container}>
@@ -80,19 +87,26 @@ export default function Productos() {
       <button onClick={() => setVerBtnState(true)} id={s.addBtn}>
         Ver Productos
       </button>
+      <button onClick={() => setInflacionState(true)} id={s.addBtn}>
+        Modificar Costos Global
+      </button>
       <div className={s.grid}>
         <div className={s.gridTitles}>
           <p>Productos</p>
         </div>
-        {allProducts.length ? allProducts.map((el, index) => {
-          return (
-            <div key={index} className={s.gridLines}>
-              <Link id={s.link} to={`/Productos/${el.id}`}>
-                <button id={s.btn}>{el.name}</button>
-              </Link>
-            </div>
-          );
-        }) : <Loader />}
+        {allProducts.length ? (
+          allProducts.map((el, index) => {
+            return (
+              <div key={index} className={s.gridLines}>
+                <Link id={s.link} to={`/productos/${el.id}`}>
+                  <button id={s.btn}>{el.name}</button>
+                </Link>
+              </div>
+            );
+          })
+        ) : (
+          <Loader />
+        )}
       </div>
       {modalBtnState && (
         <div className={s.modal}>
@@ -111,10 +125,15 @@ export default function Productos() {
                 onChange={(e) => handleFormInputChange(e)}
               >
                 <option disabled>Tipo de Producto...</option>
-                <option value="buso">Buso</option>
+                <option value="buzo">Buzo</option>
                 <option value="remera">Remera</option>
                 <option value="chaleco">Chaleco</option>
+                <option value="camisa">Camisa</option>
+                <option value="chomba">Chomba</option>
                 <option value="campera">Campera</option>
+                <option value="pantalon">Pantalon</option>
+                <option value="gorra">Gorra</option>
+                <option value="articulo vario">Articulos Varios</option>
               </select>
               <button onClick={(e) => handleAdd(e)}>Agregar Producto</button>
             </form>
@@ -132,12 +151,9 @@ export default function Productos() {
                     <div className={s.productoContainer}>
                       <a>{el.name}</a>
                       <div className={s.btns}>
-                        <button onClick={() => handleModificarBtn(el.id)}>
-                          Modificar
-                        </button>
                         <button
                           id={s.eliminar}
-                          onClick={(e) => handleDelete(e, el.id)}
+                          onClick={(e) => handleDelete(e, el.name)}
                         >
                           Eliminar
                         </button>
@@ -150,35 +166,34 @@ export default function Productos() {
           </div>
         </div>
       )}
-      {modificarBtnState && (
+
+      {inflacionState && (
         <div className={s.modal}>
           <div className={s.modalContainer}>
-            <p onClick={() => setModificarBtnState(false)}>✖</p>
+            <p onClick={() => setInflacionState(false)}>✖</p>
             <div className={s.verContainer}>
               <form>
-                <label>Modificar Nombre</label>
-                <input
-                  onChange={(e) => handleModificarInputChange(e)}
-                  type="text"
-                  name="name"
-                  value={modificarBtnObj.name || ""}
-                />
-                <label>Modificar Tipo de Producto</label>
-                <select
-                  defaultValue="Tipo de Producto..."
-                  name="type"
-                  onChange={(e) => handleModificarInputChange(e)}
-                  value={modificarBtnObj.type || ""}
-                >
-                  <option disabled>Tipo de Producto...</option>
-                  <option value="buso">Buso</option>
-                  <option value="remera">Remera</option>
-                  <option value="chaleco">Chaleco</option>
-                  <option value="campera">Campera</option>
-                </select>
-                <button onClick={(e) => handleModificar(e)}>
-                  Modificar Producto
+                <label>Ingresar Porcentaje de Aumento</label>
+                <h4 id={s.entre}>Entre 1% y 99%</h4>
+                <div className={s.porcentajeContainer}>
+                  <p>%</p>
+                  <input
+                    onChange={(e) => handleAumentoInputChange(e)}
+                    type="number"
+                    name="name"
+                    min="0"
+                    value={inflacionInput}
+                  />
+                </div>
+
+                <button onClick={(e) => handleModificarAumento(e)}>
+                  Aumentar Costos Globales
                 </button>
+                <br />
+                <text>
+                  El porcentaje ingresado actualizara el precio de todos los
+                  productos con sus respectivos costos de produccion.
+                </text>
               </form>
             </div>
           </div>

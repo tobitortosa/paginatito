@@ -1,38 +1,39 @@
 .container {
   width: 90%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box {
+  border: 2px solid black;
 }
 
 .tableContainer {
   border: 2px solid black;
   display: flex;
   flex-direction: column;
-  margin: 30px 0px;
-  padding: 10px 30px;
+  margin: 80px 0px;
+  padding: 10px 0px;
   align-items: center;
-  height: auto;
   border-radius: 20px;
+  width: 300px;
 }
 
 .tableContainer h2 {
-  font-size: 20px;
   text-align: center;
-  margin-bottom: 5px;
+  margin-bottom: 30px;
+  font-size: 20px;
+  width: 300px;
   border-bottom: 2px solid black;
-  width: 100%;
-}
-
-.tableContainer div {
-  margin: 15px 0px;
 }
 
 .tableContainer a {
-  border: 1px solid black;
+  border: 2px solid black;
   text-align: center;
   text-decoration: none;
-  margin: 5px;
-  padding: 5px 30px;
+  margin: 10px 10px;
+  padding: 5px 40px;
   font-size: 20px;
   border-radius: 10px;
   color: black;

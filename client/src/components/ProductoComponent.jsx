@@ -93,11 +93,9 @@ export default function ProductoComponent() {
     parseInt(product?.details?.cintaReflexiva) +
     parseInt(product?.details?.peliculas);
 
-  console.log(mediaSuma);
-
   const salen =
     product?.costs?.kilosComprados && product?.costs?.kilosXPrenda
-      ? product?.costs?.kilosComprados / product?.costs?.kilosXPrenda
+      ? product?.costs?.kilosComprados * product?.costs?.kilosXPrenda
       : "-";
 
   return (
@@ -250,7 +248,9 @@ export default function ProductoComponent() {
             </div>
             <div className={s.gridLines}>
               <p>
-                {product?.details?.tela ? `$${product?.details?.tela}` : "-"}
+                {product?.details?.tela
+                  ? `$${Math.ceil(product?.details?.tela)}`
+                  : "-"}
               </p>
               <p>
                 {product?.details?.corte ? `$${product?.details?.corte}` : "-"}
@@ -262,63 +262,65 @@ export default function ProductoComponent() {
               </p>
               <p>
                 {product?.details?.cierreDeCuello
-                  ? `$${product?.details?.cierreDeCuello}`
+                  ? `$${Math.ceil(product?.details?.cierreDeCuello)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.ribsPuñoCuello
-                  ? `$${product?.details?.ribsPuñoCuello}`
+                  ? `$${Math.ceil(product?.details?.ribsPuñoCuello)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.tancaYCordon
-                  ? `$${product?.details?.tancaYCordon}`
+                  ? `$${Math.ceil(product?.details?.tancaYCordon)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.velcro
-                  ? `$${product?.details?.velcro}`
+                  ? `$${Math.ceil(product?.details?.velcro)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.cordonElastico
-                  ? `$${product?.details?.cordonElastico}`
+                  ? `$${Math.ceil(product?.details?.cordonElastico)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.hebillasLaterales
-                  ? `$${product?.details?.hebillasLaterales}`
+                  ? `$${Math.ceil(product?.details?.hebillasLaterales)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.cierreLateral
-                  ? `$${product?.details?.cierreLateral}`
+                  ? `$${Math.ceil(product?.details?.cierreLateral)}`
                   : "-"}
               </p>
               <p>
-                {product?.details?.bolsa ? `$${product?.details?.bolsa}` : "-"}
+                {product?.details?.bolsa
+                  ? `$${Math.ceil(product?.details?.bolsa)}`
+                  : "-"}
               </p>
               <p id={s.total}>{`$${
                 total === null ? "-" : Math.ceil(total) - mediaSuma
               }`}</p>
               <p>
                 {product?.details?.estampado
-                  ? `$${product?.details?.estampado}`
+                  ? `$${Math.ceil(product?.details?.estampado)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.bordado
-                  ? `$${product?.details?.bordado}`
+                  ? `$${Math.ceil(product?.details?.bordado)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.cintaReflexiva
-                  ? `$${product?.details?.cintaReflexiva}`
+                  ? `$${Math.ceil(product?.details?.cintaReflexiva)}`
                   : "-"}
               </p>
               <p>
                 {product?.details?.peliculas
-                  ? `$${product?.details?.peliculas}`
+                  ? `$${Math.ceil(product?.details?.peliculas)}`
                   : "-"}
               </p>
               <p id={s.total}>{`$${
@@ -338,9 +340,8 @@ export default function ProductoComponent() {
           <div className={s.grid}>
             <div className={s.gridTitles}>
               <p>Kilos Comprados</p>
-              <p>Kilos x Prenda</p>
+              <p>Prendas por kilo</p>
               <p>Precio por Kilo Final</p>
-              <p>Costo con Iva por Unidad</p>
               <p>Salen</p>
               <p id={s.total}>Precio Final Tela</p>
               <p>Porcentaje De Beneficio</p>
@@ -362,11 +363,6 @@ export default function ProductoComponent() {
                 {product?.costs?.precioXKiloFinal
                   ? `$${product?.costs?.precioXKiloFinal}`
                   : "-"}
-              </p>
-              <p>
-                {precioFinal === "-" || salen === "-"
-                  ? "-"
-                  : `$${precioFinal / salen}`}
               </p>
               <p id={s.salen}>{Math.floor(salen) || "-"}</p>
               <p id={s.total}>
@@ -546,7 +542,7 @@ export default function ProductoComponent() {
                 <div className={s.modalTitles}>
                   <div className={s.titleContainer}>
                     <p>Kilos Comprados</p>
-                    <p>Kilos por Prenda</p>
+                    <p>Prendas por Kilo</p>
                     <p>Precio por Kilo Final</p>
                     <p>Porcentaje de Beneficio</p>
                   </div>

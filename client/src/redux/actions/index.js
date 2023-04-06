@@ -21,6 +21,7 @@ import {
   EDIT_APORTEYGASTO,
   DELETE_APORTEYGASTO,
   EDIT_PRODUCT_STOCK,
+  EDIT_AUMENTO,
 } from "./actionsTypes";
 import axios from "axios";
 
@@ -73,14 +74,19 @@ export const editProduct = (obj) => async (dispatch) => {
   return dispatch({ type: EDIT_PRODUCT });
 };
 
-export const deleteProduct = (id) => async (dispatch) => {
-  await axios.post(`${url}/productos/delete`, { id: id });
+export const deleteProduct = (name) => async (dispatch) => {
+  await axios.post(`${url}/productos/delete`, { name });
   return dispatch({ type: DELETE_PRODUCT });
 };
 
 export const editProductStock = (id, stock) => async (dispatch) => {
   await axios.put(`${url}/productos/stock`, { id, stock });
   return dispatch({ type: EDIT_PRODUCT_STOCK });
+};
+
+export const editAumento = (aumento) => async (dispatch) => {
+  await axios.put(`${url}/productos/aumento`, { aumento });
+  return dispatch({ type: EDIT_AUMENTO });
 };
 
 // Pedidos actions

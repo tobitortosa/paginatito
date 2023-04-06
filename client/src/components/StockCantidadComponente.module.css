@@ -1,0 +1,171 @@
+.container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-transform: capitalize;
+}
+
+.container h4 {
+  margin-top: 10px;
+}
+
+
+.box {
+  border: 1px solid black;
+  text-align: center;
+  width: 50vw;
+  margin: 20px;
+  border-radius: 5px;
+}
+
+p::first-letter {
+  text-transform: capitalize;
+}
+
+#talle {
+  text-transform: uppercase;
+  font-size: 18px;
+}
+
+.titles {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid black;
+}
+
+.titles h3 {
+  width: 100px;
+  margin: 15px 0px;
+}
+
+.tallesContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 0px;
+}
+
+.tallesTitles {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60vh;
+  width: 100px;
+  margin: 5px;
+}
+
+.tallesTitles p {
+  font-size: 20px;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.tallesTitles button {
+  font-size: 20px;
+  padding: 5px;
+  border: none;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.tallesTitles button:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.55);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainer {
+  width: 45vw;
+  height: auto;
+  padding: 20px;
+}
+
+.modalContainer form {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.modalContainer input {
+  padding: 10px;
+  padding-left: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  margin: 10px 0px;
+  border: 2px solid transparent;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.modalContainer input:focus {
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  background-color: white;
+}
+
+.modalContainer label {
+  margin: 5px;
+  margin-left: 0px;
+  color: white;
+  font-size: 18px;
+}
+
+.modalContainer h3 {
+  color: rgba(255, 255, 255);
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: none;
+}
+
+.modalContainer button {
+  border-radius: 5px;
+  height: 50px;
+  border: none;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.modalContainer form select {
+  height: 45px;
+  padding-left: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+}
+
+.modalContainer button:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
+.modalContainer p {
+  font-size: 35px;
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  color: white;
+  transition: 0.3s;
+}
+
+.modalContainer p:hover {
+  transition: 0.3s;
+  color: red;
+  cursor: pointer;
+}
