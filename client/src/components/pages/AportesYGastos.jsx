@@ -74,7 +74,6 @@ export default function AportesYGastos() {
         </div>
         {allAportesYGastos.length ? (
           allAportesYGastos.map((el, index) => {
-            console.log(el.id);
             return (
               <div key={index} className={s.tableLine}>
                 <p>{el.type}</p>

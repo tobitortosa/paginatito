@@ -55,7 +55,6 @@ export default function Pedidos() {
 
   const [stockInsuficiente, setStockInsuficiente] = useState(false);
   const [productoExistente, setProductoExistente] = useState(false);
-  const [reload, setReload] = useState(0);
 
   const handleEntrego = (el, entrego) => {
     setBtnEntrego(!entrego);
@@ -71,7 +70,7 @@ export default function Pedidos() {
     dispatch(getAllClients());
     dispatch(getAllPedidos());
     dispatch(getAllProducts());
-  }, [reload, btnEntrego, btnState]);
+  }, [btnEntrego, btnState]);
 
   const handleInputChange = (e) => {
     setInput({
@@ -428,7 +427,6 @@ export default function Pedidos() {
                     .filter((p) => p.id === subInput.idPedido)[0]
                     .subPedidos.filter((sp) => !sp.deleted)
                     .map((el, index) => {
-                      console.log(el);
                       return (
                         <div key={index} className={s.productsLine}>
                           <div className={s.txtContainer}>
@@ -714,7 +712,6 @@ export default function Pedidos() {
                     {facturaObj.subPedidos
                       .filter((c) => !c.deleted)
                       .map((el, index) => {
-                        console.log(facturaObj);
                         return (
                           <div key={index} className={s.line}>
                             <p id={s.cant}>{el.cantidad}</p>
