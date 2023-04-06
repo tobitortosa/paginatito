@@ -33,7 +33,7 @@ function App() {
               <Route path="/productos" element={<Productos />} />
               <Route path="/stock" element={<Stock />} />
               <Route
-                path="/productos/:productoId"
+                path="/productos/:productName"
                 element={<ProductoComponent />}
               />
               <Route path="/stock/:productName" element={<StockComponent />} />

@@ -5,17 +5,19 @@ import { getAllProducts, editProduct } from "../redux/actions";
 import s from "./ProductoComponent.module.css";
 
 export default function ProductoComponent() {
-  const { productoId } = useParams();
+  const { productName } = useParams();
 
   const dispatch = useDispatch();
-  const product = useSelector(
-    (state) => state.allProducts.filter((p) => p.id === productoId)[0]
-  );
+  const allProducts = useSelector((state) => state.allProducts);
+
+  const product = allProducts.filter((p) => p.name === productName)[0];
 
   const [btnState, setBtnState] = useState(false);
   const [costsBtnState, setCostsBtnState] = useState(false);
   const [editDetailsInput, setEditDetailsInput] = useState({});
   const [editCostsInput, setEditCostsInput] = useState({});
+
+  console.log(product)
 
   const precioFinal =
     product?.costs?.kilosComprados && product?.costs?.precioXKiloFinal
@@ -40,8 +42,6 @@ export default function ProductoComponent() {
       [e.target.name]: e.target.value,
     });
   };
-
-  console.log(product);
 
   const handleEditBtn = () => {
     setBtnState(true);
@@ -86,6 +86,8 @@ export default function ProductoComponent() {
       })
     );
   };
+
+  console.log();
 
   const mediaSuma =
     parseInt(product?.details?.estampado) +

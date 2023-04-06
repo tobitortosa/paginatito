@@ -98,7 +98,7 @@ export default function Productos() {
           allProducts.map((el, index) => {
             return (
               <div key={index} className={s.gridLines}>
-                <Link id={s.link} to={`/productos/${el.id}`}>
+                <Link id={s.link} to={`/productos/${el.name}`}>
                   <button id={s.btn}>{el.name}</button>
                 </Link>
               </div>

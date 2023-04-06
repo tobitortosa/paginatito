@@ -737,11 +737,13 @@ export default function Pedidos() {
                       <p id={s.producto}></p>
                       <p>Total</p>
                       <p>
-                        {`$${facturaObj.subPedidos
-                          .filter((s) => !s.deleted)
-                          .reduce((acc, el) => {
-                            return parseInt(el.total) + acc;
-                          }, 0)}` || "-"}
+                        {`$${Math.ceil(
+                          facturaObj.subPedidos
+                            .filter((s) => !s.deleted)
+                            .reduce((acc, el) => {
+                              return parseInt(el.total) + acc;
+                            }, 0)
+                        )}` || "-"}
                       </p>
                     </div>
                     <div className={s.line}>
@@ -749,13 +751,13 @@ export default function Pedidos() {
                       <p id={s.producto}></p>
                       <p>Total con Iva</p>
                       <p>
-                        {`$${
+                        {`$${Math.ceil(
                           facturaObj.subPedidos
                             .filter((s) => !s.deleted)
                             .reduce((acc, el) => {
                               return parseInt(el.total) + acc;
                             }, 0) * 1.21
-                        }` || "-"}
+                        )}` || "-"}
                       </p>
                     </div>
                   </div>
@@ -763,7 +765,7 @@ export default function Pedidos() {
                 <div className={s.lines}>
                   <div className={s.tel}>
                     <h3>
-                      Seña:{" "}
+                      Seña:
                       {facturaObj.seña ? `$${facturaObj.seña}` : "_________"}
                     </h3>
                     <h3>

@@ -61,16 +61,40 @@ router.post("/productos", async (req, res) => {
 });
 
 router.put("/productos", async (req, res) => {
-  const { id } = req.body;
+  const { details, costs, name } = req.body;
+
   console.log(req.body);
+
   try {
-    Producto.update(
-      {
-        ...req.body,
-      },
-      { where: { id: id } }
+    let total = Object.keys(details).reduce((acc, el) => {
+      return parseFloat(details[`${el}`]) + acc;
+    }, 0);
+
+    let costoFinal = Math.ceil(
+      (total * 1.21 * costs?.porcentajeDeBeneficio) / 100 + total * 1.21
     );
-    res.status(200).send(`Producto con el id ${id} modificado correctamente`);
+
+    let allProducts = await Producto.findAll();
+
+    allProducts
+      .filter((p) => p.name === name)
+      .forEach(async (el) => {
+        console.log(el.id);
+        await Producto.update(
+          {
+            details: details,
+            costs: {
+              ...costs,
+              costoFinal: costoFinal,
+            },
+          },
+          { where: { id: el.id } }
+        );
+      });
+
+    res
+      .status(200)
+      .send(`Producto con nombre ${name} modificado correctamente`);
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -80,7 +104,7 @@ router.put("/productos/stock", async (req, res) => {
   const { id, stock } = req.body;
   console.log(req.body);
   try {
-    Producto.update(
+    await Producto.update(
       {
         stock,
       },
@@ -108,11 +132,11 @@ router.put("/productos/aumento", async (req, res) => {
     let allProducts = await Producto.findAll();
     let obj = {};
 
-    allProducts.forEach((el) => {
+    allProducts.forEach(async (el) => {
       Object.keys(el.details).forEach((key) => {
         obj[key] = String(parseFloat(el.details[key]) * aumento);
       });
-      Producto.update(
+      await Producto.update(
         {
           details: obj,
         },
