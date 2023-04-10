@@ -30,6 +30,7 @@ router.get("/pedidos", async (req, res) => {
 
 router.post("/pedidos", async (req, res) => {
   const { idCliente, pedidoDate, entregaDate, seña, entrego } = req.body;
+
   if (!idCliente) {
     return res.status(400).send("Parametros insuficientes");
   }

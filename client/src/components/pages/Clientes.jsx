@@ -12,7 +12,7 @@ import {
 export default function Clientes() {
   const dispatch = useDispatch();
 
-  const allClients = useSelector((state) =>
+  const stateAllClients = useSelector((state) =>
     state.allClients
       .filter((c) => !c.deleted)
       .sort((a, b) => a.redSocial.localeCompare(b.redSocial))
@@ -46,6 +46,19 @@ export default function Clientes() {
   const [btnLineState, setBtnLineState] = useState(false);
   const [editBtnState, setEditBtnState] = useState(false);
   const [editBtnObj, setEditBtnObj] = useState({});
+  const [allClients, setAllClients] = useState([]);
+  const [flag, setFlag] = useState(true);
+
+  useEffect(() => {
+    dispatch(getAllClients());
+  }, []);
+
+  useEffect(() => {
+    if (flag && stateAllClients.length) {
+      setAllClients(stateAllClients);
+      setFlag(false);
+    }
+  }, [stateAllClients]);
 
   const handleInputChange = (e) => {
     setInput({
@@ -65,26 +78,39 @@ export default function Clientes() {
     e.preventDefault();
     setBtnState(false);
     dispatch(createNewClient(input));
+    setAllClients([...allClients, { ...input, deleted: false }]);
   };
 
   const handleEdit = (e) => {
     e.preventDefault();
     setEditBtnState(false);
+    console.log(editBtnObj);
     dispatch(editClient(editBtnObj));
+    setAllClients([
+      ...allClients.filter((c) => c.id !== editBtnObj.id),
+      editBtnObj,
+    ]);
   };
 
   const handleEditBtn = (id) => {
-    setEditBtnState(true);
-    setEditBtnObj({ ...allClients.filter((client) => client.id === id)[0] });
+    if (id) {
+      setEditBtnState(true);
+      setEditBtnObj({
+        ...allClients.filter((client) => client.id === id)[0],
+      });
+    } else {
+      location.reload();
+    }
   };
 
   const handleDeleteBtn = (id) => {
-    dispatch(deleteClient(id));
+    if (id) {
+      dispatch(deleteClient(id));
+      setAllClients([...allClients.filter((c) => c.id !== id)]);
+    } else {
+      location.reload();
+    }
   };
-
-  useEffect(() => {
-    dispatch(getAllClients());
-  }, [editBtnState, btnState, btnLineState, editBtnObj]);
 
   return (
     <div className={s.container}>
@@ -139,11 +165,11 @@ export default function Clientes() {
                   <p>{el.fax || "-"}</p>
                   <p>
                     <a
-                      href={`https://${el.paginaWeb.toLowerCase()}`}
+                      href={`https://${el.paginaWeb?.toLowerCase()}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {el.paginaWeb.toLowerCase() || "-"}
+                      {el.paginaWeb?.toLowerCase() || "-"}
                     </a>
                   </p>
                   <p id={s.obs}>{el.observaciones || "-"}</p>
@@ -205,13 +231,6 @@ export default function Clientes() {
             })
         )}
       </div>
-      {btnLineState && (
-        <div className={s.lineModal}>
-          <div className={s.text}>
-            <p onClick={() => setBtnLineState(false)}>✖</p>
-          </div>
-        </div>
-      )}
       {btnState && (
         <div className={s.modal}>
           <div className={s.modalContainer}>

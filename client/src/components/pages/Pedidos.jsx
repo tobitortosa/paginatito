@@ -18,7 +18,7 @@ import Loader from "../Loader";
 export default function Pedidos() {
   const dispatch = useDispatch();
 
-  const allPedidos = useSelector((state) =>
+  const stateAllPedidos = useSelector((state) =>
     state.allPedidos.filter((c) => !c.deleted)
   );
   const allClients = useSelector((state) =>
@@ -27,6 +27,23 @@ export default function Pedidos() {
   const allProducts = useSelector((state) =>
     state.allProducts.filter((c) => !c.deleted)
   );
+
+  const [flag, setFlag] = useState(true);
+  const [allPedidos, setAllPedidos] = useState([]);
+
+  useEffect(() => {
+    dispatch(getAllClients());
+    dispatch(getAllProducts());
+    dispatch(getAllPedidos());
+  }, []);
+
+  useEffect(() => {
+    if (flag && stateAllPedidos.length) {
+      console.log("entro");
+      setAllPedidos(stateAllPedidos);
+      setFlag(false);
+    }
+  }, [allProducts]);
 
   const [input, setInput] = useState({
     idCliente: "",
@@ -43,7 +60,6 @@ export default function Pedidos() {
     total: "",
   });
 
-  const [btnEntrego, setBtnEntrego] = useState();
   const [btnState, setBtnState] = useState(false);
   const [editBtnState, setEditBtnState] = useState(false);
   const [editProductBtnState, setEditProductBtnState] = useState(false);
@@ -57,20 +73,18 @@ export default function Pedidos() {
   const [productoExistente, setProductoExistente] = useState(false);
 
   const handleEntrego = (el, entrego) => {
-    setBtnEntrego(!entrego);
-    dispatch(
-      editPedido({
-        ...el,
-        entrego: !entrego,
-      })
-    );
+    if (el.id) {
+      dispatch(
+        editPedido({
+          ...el,
+          entrego: !entrego,
+        })
+      );
+      el.entrego = !entrego;
+    } else {
+      location.reload();
+    }
   };
-
-  useEffect(() => {
-    dispatch(getAllClients());
-    dispatch(getAllPedidos());
-    dispatch(getAllProducts());
-  }, [btnEntrego, btnState]);
 
   const handleInputChange = (e) => {
     setInput({
@@ -103,20 +117,25 @@ export default function Pedidos() {
   const handleAdd = (e) => {
     e.preventDefault();
     setBtnState(false);
-    setReload(1);
     dispatch(
       createPedido({
         ...input,
         subPedido: subInput,
       })
     );
+    setAllPedidos([...allPedidos, { ...input, subPedido: subInput }]);
   };
 
   const handleEdit = (e) => {
     e.preventDefault();
     setEditBtnState(false);
     dispatch(editPedido(editBtnObj));
-    setReload(2);
+    let ped = allPedidos.filter((p) => p.id === editBtnObj.id);
+    ped.pedidoDate = editBtnObj.pedidoDate;
+    ped.entregaDate = editBtnObj.entregaDate;
+    ped.seña = editBtnObj.seña;
+
+    setAllPedidos([...allPedidos.filter((p) => p.id !== editBtnObj.id), ped]);
   };
 
   const handleProductEdit = (e) => {
@@ -140,6 +159,26 @@ export default function Pedidos() {
       dispatch(editSubPedido({ ...editBtnProductObj, total: totalstr }));
       setEditProductBtnState(false);
       dispatch(editProductStock(editBtnProductObj.productoId, can));
+      allPedidos
+        .filter((p) => p.id === editBtnProductObj.pedidoId)[0]
+        .subPedidos.filter((c) => !c.deleted)
+        .filter(
+          (sp) => sp.productoId === editBtnProductObj.productoId
+        )[0].cantidad = editBtnProductObj.cantidad;
+
+      allPedidos
+        .filter((p) => p.id === editBtnProductObj.pedidoId)[0]
+        .subPedidos.filter((c) => !c.deleted)
+        .filter(
+          (sp) => sp.productoId === editBtnProductObj.productoId
+        )[0].total =
+        editBtnProductObj.cantidad *
+        allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]
+          .costs.costoFinal;
+
+      allProducts.filter(
+        (p) => p.id === editBtnProductObj.productoId
+      )[0].stock = can;
     } else {
       setStockInsuficiente(true);
     }
@@ -198,17 +237,43 @@ export default function Pedidos() {
               )[0]?.costs?.costoFinal,
           })
         );
-        dispatch(
-          editProductStock(
-            allProducts.filter(
+        console.log(subInput);
+        console.log(allPedidos.filter((p) => p.id === subInput.idPedido)[0]);
+
+        allPedidos
+          .filter((p) => p.id === subInput.idPedido)[0]
+          .subPedidos.push({
+            ...subInput,
+            pedidoId: subInput.idPedido,
+            deleted: false,
+            productoId: allProducts.filter(
               (p) =>
                 p.name === subInput.name &&
                 p.color === subInput.color &&
                 p.talle === subInput.talle
             )[0]?.id,
-            can
-          )
-        );
+
+            total: String(
+              subInput.cantidad *
+                allProducts.filter(
+                  (p) =>
+                    p.name === subInput.name &&
+                    p.color === subInput.color &&
+                    p.talle === subInput.talle
+                )[0]?.costs?.costoFinal
+            ),
+          }),
+          dispatch(
+            editProductStock(
+              allProducts.filter(
+                (p) =>
+                  p.name === subInput.name &&
+                  p.color === subInput.color &&
+                  p.talle === subInput.talle
+              )[0]?.id,
+              can
+            )
+          );
       } else {
         setStockInsuficiente(true);
       }
@@ -217,44 +282,73 @@ export default function Pedidos() {
     }
   };
 
-  const handleDeleteProductBtn = (id, productoId, cantidad) => {
-    let can =
-      parseInt(allProducts.filter((p) => p.id === productoId)[0]?.stock) +
-      parseInt(cantidad);
+  const handleDeleteProductBtn = (id, productoId, cantidad, el) => {
+    if (id) {
+      allPedidos.filter((p) => p.id === el.pedidoId)[0].subPedidos = allPedidos
+        .filter((p) => p.id === el.pedidoId)[0]
+        .subPedidos.filter((sp) => sp.id !== el.id);
+      let can =
+        parseInt(allProducts.filter((p) => p.id === productoId)[0]?.stock) +
+        parseInt(cantidad);
 
-    dispatch(editProductStock(productoId, can));
-    dispatch(deleteSubPedido(id));
+      dispatch(editProductStock(productoId, can));
+      dispatch(deleteSubPedido(id));
+    } else {
+      location.reload();
+    }
   };
 
   const handleDeleteBtn = (id, subPedidos) => {
-    subPedidos
-      .filter((c) => !c.deleted)
-      .forEach((el) => {
-        handleDeleteProductBtn(el.id, el.productoId, el.cantidad);
-      });
-    dispatch(deletePedido(id));
+    console.log(id);
+
+    if (id) {
+      setAllPedidos([...allPedidos.filter((p) => p.id !== id)]);
+      dispatch(deletePedido(id));
+    } else {
+      location.reload();
+    }
+
+    if (subPedidos?.length) {
+      subPedidos
+        .filter((c) => !c.deleted)
+        .forEach((el) => {
+          handleDeleteProductBtn(el.id, el.productoId, el.cantidad);
+        });
+    }
   };
 
   const handleAddInputState = (id) => {
-    setBtnProductoState(true);
-    subInput.idPedido = id;
+    if (id) {
+      setBtnProductoState(true);
+      subInput.idPedido = id;
+    } else {
+      location.reload();
+    }
   };
 
   const handleEditProductList = (id, pedidoId) => {
-    setEditProductBtnState(true);
-    setEditBtnProductObj({
-      ...allPedidos
-        .filter((p) => p.id === pedidoId)[0]
-        .subPedidos.filter((s) => s.id === id)[0],
-      initialStock: allPedidos
-        .filter((p) => p.id === pedidoId)[0]
-        .subPedidos.filter((s) => s.id === id)[0].cantidad,
-    });
+    if (id) {
+      setEditProductBtnState(true);
+      setEditBtnProductObj({
+        ...allPedidos
+          .filter((p) => p.id === pedidoId)[0]
+          .subPedidos.filter((s) => s.id === id)[0],
+        initialStock: allPedidos
+          .filter((p) => p.id === pedidoId)[0]
+          .subPedidos.filter((s) => s.id === id)[0].cantidad,
+      });
+    } else {
+      location.reload();
+    }
   };
 
   const handleEditBtn = (id) => {
-    setEditBtnState(true);
-    setEditBtnObj(allPedidos.filter((p) => p.id === id)[0]);
+    if (id) {
+      setEditBtnObj(allPedidos.filter((p) => p.id === id)[0]);
+      setEditBtnState(true);
+    } else {
+      location.reload();
+    }
   };
 
   let productoElegido = allProducts.filter((p) => p.name === subInput?.name)[0];
@@ -263,8 +357,12 @@ export default function Pedidos() {
   const [facturaObj, setFacturaObj] = useState({});
 
   const handleFactura = (obj) => {
-    setFacturaState(true);
-    setFacturaObj(obj);
+    if (obj.id) {
+      setFacturaState(true);
+      setFacturaObj(obj);
+    } else {
+      location.reload();
+    }
   };
 
   return (
@@ -294,7 +392,12 @@ export default function Pedidos() {
             return (
               <div key={index} className={s.gridLines}>
                 <button onClick={() => handleFactura(el)}>Ver Factura</button>
-                <p>{el.cliente?.redSocial || "-"}</p>
+                <p>
+                  {el.clienteId
+                    ? el.cliente?.redSocial
+                    : allClients.filter((c) => c.id === el.idCliente)[0]
+                        ?.redSocial}
+                </p>
                 <p
                   id={s.verProductos}
                   onClick={() => handleAddInputState(el.id)}
@@ -309,7 +412,7 @@ export default function Pedidos() {
                 <p>
                   {`$${
                     el.subPedidos
-                      .filter((sp) => !sp.deleted)
+                      ?.filter((sp) => !sp.deleted)
                       .reduce((acc, el) => {
                         return parseFloat(el.total) + acc;
                       }, 0) * 1.21
@@ -317,7 +420,7 @@ export default function Pedidos() {
                 </p>
                 <p>{el.seña !== "" ? `$${el.seña}` : "-"}</p>
                 <p>
-                  {el.subPedidos.length
+                  {el.subPedidos?.length
                     ? `$${
                         el.subPedidos
                           .filter((sp) => !sp.deleted)
@@ -434,27 +537,27 @@ export default function Pedidos() {
                               {
                                 allProducts.filter(
                                   (p) => p.id === el.productoId
-                                )[0].name
+                                )[0]?.name
                               }
                             </p>
                             <p>
                               {
                                 allProducts.filter(
                                   (p) => p.id === el.productoId
-                                )[0].color
+                                )[0]?.color
                               }
                             </p>
                             <p>
                               {allProducts
                                 .filter((p) => p.id === el.productoId)[0]
-                                .talle.toUpperCase()}
+                                ?.talle.toUpperCase()}
                             </p>
                             <p>{el.cantidad}</p>
                             <p>
                               {`$${
                                 allProducts.filter(
                                   (p) => p.id === el.productoId
-                                )[0].costs?.costoFinal
+                                )[0]?.costs?.costoFinal
                               }`}
                             </p>
                             <button
@@ -472,7 +575,8 @@ export default function Pedidos() {
                                 handleDeleteProductBtn(
                                   el.id,
                                   el.productoId,
-                                  el.cantidad
+                                  el.cantidad,
+                                  el
                                 )
                               }
                             >
@@ -758,6 +862,22 @@ export default function Pedidos() {
                             .reduce((acc, el) => {
                               return parseInt(el.total) + acc;
                             }, 0) * 1.21
+                        )}` || "-"}
+                      </p>
+                    </div>
+                    <div className={s.line}>
+                      <p id={s.cant}></p>
+                      <p id={s.producto}></p>
+                      <p>Total sin Seña</p>
+                      <p>
+                        {`$${Math.ceil(
+                          facturaObj.subPedidos
+                            .filter((s) => !s.deleted)
+                            .reduce((acc, el) => {
+                              return parseInt(el.total) + acc;
+                            }, 0) *
+                            1.21 -
+                            facturaObj.seña
                         )}` || "-"}
                       </p>
                     </div>

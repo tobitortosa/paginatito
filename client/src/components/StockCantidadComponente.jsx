@@ -15,13 +15,21 @@ export default function StockCantidadComponente() {
 
   const [editState, setEditState] = useState(false);
   const [editObj, setEditObj] = useState({});
+  const [product, setProduct] = useState([]);
+  const [flag, setFlag] = useState(true);
+
   useEffect(() => {
     dispatch(getAllProducts());
   }, []);
 
-  let product = allProducts.filter(
-    (p) => p.name === productName && p.color === color
-  );
+  useEffect(() => {
+    if (flag && allProducts.length) {
+      setProduct(
+        allProducts.filter((p) => p.name === productName && p.color === color)
+      );
+      setFlag(false);
+    }
+  }, [allProducts]);
 
   const handleFormInputChange = (e) => {
     setEditObj({
@@ -40,6 +48,9 @@ export default function StockCantidadComponente() {
   const handleEdit = (e) => {
     e.preventDefault();
     dispatch(editProductStock(editObj.id, editObj.stock));
+    let pro = [...product.filter((p) => p.id === editObj.id)][0];
+    pro.stock = editObj.stock;
+    setProduct([...product.filter((p) => p.id !== editObj.id), pro]);
     setEditState(false);
   };
 
@@ -56,7 +67,11 @@ export default function StockCantidadComponente() {
         <div className={s.tallesContainer}>
           <div className={s.tallesTitles}>
             {product.map((el, index) => {
-              return <p id={s.talle} key={index}>{el.talle}</p>;
+              return (
+                <p id={s.talle} key={index}>
+                  {el.talle}
+                </p>
+              );
             })}
           </div>
           <div className={s.tallesTitles}>

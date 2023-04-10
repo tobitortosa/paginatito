@@ -13,13 +13,25 @@ export default function AportesYGastos() {
   const dispatch = useDispatch();
 
   const [btnState, setBtnState] = useState(false);
-  const allAportesYGastos = useSelector((state) =>
+  const stateAllAportesYGastos = useSelector((state) =>
     state.allAportesYGastos.filter((a) => !a.deleted)
   );
+
+  const [allAportesYGastos, setAllAportesYGastos] = useState([]);
+  const [flag, setFlag] = useState(true);
 
   useEffect(() => {
     dispatch(getAllAporteYGasto());
   }, []);
+
+  useEffect(() => {
+    if (flag && stateAllAportesYGastos.length) {
+      setAllAportesYGastos(stateAllAportesYGastos);
+      setFlag(false);
+    }
+  }, [stateAllAportesYGastos]);
+
+  console.log(allAportesYGastos);
 
   const [input, setInput] = useState({
     type: "",
@@ -39,11 +51,17 @@ export default function AportesYGastos() {
     e.preventDefault();
     setBtnState(false);
     dispatch(createAporteYGasto(input));
+    setAllAportesYGastos([...allAportesYGastos, input]);
   };
 
   const handleDelete = (e, id) => {
     e.preventDefault();
-    dispatch(deleteAporteYGasto(id));
+    if (id) {
+      dispatch(deleteAporteYGasto(id));
+      setAllAportesYGastos([...allAportesYGastos.filter((ap) => ap.id !== id)]);
+    } else {
+      location.reload();
+    }
   };
 
   let aportes = allAportesYGastos

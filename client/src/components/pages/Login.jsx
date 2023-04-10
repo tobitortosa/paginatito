@@ -1,12 +1,14 @@
 import React from "react";
 import s from "./Login.module.css";
 import { useState } from "react";
-import { login } from "../../redux/actions";
+import { login, clearLogin } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../Loader";
 
 export default function Login() {
   const dispatch = useDispatch();
   const loginObj = useSelector((state) => state.loginObj);
+  const [loading, setLoading] = useState(false);
 
   const [input, setInput] = useState({
     name: "",
@@ -18,13 +20,18 @@ export default function Login() {
       ...input,
       [e.target.name]: e.target.value,
     });
+    setLoading(false);
+    dispatch(clearLogin());
   };
 
   const handleLogin = () => {
     if (input.name.length < 1 || input.password.length < 1) {
       alert("Ingrese su nombre y contraseña");
     } else {
-      dispatch(login(input));
+      setLoading(true);
+      setTimeout(() => {
+        dispatch(login(input));
+      }, 3000);
     }
   };
 
@@ -51,6 +58,10 @@ export default function Login() {
           />
         </form>
         <button onClick={() => handleLogin()}>Iniciar Sesion</button>
+        {loading && loginObj.logged === undefined ? <Loader /> : null}
+        {loginObj.logged === false && (
+          <p id={s.in}>Nombre o contraseña incorrecto</p>
+        )}
       </div>
     </div>
   );

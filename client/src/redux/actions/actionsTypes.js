@@ -1,4 +1,5 @@
 export const LOGIN = "LOGIN";
+export const CLEAR_LOGIN = "CLEAR_LOGIN";
 
 export const GET_ALL_CLIENTS = "GET_ALL_CLIENTS";
 export const CREATE_NEW_CLIENT = "CREATE_NEW_CLIENT";

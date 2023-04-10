@@ -62,7 +62,6 @@ router.post("/productos", async (req, res) => {
 router.put("/productos", async (req, res) => {
   const { details, costs, name } = req.body;
 
-
   try {
     let total = Object.keys(details).reduce((acc, el) => {
       return parseFloat(details[`${el}`]) + acc;
@@ -116,9 +115,9 @@ router.post("/productos/delete", async (req, res) => {
   const { name } = req.body;
   try {
     Producto.destroy({ where: { name: name } });
-    res.status(200).send(`Producto con el id ${id} eliminado correctamente`);
+    res.status(200).send(`Producto ${name} eliminado correctamente`);
   } catch (error) {
-    res.status(400).send("error");
+    res.status(400).send(error.message);
   }
 });
 

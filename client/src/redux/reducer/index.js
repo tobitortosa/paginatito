@@ -5,6 +5,7 @@ import {
   GET_ALL_SUBPEDIDOS,
   GET_ALL_APORTESYGASTOS,
   LOGIN,
+  CLEAR_LOGIN,
 } from "../actions/actionsTypes";
 
 export const initialState = {
@@ -22,6 +23,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loginObj: action.payload,
+      };
+    case CLEAR_LOGIN:
+      return {
+        ...state,
+        loginObj: {},
       };
     case GET_ALL_CLIENTS:
       return {

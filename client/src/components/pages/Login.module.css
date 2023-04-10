@@ -18,6 +18,8 @@
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
+  width: 240px;
+
 }
 
 .container form {
@@ -53,4 +55,9 @@
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.2);
   transition: 0.3s;
+}
+
+#in {
+  text-align: center;
+  color: rgb(211, 0, 0);
 }

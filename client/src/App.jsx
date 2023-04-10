@@ -1,15 +1,11 @@
-import { useState } from "react";
 import s from "./App.module.css";
 import { Route, Routes } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import AportesYGastos from "./components/pages/AportesYGastos";
 import Clientes from "./components/pages/Clientes";
 import Pedidos from "./components/pages/Pedidos";
 import Productos from "./components/pages/Productos";
-import DateComponent from "./components/DateComponent";
 import ProductoComponent from "./components/ProductoComponent";
-import SubPedidoComponent from "./components/SubPedidoComponent";
 import Login from "./components/pages/Login";
 import Stock from "./components/pages/Stock";
 import StockComponent from "./components/StockComponent";

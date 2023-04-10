@@ -22,6 +22,7 @@ import {
   DELETE_APORTEYGASTO,
   EDIT_PRODUCT_STOCK,
   EDIT_AUMENTO,
+  CLEAR_LOGIN,
 } from "./actionsTypes";
 import axios from "axios";
 
@@ -33,6 +34,10 @@ const url = "https://paginatito.onrender.com";
 export const login = (obj) => async (dispatch) => {
   const loginObj = await axios.post(`${url}/login`, obj);
   return dispatch({ type: LOGIN, payload: loginObj.data });
+};
+
+export const clearLogin = () => async (dispatch) => {
+  return dispatch({ type: CLEAR_LOGIN });
 };
 
 //Clients actions

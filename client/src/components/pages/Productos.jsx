@@ -12,14 +12,6 @@ import Loader from "../Loader";
 
 export default function Productos() {
   const dispatch = useDispatch();
-  const allProducts = useSelector((state) =>
-    state.allProducts
-      .filter(
-        (value, index, self) =>
-          index === self.findIndex((t) => t.name === value.name)
-      )
-      .filter((c) => !c.deleted)
-  );
 
   const [modalBtnState, setModalBtnState] = useState(false);
   const [verBtnState, setVerBtnState] = useState(false);
@@ -30,23 +22,43 @@ export default function Productos() {
 
   const [inflacionState, setInflacionState] = useState(false);
   const [inflacionInput, setInflacionInput] = useState("");
+  const [flag, setFlag] = useState(true);
+  const [products, setProducts] = useState([]);
+
+  const allProduct = useSelector((state) =>
+    state.allProducts
+      .filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.name === value.name)
+      )
+      .filter((c) => !c.deleted)
+  );
 
   useEffect(() => {
     dispatch(getAllProducts());
-  }, [modalBtnState, verBtnState]);
+  }, []);
+
+  useEffect(() => {
+    if (flag && allProduct.length) {
+      setProducts(allProduct);
+      setFlag(false);
+    }
+  }, [allProduct]);
 
   const handleAdd = (e) => {
     e.preventDefault();
     if (formInput.name.length) {
       setModalBtnState(false);
       dispatch(createNewProduct(formInput));
+      setProducts([...products, formInput]);
     }
   };
 
   const handleDelete = (e, name) => {
     e.preventDefault();
     setVerBtnState(false);
-    let productName = allProducts.filter((p) => p.name === name)[0].name;
+    let productName = products.filter((p) => p.name === name)[0].name;
+    setProducts([...products.filter((p) => p.name !== name)]);
     dispatch(deleteProduct(productName));
   };
 
@@ -83,8 +95,8 @@ export default function Productos() {
         <div className={s.gridTitles}>
           <p>Productos</p>
         </div>
-        {allProducts.length ? (
-          allProducts.map((el, index) => {
+        {products.length ? (
+          products.map((el, index) => {
             return (
               <div key={index} className={s.gridLines}>
                 <Link id={s.link} to={`/productos/${el.name}`}>
@@ -134,7 +146,7 @@ export default function Productos() {
           <div className={s.modalContainer}>
             <p onClick={() => setVerBtnState(false)}>✖</p>
             <div className={s.verContainer}>
-              {allProducts.map((el, index) => {
+              {products.map((el, index) => {
                 return (
                   <div key={index} className={s.verProductos}>
                     <div className={s.productoContainer}>
@@ -179,10 +191,10 @@ export default function Productos() {
                   Aumentar Costos Globales
                 </button>
                 <br />
-                <text>
+                <div>
                   El porcentaje ingresado actualizara el precio de todos los
                   productos con sus respectivos costos de produccion.
-                </text>
+                </div>
               </form>
             </div>
           </div>
