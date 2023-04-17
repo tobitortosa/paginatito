@@ -27,7 +27,7 @@ import {
 import axios from "axios";
 
 // const url = "http://localhost:3001";
-const url = "https://paginatito.onrender.com";
+const url = "https://paginatito-production.up.railway.app";
 
 // Login
 
