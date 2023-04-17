@@ -365,6 +365,8 @@ export default function Pedidos() {
     }
   };
 
+  console.log(facturaObj)
+
   return (
     <div className={s.container}>
       <div className={s.searchContainer}>
@@ -554,11 +556,15 @@ export default function Pedidos() {
                             </p>
                             <p>{el.cantidad}</p>
                             <p>
-                              {`$${
-                                allProducts.filter(
-                                  (p) => p.id === el.productoId
-                                )[0]?.costs?.costoFinal
-                              }`}
+                              {allProducts.filter(
+                                (p) => p.id === el.productoId
+                              )[0]?.costs?.costoFinal
+                                ? `$${
+                                    allProducts.filter(
+                                      (p) => p.id === el.productoId
+                                    )[0]?.costs?.costoFinal
+                                  }`
+                                : "-"}
                             </p>
                             <button
                               id={s.editPBtn}
@@ -793,9 +799,9 @@ export default function Pedidos() {
                   <h3>Cliente: {facturaObj.cliente?.redSocial}</h3>
                   <h3>
                     Domicilio:
-                    {` ${facturaObj.cliente?.direccion || "______________"} (${
-                      facturaObj.cliente?.localidad || "____________"
-                    })`}
+                    {` ${facturaObj.cliente?.direccion || "______________"} N°${
+                      facturaObj.cliente?.ndireccion || "______ "
+                    }(${facturaObj.cliente?.localidad || " ____________"})`}
                   </h3>
                   <div className={s.tel}>
                     <h3>
@@ -823,17 +829,23 @@ export default function Pedidos() {
                               {
                                 allProducts.filter(
                                   (p) => p.id === el.productoId
-                                )[0].name
+                                )[0]?.name
                               }
                             </p>
                             <p>
-                              {`$${
-                                allProducts.filter(
-                                  (p) => p.id === el.productoId
-                                )[0]?.costs?.costoFinal
-                              }`}
+                              {allProducts.filter(
+                                (p) => p.id === el.productoId
+                              )[0]?.costs?.costoFinal
+                                ? `$${
+                                    allProducts.filter(
+                                      (p) => p.id === el.productoId
+                                    )[0]?.costs?.costoFinal
+                                  }`
+                                : "-"}
                             </p>
-                            <p>{`$${el.total}`}</p>
+                            <p>
+                              {typeof el.total === "NaN" ? `$${el.total}` : "-"}
+                            </p>
                           </div>
                         );
                       })}
@@ -842,13 +854,23 @@ export default function Pedidos() {
                       <p id={s.producto}></p>
                       <p>Total</p>
                       <p>
-                        {`$${Math.ceil(
-                          facturaObj.subPedidos
-                            .filter((s) => !s.deleted)
-                            .reduce((acc, el) => {
-                              return parseInt(el.total) + acc;
-                            }, 0)
-                        )}` || "-"}
+                        {!isNaN(
+                          Math.ceil(
+                            facturaObj.subPedidos
+                              .filter((s) => !s.deleted)
+                              .reduce((acc, el) => {
+                                return parseInt(el.total) + acc;
+                              }, 0)
+                          )
+                        )
+                          ? `$${Math.ceil(
+                              facturaObj.subPedidos
+                                .filter((s) => !s.deleted)
+                                .reduce((acc, el) => {
+                                  return parseInt(el.total) + acc;
+                                }, 0)
+                            )}`
+                          : "-"}
                       </p>
                     </div>
                     <div className={s.line}>
@@ -856,13 +878,23 @@ export default function Pedidos() {
                       <p id={s.producto}></p>
                       <p>Total con Iva</p>
                       <p>
-                        {`$${Math.ceil(
-                          facturaObj.subPedidos
-                            .filter((s) => !s.deleted)
-                            .reduce((acc, el) => {
-                              return parseInt(el.total) + acc;
-                            }, 0) * 1.21
-                        )}` || "-"}
+                        {!isNaN(
+                          Math.ceil(
+                            facturaObj.subPedidos
+                              .filter((s) => !s.deleted)
+                              .reduce((acc, el) => {
+                                return parseInt(el.total) + acc;
+                              }, 0) * 1.21
+                          )
+                        )
+                          ? `$${Math.ceil(
+                              facturaObj.subPedidos
+                                .filter((s) => !s.deleted)
+                                .reduce((acc, el) => {
+                                  return parseInt(el.total) + acc;
+                                }, 0)
+                            )}`
+                          : "-"}
                       </p>
                     </div>
                     <div className={s.line}>
@@ -870,15 +902,25 @@ export default function Pedidos() {
                       <p id={s.producto}></p>
                       <p>Total sin Seña</p>
                       <p>
-                        {`$${Math.ceil(
-                          facturaObj.subPedidos
-                            .filter((s) => !s.deleted)
-                            .reduce((acc, el) => {
-                              return parseInt(el.total) + acc;
-                            }, 0) *
-                            1.21 -
-                            facturaObj.seña
-                        )}` || "-"}
+                        {!isNaN(
+                          Math.ceil(
+                            facturaObj.subPedidos
+                              .filter((s) => !s.deleted)
+                              .reduce((acc, el) => {
+                                return parseInt(el.total) + acc;
+                              }, 0) *
+                              1.21 -
+                              facturaObj.seña
+                          )
+                        )
+                          ? `$${Math.ceil(
+                              facturaObj.subPedidos
+                                .filter((s) => !s.deleted)
+                                .reduce((acc, el) => {
+                                  return parseInt(el.total) + acc;
+                                }, 0)
+                            )}`
+                          : "-"}
                       </p>
                     </div>
                   </div>

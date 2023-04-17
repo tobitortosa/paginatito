@@ -190,8 +190,8 @@
 
 .verContainer {
   margin: 20px;
-  height: 60vh;
-  width: 50vw;
+  height: auto;
+  width: 30vw;
   display: flex;
   flex-direction: column;
   background-color: rgba(255, 255, 255);
@@ -320,4 +320,10 @@
   padding: 5px 0px;
   font-weight: bold;
   font-size: 18px;
+}
+
+#text {
+  margin: 20px 0px;
+  text-align: center;
+  font-size: 20px;
 }

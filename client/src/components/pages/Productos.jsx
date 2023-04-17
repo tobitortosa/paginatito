@@ -22,6 +22,7 @@ export default function Productos() {
 
   const [inflacionState, setInflacionState] = useState(false);
   const [inflacionInput, setInflacionInput] = useState("");
+  const [inflacionModal, setInflacionModal] = useState(false);
   const [flag, setFlag] = useState(true);
   const [products, setProducts] = useState([]);
 
@@ -47,7 +48,7 @@ export default function Productos() {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    if (formInput.name.length) {
+    if (formInput.name.length && formInput.type !== "") {
       setModalBtnState(false);
       dispatch(createNewProduct(formInput));
       setProducts([...products, formInput]);
@@ -73,9 +74,21 @@ export default function Productos() {
     setInflacionInput(e.target.value);
   };
 
+  const handleInflacionModal = () => {
+    setInflacionModal(true);
+    setInflacionState(false);
+  };
   const handleModificarAumento = (e) => {
     e.preventDefault();
-    if (inflacionInput > 0 && inflacionInput < 100) {
+    if (
+      inflacionInput > 0 &&
+      inflacionInput < 100 &&
+      inflacionInput.length > 0
+    ) {
+      // alert(
+      //   `Se ah actualizado el precio de todos los productos un ${inflacionInput}`
+      // );
+      handleInflacionModal();
       dispatch(editAumento(parseFloat(`1.${inflacionInput}`)));
     }
   };
@@ -195,6 +208,24 @@ export default function Productos() {
                   El porcentaje ingresado actualizara el precio de todos los
                   productos con sus respectivos costos de produccion.
                 </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {inflacionModal && (
+        <div className={s.modal}>
+          <div className={s.modalContainer}>
+            <p onClick={() => setInflacionModal(false)}>✖</p>
+            <div className={s.verContainer}>
+              <form>
+                <div id={s.text}>
+                  {`El precio de todos los productos aumento un ${inflacionInput}%`}
+                </div>
+                <button onClick={() => setInflacionModal(false)}>
+                  Aceptar
+                </button>
               </form>
             </div>
           </div>

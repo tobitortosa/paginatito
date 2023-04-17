@@ -15,6 +15,7 @@ router.get("/pedidos", async (req, res) => {
             "tel1",
             "observaciones",
             "celular",
+            "ndireccion",
           ],
         },
         {

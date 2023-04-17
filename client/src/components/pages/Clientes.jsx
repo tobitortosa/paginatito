@@ -190,10 +190,17 @@ export default function Clientes() {
           )
         ) : (
           allClients
-            .filter((client) =>
-              client.redSocial
-                .toLowerCase()
-                .includes(searchBarInput.toLowerCase())
+            .filter(
+              (client) =>
+                client.redSocial
+                  .toLowerCase()
+                  .includes(searchBarInput.toLowerCase()) ||
+                client.name
+                  .toLowerCase()
+                  .includes(searchBarInput.toLowerCase()) ||
+                client.lastName
+                  .toLowerCase()
+                  .includes(searchBarInput.toLowerCase())
             )
             .map((el, index) => {
               return (
