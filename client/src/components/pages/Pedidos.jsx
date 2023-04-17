@@ -429,7 +429,7 @@ export default function Pedidos() {
                 <p>
                   {!isNaN(
                     el.subPedidos
-                      .filter((sp) => !sp.deleted)
+                      ?.filter((sp) => !sp.deleted)
                       .reduce((acc, el) => {
                         return parseInt(el.total) + acc;
                       }, 0) *
@@ -438,7 +438,7 @@ export default function Pedidos() {
                   )
                     ? `$${Math.ceil(
                         el.subPedidos
-                          .filter((sp) => !sp.deleted)
+                          ?.filter((sp) => !sp.deleted)
                           .reduce((acc, el) => {
                             return parseInt(el.total) + acc;
                           }, 0) *
