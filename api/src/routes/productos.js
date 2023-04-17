@@ -32,30 +32,6 @@ router.post("/productos", async (req, res) => {
     "60",
   ];
 
-  // let details = {
-  //   tela: "0",
-  //   corte: "0",
-  //   costura: "0",
-  //   cierreDeCuello: "0",
-  //   ribsPuñoCuello: "0",
-  //   tancaYCordon: "0",
-  //   velcro: "0",
-  //   cordonElastico: "0",
-  //   hebillasLaterales: "0",
-  //   cierreLateral: "0",
-  //   bolsa: "0",
-  //   estampado: "0",
-  //   bordado: "0",
-  //   cintaReflexiva: "0",
-  //   peliculas: "0",
-  // };
-
-  // let costs = {
-  //   kilosComprados: "0",
-  //   kilosXPrenda: "0",
-  //   precioXKiloFinal: "0",
-  // };
-
   try {
     if (req.body.type === "pantalon" || req.body.type === "camisa") {
       for (let i = 0; i < colores.length; i++) {
@@ -74,8 +50,6 @@ router.post("/productos", async (req, res) => {
             ...req.body,
             color: colores[i],
             talle: talles[j],
-            details: details,
-            costs: costs,
           });
         }
       }

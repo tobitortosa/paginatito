@@ -365,7 +365,7 @@ export default function Pedidos() {
     }
   };
 
-  console.log(facturaObj)
+  console.log(facturaObj);
 
   return (
     <div className={s.container}>
@@ -843,9 +843,7 @@ export default function Pedidos() {
                                   }`
                                 : "-"}
                             </p>
-                            <p>
-                              {typeof el.total === "NaN" ? `$${el.total}` : "-"}
-                            </p>
+                            <p>{!isNaN(el.total) ? `$${el.total}` : "-"}</p>
                           </div>
                         );
                       })}
