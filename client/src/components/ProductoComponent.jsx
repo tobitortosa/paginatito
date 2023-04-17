@@ -3,7 +3,6 @@ import { useSelector, useDispatch, Provider } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getAllProducts, editProduct } from "../redux/actions";
 import s from "./ProductoComponent.module.css";
-import Loader from "./Loader";
 
 export default function ProductoComponent() {
   const { productName } = useParams();
@@ -34,6 +33,8 @@ export default function ProductoComponent() {
       setFlag(false);
     }
   }, [allProducts]);
+
+  if (!product) location.reload();
 
   const handleCostsInputChange = (e) => {
     setEditCostsInput({
