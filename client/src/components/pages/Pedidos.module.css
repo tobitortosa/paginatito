@@ -194,7 +194,6 @@
   background-color: rgba(255, 255, 255, 0.6);
   position: relative;
   width: auto;
-  height: auto;
 }
 .lineForm {
   display: flex;
@@ -390,7 +389,6 @@
 
 .productosContainer .divContainer {
   border: 2px solid black;
-  height: 25vh;
   margin: 5px;
 }
 
@@ -592,4 +590,20 @@
 
 .observaciones {
   padding: 10px;
+}
+
+.cel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.celContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.cel p {
+  min-width: 40px;
+  font-size: 16px;
 }

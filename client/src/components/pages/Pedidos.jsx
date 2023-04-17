@@ -39,7 +39,6 @@ export default function Pedidos() {
 
   useEffect(() => {
     if (flag && stateAllPedidos.length) {
-      console.log("entro");
       setAllPedidos(stateAllPedidos);
       setFlag(false);
     }
@@ -365,8 +364,6 @@ export default function Pedidos() {
     }
   };
 
-  console.log(facturaObj);
-
   return (
     <div className={s.container}>
       <div className={s.searchContainer}>
@@ -412,26 +409,42 @@ export default function Pedidos() {
                 <p>{el.cliente?.localidad || "-"}</p>
                 <p>{el.cliente?.tel1 || "-"}</p>
                 <p>
-                  {`$${
+                  {!isNaN(
                     el.subPedidos
                       ?.filter((sp) => !sp.deleted)
                       .reduce((acc, el) => {
                         return parseFloat(el.total) + acc;
                       }, 0) * 1.21
-                  }` || "-"}
+                  )
+                    ? `$${Math.ceil(
+                        el.subPedidos
+                          ?.filter((sp) => !sp.deleted)
+                          .reduce((acc, el) => {
+                            return parseFloat(el.total) + acc;
+                          }, 0) * 1.21
+                      )}`
+                    : "-"}
                 </p>
                 <p>{el.seña !== "" ? `$${el.seña}` : "-"}</p>
                 <p>
-                  {el.subPedidos?.length
-                    ? `$${
+                  {!isNaN(
+                    el.subPedidos
+                      .filter((sp) => !sp.deleted)
+                      .reduce((acc, el) => {
+                        return parseInt(el.total) + acc;
+                      }, 0) *
+                      1.21 -
+                      el.seña
+                  )
+                    ? `$${Math.ceil(
                         el.subPedidos
                           .filter((sp) => !sp.deleted)
                           .reduce((acc, el) => {
                             return parseInt(el.total) + acc;
                           }, 0) *
                           1.21 -
-                        el.seña
-                      }`
+                          el.seña
+                      )}`
                     : "-"}
                 </p>
                 <button
@@ -779,11 +792,22 @@ export default function Pedidos() {
             </p>
             <div className={s.factura}>
               <div className={s.facturaHeader}>
-                <h2>Pertex</h2>
+                <div>
+                  <h2>Pertex</h2>
+                  <h2>Indumentaria</h2>
+                </div>
                 <div className={s.headerTxt}>
                   <p>Enrique Portabales</p>
-                  <p>Cel: 11-5817-5400</p>
-                  <p>11-3882-1606</p>
+                  <div className={s.celContainer}>
+                    <div className={s.cel}>
+                      <p>Cel:</p>
+                      <p>11 58175400</p>
+                    </div>
+                    <div className={s.cel}>
+                      <p></p>
+                      <p>11 38821606</p>
+                    </div>
+                  </div>
                   <p>Email: e-portabales@hotmail.com</p>
                 </div>
               </div>
@@ -800,8 +824,8 @@ export default function Pedidos() {
                   <h3>
                     Domicilio:
                     {` ${facturaObj.cliente?.direccion || "______________"} N°${
-                      facturaObj.cliente?.ndireccion || "______ "
-                    }(${facturaObj.cliente?.localidad || " ____________"})`}
+                      facturaObj.cliente?.ndireccion || "______"
+                    } (${facturaObj.cliente?.localidad || " ____________"})`}
                   </h3>
                   <div className={s.tel}>
                     <h3>
@@ -843,7 +867,7 @@ export default function Pedidos() {
                                   }`
                                 : "-"}
                             </p>
-                            <p>{!isNaN(el.total) ? `$${el.total}` : "-"}</p>
+                            <p>{el.total !== null ? `$${el.total}` : "-"}</p>
                           </div>
                         );
                       })}
@@ -890,7 +914,7 @@ export default function Pedidos() {
                                 .filter((s) => !s.deleted)
                                 .reduce((acc, el) => {
                                   return parseInt(el.total) + acc;
-                                }, 0)
+                                }, 0) * 1.21
                             )}`
                           : "-"}
                       </p>
@@ -916,7 +940,9 @@ export default function Pedidos() {
                                 .filter((s) => !s.deleted)
                                 .reduce((acc, el) => {
                                   return parseInt(el.total) + acc;
-                                }, 0)
+                                }, 0) *
+                                1.21 -
+                                facturaObj.seña
                             )}`
                           : "-"}
                       </p>
@@ -926,7 +952,7 @@ export default function Pedidos() {
                 <div className={s.lines}>
                   <div className={s.tel}>
                     <h3>
-                      Seña:
+                      Seña:{" "}
                       {facturaObj.seña ? `$${facturaObj.seña}` : "_________"}
                     </h3>
                     <h3>

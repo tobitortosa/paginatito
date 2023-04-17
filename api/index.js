@@ -10,7 +10,7 @@ const {
 
 const main = async () => {
   try {
-    conn.sync({ force: true }).then(async () => {
+    conn.sync({ force: false }).then(async () => {
       await uploadAllClients(clients);
       await uploadAllProducts(products);
       server.listen(PORT, () => {

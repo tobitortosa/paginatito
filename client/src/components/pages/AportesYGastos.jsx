@@ -31,8 +31,6 @@ export default function AportesYGastos() {
     }
   }, [stateAllAportesYGastos]);
 
-  console.log(allAportesYGastos);
-
   const [input, setInput] = useState({
     type: "",
     cost: "",
