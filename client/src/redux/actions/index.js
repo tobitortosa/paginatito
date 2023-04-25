@@ -32,8 +32,8 @@ import {
 } from "./actionsTypes";
 import axios from "axios";
 
-const url = "http://localhost:3001";
-// const url = "https://paginatito-production.up.railway.app";
+// const url = "http://localhost:3001";
+const url = "https://paginatito-production.up.railway.app";
 
 // Login
 
