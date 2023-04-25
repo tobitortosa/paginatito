@@ -6,6 +6,8 @@ import {
   GET_ALL_APORTESYGASTOS,
   LOGIN,
   CLEAR_LOGIN,
+  GET_ALL_PCOSTS,
+  GET_ALLPDETAILS,
 } from "../actions/actionsTypes";
 
 export const initialState = {
@@ -15,6 +17,8 @@ export const initialState = {
   allPedidos: [],
   allSubPedidos: [],
   allAportesYGastos: [],
+  allPdetails: [],
+  allPcosts: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -53,6 +57,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         allAportesYGastos: action.payload,
+      };
+    case GET_ALL_PCOSTS:
+      return {
+        ...state,
+        allPcosts: action.payload,
+      };
+    case GET_ALLPDETAILS:
+      return {
+        ...state,
+        allPdetails: action.payload,
       };
     default:
       return {

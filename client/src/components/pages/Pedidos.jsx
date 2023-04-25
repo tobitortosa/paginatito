@@ -12,6 +12,7 @@ import {
   createSubPedido,
   deleteSubPedido,
   editProductStock,
+  getProductCosts,
 } from "../../redux/actions";
 import Loader from "../Loader";
 
@@ -28,6 +29,8 @@ export default function Pedidos() {
     state.allProducts.filter((c) => !c.deleted)
   );
 
+  const allPcosts = useSelector((state) => state.allPcosts);
+
   const [flag, setFlag] = useState(true);
   const [allPedidos, setAllPedidos] = useState([]);
 
@@ -35,6 +38,7 @@ export default function Pedidos() {
     dispatch(getAllClients());
     dispatch(getAllProducts());
     dispatch(getAllPedidos());
+    dispatch(getProductCosts());
   }, []);
 
   useEffect(() => {
@@ -130,11 +134,14 @@ export default function Pedidos() {
     setEditBtnState(false);
     dispatch(editPedido(editBtnObj));
     let ped = allPedidos.filter((p) => p.id === editBtnObj.id);
-    ped.pedidoDate = editBtnObj.pedidoDate;
-    ped.entregaDate = editBtnObj.entregaDate;
-    ped.seña = editBtnObj.seña;
+    ped[0].pedidoDate = editBtnObj.pedidoDate;
+    ped[0].entregaDate = editBtnObj.entregaDate;
+    ped[0].seña = editBtnObj.seña;
 
-    setAllPedidos([...allPedidos.filter((p) => p.id !== editBtnObj.id), ped]);
+    setAllPedidos([
+      ...allPedidos.filter((p) => p.id !== editBtnObj.id),
+      ped[0],
+    ]);
   };
 
   const handleProductEdit = (e) => {
@@ -142,8 +149,13 @@ export default function Pedidos() {
     let totalstr;
     totalstr =
       editBtnProductObj.cantidad *
-      allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]?.costs
-        ?.costoFinal;
+      allPcosts.filter(
+        (pc) =>
+          pc.id ===
+          allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]
+            .pcostId
+      )[0].costoFinal;
+
     totalstr = totalstr.toString();
 
     let can =
@@ -172,8 +184,12 @@ export default function Pedidos() {
           (sp) => sp.productoId === editBtnProductObj.productoId
         )[0].total =
         editBtnProductObj.cantidad *
-        allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]
-          .costs.costoFinal;
+        allPcosts.filter(
+          (pc) =>
+            pc.id ===
+            allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]
+              .pcostId
+        )[0].costoFinal;
 
       allProducts.filter(
         (p) => p.id === editBtnProductObj.productoId
@@ -228,16 +244,18 @@ export default function Pedidos() {
             )[0]?.id,
             total:
               subInput.cantidad *
-              allProducts.filter(
-                (p) =>
-                  p.name === subInput.name &&
-                  p.color === subInput.color &&
-                  p.talle === subInput.talle
-              )[0]?.costs?.costoFinal,
+              allPcosts.filter(
+                (pc) =>
+                  pc.id ===
+                  allProducts.filter(
+                    (p) =>
+                      p.name === subInput.name &&
+                      p.color === subInput.color &&
+                      p.talle === subInput.talle
+                  )[0].pcostId
+              )[0].costoFinal,
           })
         );
-        console.log(subInput);
-        console.log(allPedidos.filter((p) => p.id === subInput.idPedido)[0]);
 
         allPedidos
           .filter((p) => p.id === subInput.idPedido)[0]
@@ -254,12 +272,16 @@ export default function Pedidos() {
 
             total: String(
               subInput.cantidad *
-                allProducts.filter(
-                  (p) =>
-                    p.name === subInput.name &&
-                    p.color === subInput.color &&
-                    p.talle === subInput.talle
-                )[0]?.costs?.costoFinal
+                allPcosts.filter(
+                  (pc) =>
+                    pc.id ===
+                    allProducts.filter(
+                      (p) =>
+                        p.name === subInput.name &&
+                        p.color === subInput.color &&
+                        p.talle === subInput.talle
+                    )[0].pcostId
+                )[0].costoFinal
             ),
           }),
           dispatch(
@@ -298,8 +320,6 @@ export default function Pedidos() {
   };
 
   const handleDeleteBtn = (id, subPedidos) => {
-    console.log(id);
-
     if (id) {
       setAllPedidos([...allPedidos.filter((p) => p.id !== id)]);
       dispatch(deletePedido(id));
@@ -569,13 +589,21 @@ export default function Pedidos() {
                             </p>
                             <p>{el.cantidad}</p>
                             <p>
-                              {allProducts.filter(
-                                (p) => p.id === el.productoId
-                              )[0]?.costs?.costoFinal
+                              {allPcosts.filter(
+                                (pc) =>
+                                  pc.id ===
+                                  allProducts.filter(
+                                    (p) => p.id === el.productoId
+                                  )[0]?.pcostId
+                              )[0]?.costoFinal
                                 ? `$${
-                                    allProducts.filter(
-                                      (p) => p.id === el.productoId
-                                    )[0]?.costs?.costoFinal
+                                    allPcosts.filter(
+                                      (pc) =>
+                                        pc.id ===
+                                        allProducts.filter(
+                                          (p) => p.id === el.productoId
+                                        )[0].pcostId
+                                    )[0].costoFinal
                                   }`
                                 : "-"}
                             </p>
@@ -857,13 +885,21 @@ export default function Pedidos() {
                               }
                             </p>
                             <p>
-                              {allProducts.filter(
-                                (p) => p.id === el.productoId
-                              )[0]?.costs?.costoFinal
+                              {allPcosts.filter(
+                                (pc) =>
+                                  pc.id ===
+                                  allProducts.filter(
+                                    (p) => p.id === el.productoId
+                                  )[0].pcostId
+                              )[0].costoFinal
                                 ? `$${
-                                    allProducts.filter(
-                                      (p) => p.id === el.productoId
-                                    )[0]?.costs?.costoFinal
+                                    allPcosts.filter(
+                                      (pc) =>
+                                        pc.id ===
+                                        allProducts.filter(
+                                          (p) => p.id === el.productoId
+                                        )[0].pcostId
+                                    )[0].costoFinal
                                   }`
                                 : "-"}
                             </p>
@@ -898,30 +934,6 @@ export default function Pedidos() {
                     <div className={s.line}>
                       <p id={s.cant}></p>
                       <p id={s.producto}></p>
-                      <p>Total con Iva</p>
-                      <p>
-                        {!isNaN(
-                          Math.ceil(
-                            facturaObj.subPedidos
-                              .filter((s) => !s.deleted)
-                              .reduce((acc, el) => {
-                                return parseInt(el.total) + acc;
-                              }, 0) * 1.21
-                          )
-                        )
-                          ? `$${Math.ceil(
-                              facturaObj.subPedidos
-                                .filter((s) => !s.deleted)
-                                .reduce((acc, el) => {
-                                  return parseInt(el.total) + acc;
-                                }, 0) * 1.21
-                            )}`
-                          : "-"}
-                      </p>
-                    </div>
-                    <div className={s.line}>
-                      <p id={s.cant}></p>
-                      <p id={s.producto}></p>
                       <p>Total sin Seña</p>
                       <p>
                         {!isNaN(
@@ -930,9 +942,7 @@ export default function Pedidos() {
                               .filter((s) => !s.deleted)
                               .reduce((acc, el) => {
                                 return parseInt(el.total) + acc;
-                              }, 0) *
-                              1.21 -
-                              facturaObj.seña
+                              }, 0) - facturaObj.seña
                           )
                         )
                           ? `$${Math.ceil(
@@ -940,9 +950,7 @@ export default function Pedidos() {
                                 .filter((s) => !s.deleted)
                                 .reduce((acc, el) => {
                                   return parseInt(el.total) + acc;
-                                }, 0) *
-                                1.21 -
-                                facturaObj.seña
+                                }, 0) - facturaObj.seña
                             )}`
                           : "-"}
                       </p>

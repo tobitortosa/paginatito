@@ -16,7 +16,6 @@ module.exports = (sequelize) => {
       },
       stock: {
         type: DataTypes.STRING,
-        allowNull: false,
         defaultValue: "0",
       },
       color: {
@@ -51,12 +50,12 @@ module.exports = (sequelize) => {
         allowNull: false,
         defaultValue: false,
       },
-      costs: {
-        type: DataTypes.JSON,
-      },
-      details: {
-        type: DataTypes.JSON,
-      },
+      // costs: {
+      //   type: DataTypes.JSON,
+      // },
+      // details: {
+      //   type: DataTypes.JSON,
+      // },
     },
     {
       timestamps: false,

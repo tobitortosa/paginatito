@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch, Provider } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getAllProducts, editProduct } from "../redux/actions";
+import {
+  getAllProducts,
+  getProductCosts,
+  editProductCosts,
+  getProductDetails,
+  editProductDetails,
+} from "../redux/actions";
 import s from "./ProductoComponent.module.css";
 
 export default function ProductoComponent() {
@@ -9,22 +15,28 @@ export default function ProductoComponent() {
 
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
+  const allPcosts = useSelector((state) => state.allPcosts);
+  const allPdetails = useSelector((state) => state.allPdetails);
 
   const [btnState, setBtnState] = useState(false);
   const [costsBtnState, setCostsBtnState] = useState(false);
   const [editDetailsInput, setEditDetailsInput] = useState({});
   const [editCostsInput, setEditCostsInput] = useState({});
+  const [finalCostsObj, setFinalCostsObj] = useState({});
+  const [finalDetailsObj, setFinalDetailsObj] = useState({});
   const [product, setProduct] = useState({});
   const [flag, setFlag] = useState(true);
-
+  const costs = allPcosts.filter((pc) => pc.id === product.pcostId)[0];
+  const details = allPdetails.filter((pd) => pd.id === product.pdetailId)[0];
   const precioFinal =
-    product?.costs?.kilosComprados && product?.costs?.precioXKiloFinal
-      ? product?.costs?.kilosComprados *
-        (product?.costs?.precioXKiloFinal * 1.21)
-      : "-";
+    finalCostsObj.kilosComprados && finalCostsObj.precioXKiloFinal
+      ? finalCostsObj.kilosComprados * (finalCostsObj.precioXKiloFinal * 1.21)
+      : costs?.kilosComprados * (costs?.precioXKiloFinal * 1.21);
 
   useEffect(() => {
     dispatch(getAllProducts());
+    dispatch(getProductCosts());
+    dispatch(getProductDetails());
   }, []);
 
   useEffect(() => {
@@ -52,100 +64,112 @@ export default function ProductoComponent() {
 
   const handleEditBtn = () => {
     setBtnState(true);
-    setEditDetailsInput(
-      product?.details
-        ? product?.details
-        : {
-            tela: "0",
-            corte: "0",
-            costura: "0",
-            cierreDeCuello: "0",
-            ribsPuñoCuello: "0",
-            tancaYCordon: "0",
-            velcro: "0",
-            cordonElastico: "0",
-            hebillasLaterales: "0",
-            cierreLateral: "0",
-            bolsa: "0",
-            estampado: "0",
-            bordado: "0",
-            cintaReflexiva: "0",
-            peliculas: "0",
-          }
-    );
+
+    if (Object.keys(finalDetailsObj).length) {
+      setEditDetailsInput(finalDetailsObj);
+    } else {
+      setEditDetailsInput({
+        ...details,
+      });
+    }
   };
 
   const handleEditCostsBtn = () => {
     setCostsBtnState(true);
-    setEditCostsInput(
-      product?.costs
-        ? product?.costs
-        : {
-            kilosComprados: "0",
-            kilosXPrenda: "0",
-            precioXKiloFinal: "0",
-            porcentajeDeBeneficio: "0",
-            costoFinal: "0",
-          }
-    );
+
+    if (Object.keys(finalCostsObj).length) {
+      setEditCostsInput(finalCostsObj);
+    } else {
+      setEditCostsInput({
+        ...costs,
+      });
+    }
   };
+
+  const total = Object.keys(finalDetailsObj).length
+    ? Object.keys(finalDetailsObj)
+        .filter((k) => k !== "id")
+        .reduce((acc, el) => {
+          return parseInt(finalDetailsObj[`${el}`]) + acc;
+        }, 0)
+    : details
+    ? Object.keys(details)
+        .filter((k) => k !== "id")
+        .reduce((acc, el) => {
+          return parseInt(details[`${el}`]) + acc;
+        }, 0)
+    : 0;
 
   const handleDetailsEdit = (e) => {
     setBtnState(false);
+    setFinalDetailsObj(editDetailsInput);
+    dispatch(editProductDetails(editDetailsInput));
 
-    setProduct({ ...product, details: editDetailsInput });
-    dispatch(
-      editProduct({
-        ...product,
-        details: editDetailsInput,
-      })
-    );
+    let totalEdit = Object.keys(editDetailsInput)
+      .filter((k) => k !== "id")
+      .reduce((acc, el) => {
+        return parseInt(editDetailsInput[`${el}`]) + acc;
+      }, 0);
+
+    if (finalCostsObj.porcentajeDeBeneficio) {
+      dispatch(
+        editProductCosts({
+          ...finalCostsObj,
+          costoFinal: Math.ceil(
+            (totalEdit * 1.21 * finalCostsObj.porcentajeDeBeneficio) / 100 +
+              totalEdit * 1.21
+          ),
+        })
+      );
+    } else {
+      dispatch(
+        editProductCosts({
+          ...costs,
+          costoFinal: Math.ceil(
+            (totalEdit * 1.21 * costs.porcentajeDeBeneficio) / 100 +
+              totalEdit * 1.21
+          ),
+        })
+      );
+    }
   };
-
-  const total =
-    product?.details &&
-    Object.keys(product?.details).reduce((acc, el) => {
-      return parseInt(product?.details[`${el}`]) + acc;
-    }, 0);
 
   const handleCostsEdit = (e) => {
     setCostsBtnState(false);
 
-    setProduct({
-      ...product,
-      costs: {
-        ...editCostsInput,
-        costoFinal: Math.ceil(
-          (total * 1.21 * product?.costs?.porcentajeDeBeneficio) / 100 +
-            total * 1.21
-        ),
-      },
+    setFinalCostsObj({
+      ...editCostsInput,
+      costoFinal: Math.ceil(
+        (total * 1.21 * editCostsInput.porcentajeDeBeneficio) / 100 +
+          total * 1.21
+      ),
     });
 
     dispatch(
-      editProduct({
-        ...product,
-        costs: {
-          ...editCostsInput,
-          costoFinal: Math.ceil(
-            (total * 1.21 * product?.costs?.porcentajeDeBeneficio) / 100 +
-              total * 1.21
-          ),
-        },
+      editProductCosts({
+        ...editCostsInput,
+        costoFinal: Math.ceil(
+          (total * 1.21 * editCostsInput.porcentajeDeBeneficio) / 100 +
+            total * 1.21
+        ),
       })
     );
   };
 
-  const mediaSuma =
-    parseInt(product?.details?.estampado) +
-    parseInt(product?.details?.bordado) +
-    parseInt(product?.details?.cintaReflexiva) +
-    parseInt(product?.details?.peliculas);
+  const mediaSuma = Object.keys(finalDetailsObj).length
+    ? parseInt(finalDetailsObj.estampado) +
+      parseInt(finalDetailsObj.bordado) +
+      parseInt(finalDetailsObj.cintaReflexiva) +
+      parseInt(finalDetailsObj.peliculas)
+    : parseInt(details?.estampado) +
+      parseInt(details?.bordado) +
+      parseInt(details?.cintaReflexiva) +
+      parseInt(details?.peliculas);
 
   const salen =
-    product?.costs?.kilosComprados && product?.costs?.kilosXPrenda
-      ? product?.costs?.kilosComprados * product?.costs?.kilosXPrenda
-      : "-";
+    finalCostsObj.kilosComprados && finalCostsObj.kilosXPrenda
+      ? finalCostsObj.kilosComprados * finalCostsObj.kilosXPrenda
+      : costs?.kilosComprados * costs?.kilosXPrenda;
 
   return (
     <div className={s.container}>
@@ -164,113 +188,172 @@ export default function ProductoComponent() {
               <div className={`${s.gridTitles} ${s.participacion}`}>
                 <p id={s.participacionTitle}>% de Participacion</p>
                 <p>
-                  {product?.details?.tela
-                    ? `${String((product?.details?.tela / total) * 100).slice(
+                  {finalDetailsObj.tela && total !== 0
+                    ? `${String(
+                        (parseFloat(finalDetailsObj.tela) / total) * 100
+                      ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.tela / total) * 100).slice(0, 3)}%`
+                    : "-"}
+                </p>
+                <p>
+                  {finalDetailsObj.corte && total !== 0
+                    ? `${String(
+                        (parseFloat(finalDetailsObj.corte) / total) * 100
+                      ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.corte / total) * 100).slice(0, 3)}%`
+                    : "-"}
+                </p>
+                <p>
+                  {finalDetailsObj.costura && total !== 0
+                    ? `${String(
+                        (parseFloat(finalDetailsObj.costura) / total) * 100
+                      ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.costura / total) * 100).slice(0, 3)}%`
+                    : "-"}
+                </p>
+                <p>
+                  {finalDetailsObj.cierreDeCuello && total !== 0
+                    ? `${String(
+                        (parseFloat(finalDetailsObj.cierreDeCuello) / total) *
+                          100
+                      ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.cierreDeCuello / total) * 100).slice(
                         0,
                         3
                       )}%`
                     : "-"}
                 </p>
                 <p>
-                  {product?.details?.corte
-                    ? `${String((product?.details?.corte / total) * 100).slice(
+                  {finalDetailsObj.ribsPuñoCuello && total !== 0
+                    ? `${String(
+                        (parseFloat(finalDetailsObj.ribsPuñoCuello) / total) *
+                          100
+                      ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.ribsPuñoCuello / total) * 100).slice(
                         0,
                         3
                       )}%`
                     : "-"}
                 </p>
                 <p>
-                  {product?.details?.costura
+                  {finalDetailsObj.tancaYCordon && total !== 0
                     ? `${String(
-                        (product?.details?.costura / total) * 100
+                        (parseFloat(finalDetailsObj.tancaYCordon) / total) * 100
                       ).slice(0, 3)}%`
-                    : "-"}
-                </p>
-                <p>
-                  {product?.details?.cierreDeCuello
-                    ? `${String(
-                        (product?.details?.cierreDeCuello / total) * 100
-                      ).slice(0, 3)}%`
-                    : "-"}
-                </p>
-                <p>
-                  {product?.details?.ribsPuñoCuello
-                    ? `${String(
-                        (product?.details?.ribsPuñoCuello / total) * 100
-                      ).slice(0, 3)}%`
-                    : "-"}
-                </p>
-                <p>
-                  {product?.details?.tancaYCordon
-                    ? `${String(
-                        (product?.details?.tancaYCordon / total) * 100
-                      ).slice(0, 3)}%`
-                    : "-"}
-                </p>
-                <p>
-                  {product?.details?.velcro
-                    ? `${String((product?.details?.velcro / total) * 100).slice(
+                    : total !== 0
+                    ? `${String((details?.tancaYCordon / total) * 100).slice(
                         0,
                         3
                       )}%`
                     : "-"}
                 </p>
                 <p>
-                  {product?.details?.cordonElastico
+                  {finalDetailsObj.velcro && total !== 0
                     ? `${String(
-                        (product?.details?.cordonElastico / total) * 100
+                        (parseFloat(finalDetailsObj.velcro) / total) * 100
                       ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.velcro / total) * 100).slice(0, 3)}%`
                     : "-"}
                 </p>
                 <p>
-                  {product?.details?.hebillasLaterales
+                  {finalDetailsObj.cordonElastico && total !== 0
                     ? `${String(
-                        (product?.details?.hebillasLaterales / total) * 100
+                        (parseFloat(finalDetailsObj.cordonElastico) / total) *
+                          100
                       ).slice(0, 3)}%`
-                    : "-"}
-                </p>
-                <p>
-                  {product?.details?.cierreLateral
-                    ? `${String(
-                        (product?.details?.cierreLateral / total) * 100
-                      ).slice(0, 3)}%`
-                    : "-"}
-                </p>
-                <p>
-                  {product?.details?.bolsa
-                    ? `${String((product?.details?.bolsa / total) * 100).slice(
+                    : total !== 0
+                    ? `${String((details?.cordonElastico / total) * 100).slice(
                         0,
                         3
                       )}%`
+                    : "-"}
+                </p>
+                <p>
+                  {finalDetailsObj.hebillasLaterales && total !== 0
+                    ? `${String(
+                        (parseFloat(finalDetailsObj.hebillasLaterales) /
+                          total) *
+                          100
+                      ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String(
+                        (details?.hebillasLaterales / total) * 100
+                      ).slice(0, 3)}%`
+                    : "-"}
+                </p>
+                <p>
+                  {finalDetailsObj.cierreLateral && total !== 0
+                    ? `${String(
+                        (parseFloat(finalDetailsObj.cierreLateral) / total) *
+                          100
+                      ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.cierreLateral / total) * 100).slice(
+                        0,
+                        3
+                      )}%`
+                    : "-"}
+                </p>
+                <p>
+                  {finalDetailsObj.bolsa && total !== 0
+                    ? `${String(
+                        (parseFloat(finalDetailsObj.bolsa) / total) * 100
+                      ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.bolsa / total) * 100).slice(0, 3)}%`
                     : "-"}
                 </p>
                 <p id={s.total}></p>
                 <p>
-                  {product?.details?.estampado
+                  {finalDetailsObj.estampado && total !== 0
                     ? `${String(
-                        (product?.details?.estampado / total) * 100
+                        (parseFloat(finalDetailsObj.estampado) / total) * 100
                       ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.estampado / total) * 100).slice(
+                        0,
+                        3
+                      )}%`
                     : "-"}
                 </p>
                 <p>
-                  {product?.details?.bordado
+                  {finalDetailsObj.bordado && total !== 0
                     ? `${String(
-                        (product?.details?.bordado / total) * 100
+                        (parseFloat(finalDetailsObj.bordado) / total) * 100
                       ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.bordado / total) * 100).slice(0, 3)}%`
                     : "-"}
                 </p>
                 <p>
-                  {product?.details?.cintaReflexiva
+                  {finalDetailsObj.cintaReflexiva && total !== 0
                     ? `${String(
-                        (product?.details?.cintaReflexiva / total) * 100
+                        (parseFloat(finalDetailsObj.cintaReflexiva) / total) *
+                          100
                       ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.cintaReflexiva / total) * 100).slice(
+                        0,
+                        3
+                      )}%`
                     : "-"}
                 </p>
                 <p>
-                  {product?.details?.peliculas
+                  {finalDetailsObj.peliculas && total !== 0
                     ? `${String(
-                        (product?.details?.peliculas / total) * 100
+                        (parseFloat(finalDetailsObj.peliculas) / total) * 100
                       ).slice(0, 3)}%`
+                    : total !== 0
+                    ? `${String((details?.peliculas / total) * 100).slice(
+                        0,
+                        3
+                      )}%`
                     : "-"}
                 </p>
                 <p id={s.total}></p>
@@ -298,89 +381,83 @@ export default function ProductoComponent() {
               </div>
               <div className={s.gridLines}>
                 <p>
-                  {product?.details?.tela
-                    ? `$${Math.ceil(product?.details?.tela)}`
-                    : "-"}
+                  {finalDetailsObj.tela
+                    ? `$${Math.ceil(finalDetailsObj.tela)}`
+                    : `$${Math.ceil(details?.tela)}`}
                 </p>
                 <p>
-                  {product?.details?.tela
-                    ? `$${Math.ceil(product?.details?.corte)}`
-                    : "-"}
+                  {finalDetailsObj.corte
+                    ? `$${Math.ceil(finalDetailsObj.corte)}`
+                    : `$${Math.ceil(details?.corte)}`}
                 </p>
                 <p>
-                  {product?.details?.tela
-                    ? `$${Math.ceil(product?.details?.costura)}`
-                    : "-"}
+                  {finalDetailsObj.costura
+                    ? `$${Math.ceil(finalDetailsObj.costura)}`
+                    : `$${Math.ceil(details?.costura)}`}
                 </p>
                 <p>
-                  {product?.details?.cierreDeCuello
-                    ? `$${Math.ceil(product?.details?.cierreDeCuello)}`
-                    : "-"}
+                  {finalDetailsObj.cierreDeCuello
+                    ? `$${Math.ceil(finalDetailsObj.cierreDeCuello)}`
+                    : `$${Math.ceil(details?.cierreDeCuello)}`}
                 </p>
                 <p>
-                  {product?.details?.ribsPuñoCuello
-                    ? `$${Math.ceil(product?.details?.ribsPuñoCuello)}`
-                    : "-"}
+                  {finalDetailsObj.ribsPuñoCuello
+                    ? `$${Math.ceil(finalDetailsObj.ribsPuñoCuello)}`
+                    : `$${Math.ceil(details?.ribsPuñoCuello)}`}
                 </p>
                 <p>
-                  {product?.details?.tancaYCordon
-                    ? `$${Math.ceil(product?.details?.tancaYCordon)}`
-                    : "-"}
+                  {finalDetailsObj.tancaYCordon
+                    ? `$${Math.ceil(finalDetailsObj.tancaYCordon)}`
+                    : `$${Math.ceil(details?.tancaYCordon)}`}
                 </p>
                 <p>
-                  {product?.details?.velcro
-                    ? `$${Math.ceil(product?.details?.velcro)}`
-                    : "-"}
+                  {finalDetailsObj.velcro
+                    ? `$${Math.ceil(finalDetailsObj.velcro)}`
+                    : `$${Math.ceil(details?.velcro)}`}
                 </p>
                 <p>
-                  {product?.details?.cordonElastico
-                    ? `$${Math.ceil(product?.details?.cordonElastico)}`
-                    : "-"}
+                  {finalDetailsObj.cordonElastico
+                    ? `$${Math.ceil(finalDetailsObj.cordonElastico)}`
+                    : `$${Math.ceil(details?.cordonElastico)}`}
                 </p>
                 <p>
-                  {product?.details?.hebillasLaterales
-                    ? `$${Math.ceil(product?.details?.hebillasLaterales)}`
-                    : "-"}
+                  {finalDetailsObj.hebillasLaterales
+                    ? `$${Math.ceil(finalDetailsObj.hebillasLaterales)}`
+                    : `$${Math.ceil(details?.hebillasLaterales)}`}
                 </p>
                 <p>
-                  {product?.details?.cierreLateral
-                    ? `$${Math.ceil(product?.details?.cierreLateral)}`
-                    : "-"}
+                  {finalDetailsObj.cierreLateral
+                    ? `$${Math.ceil(finalDetailsObj.cierreLateral)}`
+                    : `$${Math.ceil(details?.cierreLateral)}`}
                 </p>
                 <p>
-                  {product?.details?.bolsa
-                    ? `$${Math.ceil(product?.details?.bolsa)}`
-                    : "-"}
+                  {finalDetailsObj.bolsa
+                    ? `$${Math.ceil(finalDetailsObj.bolsa)}`
+                    : `$${Math.ceil(details?.bolsa)}`}
                 </p>
-                <p id={s.total}>{`$${
-                  total === null ? "-" : Math.ceil(total) - mediaSuma
-                }`}</p>
+                <p id={s.total}>{`$${Math.ceil(total - mediaSuma)}`}</p>
                 <p>
-                  {product?.details?.estampado
-                    ? `$${Math.ceil(product?.details?.estampado)}`
-                    : "-"}
+                  {finalDetailsObj.estampado
+                    ? `$${Math.ceil(finalDetailsObj.estampado)}`
+                    : `$${Math.ceil(details?.estampado)}`}
                 </p>
                 <p>
-                  {product?.details?.bordado
-                    ? `$${Math.ceil(product?.details?.bordado)}`
-                    : "-"}
+                  {finalDetailsObj.bordado
+                    ? `$${Math.ceil(finalDetailsObj.bordado)}`
+                    : `$${Math.ceil(details?.bordado)}`}
                 </p>
                 <p>
-                  {product?.details?.cintaReflexiva
-                    ? `$${Math.ceil(product?.details?.cintaReflexiva)}`
-                    : "-"}
+                  {finalDetailsObj.cintaReflexiva
+                    ? `$${Math.ceil(finalDetailsObj.cintaReflexiva)}`
+                    : `$${Math.ceil(details?.cintaReflexiva)}`}
                 </p>
                 <p>
-                  {product?.details?.peliculas
-                    ? `$${Math.ceil(product?.details?.peliculas)}`
-                    : "-"}
+                  {finalDetailsObj.cintaReflexiva
+                    ? `$${Math.ceil(finalDetailsObj.cintaReflexiva)}`
+                    : `$${Math.ceil(details?.cintaReflexiva)}`}
                 </p>
-                <p id={s.total}>{`$${
-                  total === null ? "-" : Math.ceil(total)
-                }`}</p>
-                <p id={s.total}>{`$${
-                  total === null ? "-" : Math.ceil(total * 1.21)
-                }`}</p>
+                <p id={s.total}>{`$${Math.ceil(total)}`}</p>
+                <p id={s.total}>{`$${Math.ceil(total * 1.21)}`}</p>
               </div>
             </div>
           </div>
@@ -402,46 +479,49 @@ export default function ProductoComponent() {
               </div>
               <div className={s.gridLines}>
                 <p>
-                  {product?.costs?.kilosComprados
-                    ? `${product?.costs?.kilosComprados}`
-                    : "-"}
+                  {finalCostsObj.kilosComprados
+                    ? finalCostsObj.kilosComprados
+                    : costs?.kilosComprados}
                 </p>
                 <p>
-                  {product?.costs?.kilosXPrenda
-                    ? `${product?.costs?.kilosXPrenda}`
-                    : "-"}
+                  {finalCostsObj.kilosXPrenda
+                    ? finalCostsObj.kilosXPrenda
+                    : costs?.kilosXPrenda}
                 </p>
-                <p>
-                  {product?.costs?.precioXKiloFinal
-                    ? `$${product?.costs?.precioXKiloFinal}`
-                    : "-"}
-                </p>
-                <p id={s.salen}>{Math.floor(salen) || "-"}</p>
+                <p>{`$${
+                  finalCostsObj.precioXKiloFinal
+                    ? finalCostsObj.precioXKiloFinal
+                    : costs?.precioXKiloFinal
+                }`}</p>
+                <p id={s.salen}>{Math.floor(salen)}</p>
+                <p id={s.total}>{`$${precioFinal}`}</p>
+                <p>{`${
+                  finalCostsObj.porcentajeDeBeneficio
+                    ? finalCostsObj.porcentajeDeBeneficio
+                    : costs?.porcentajeDeBeneficio
+                }%`}</p>
                 <p id={s.total}>
-                  {precioFinal !== "-" ? `$${precioFinal}` : "-"}
-                </p>
-                <p>
-                  {product?.costs?.porcentajeDeBeneficio
-                    ? `${product?.costs?.porcentajeDeBeneficio}%`
-                    : "-"}
-                </p>
-                <p id={s.total}>{`$${
-                  total === null || !product?.costs?.porcentajeDeBeneficio
-                    ? "-"
-                    : Math.ceil(
-                        (total * product?.costs?.porcentajeDeBeneficio) / 100 +
+                  {finalCostsObj.porcentajeDeBeneficio
+                    ? `$${Math.ceil(
+                        (total * finalCostsObj.porcentajeDeBeneficio) / 100 +
                           total
-                      )
-                }`}</p>
-                <p id={s.total}>{`$${
-                  total === null || !product?.costs?.porcentajeDeBeneficio
-                    ? "-"
-                    : Math.ceil(
-                        (total * 1.21 * product?.costs?.porcentajeDeBeneficio) /
-                          100 +
-                          total * 1.21
-                      )
-                }`}</p>
+                      )}`
+                    : `$${Math.ceil(
+                        (total * costs?.porcentajeDeBeneficio) / 100 + total
+                      )}`}
+                </p>
+                <p id={s.total}>
+                  {finalCostsObj.porcentajeDeBeneficio
+                    ? `$${Math.ceil(
+                        ((total * finalCostsObj.porcentajeDeBeneficio) / 100 +
+                          total) *
+                          1.21
+                      )}`
+                    : `$${Math.ceil(
+                        ((total * costs?.porcentajeDeBeneficio) / 100 + total) *
+                          1.21
+                      )}`}
+                </p>
               </div>
             </div>
           </div>
@@ -471,71 +551,43 @@ export default function ProductoComponent() {
                       name="tela"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.tela
-                          ? `${Math.ceil(editDetailsInput?.tela)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.tela)}
                     />
                     <input
                       name="corte"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.corte
-                          ? `${Math.ceil(editDetailsInput?.corte)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.corte)}
                     />
                     <input
                       name="costura"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.costura
-                          ? `${Math.ceil(editDetailsInput?.costura)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.costura)}
                     />
                     <input
                       name="cierreDeCuello"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.cierreDeCuello
-                          ? `${Math.ceil(editDetailsInput?.cierreDeCuello)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.cierreDeCuello)}
                     />
                     <input
                       name="ribsPuñoCuello"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.ribsPuñoCuello
-                          ? `${Math.ceil(editDetailsInput?.ribsPuñoCuello)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.ribsPuñoCuello)}
                     />
                     <input
                       name="tancaYCordon"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.tancaYCordon
-                          ? `${Math.ceil(editDetailsInput?.tancaYCordon)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.tancaYCordon)}
                     />
                     <input
                       name="velcro"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.velcro
-                          ? `${Math.ceil(editDetailsInput?.velcro)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.velcro)}
                     />
                   </div>
                 </div>
@@ -555,81 +607,49 @@ export default function ProductoComponent() {
                       name="cordonElastico"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.cordonElastico
-                          ? `${Math.ceil(editDetailsInput?.cordonElastico)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.cordonElastico)}
                     />
                     <input
                       name="hebillasLaterales"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.hebillasLaterales
-                          ? `${Math.ceil(editDetailsInput?.hebillasLaterales)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.hebillasLaterales)}
                     />
                     <input
                       name="cierreLateral"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.cierreLateral
-                          ? `${Math.ceil(editDetailsInput?.cierreLateral)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.cierreLateral)}
                     />
                     <input
                       name="bolsa"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.bolsa
-                          ? `${Math.ceil(editDetailsInput?.bolsa)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.bolsa)}
                     />
                     <input
                       name="estampado"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.estampado
-                          ? `${Math.ceil(editDetailsInput?.estampado)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.estampado)}
                     />
                     <input
                       name="bordado"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.bordado
-                          ? `${Math.ceil(editDetailsInput?.bordado)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.bordado)}
                     />
                     <input
                       name="cintaReflexiva"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.cintaReflexiva
-                          ? `${Math.ceil(editDetailsInput?.cintaReflexiva)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.cintaReflexiva)}
                     />
                     <input
                       name="peliculas"
                       type="number"
                       onChange={(e) => handleInputChange(e)}
-                      value={
-                        editDetailsInput?.peliculas
-                          ? `${Math.ceil(editDetailsInput?.peliculas)}`
-                          : "-"
-                      }
+                      value={Math.ceil(editDetailsInput?.peliculas)}
                     />
                   </div>
                 </div>
@@ -663,25 +683,25 @@ export default function ProductoComponent() {
                       name="kilosComprados"
                       type="number"
                       onChange={(e) => handleCostsInputChange(e)}
-                      value={editCostsInput?.kilosComprados || ""}
+                      value={editCostsInput.kilosComprados}
                     />
                     <input
                       name="kilosXPrenda"
                       type="number"
                       onChange={(e) => handleCostsInputChange(e)}
-                      value={editCostsInput?.kilosXPrenda || ""}
+                      value={editCostsInput.kilosXPrenda}
                     />
                     <input
                       name="precioXKiloFinal"
                       type="number"
                       onChange={(e) => handleCostsInputChange(e)}
-                      value={editCostsInput?.precioXKiloFinal || ""}
+                      value={editCostsInput.precioXKiloFinal}
                     />
                     <input
                       name="porcentajeDeBeneficio"
                       type="number"
                       onChange={(e) => handleCostsInputChange(e)}
-                      value={editCostsInput?.porcentajeDeBeneficio || ""}
+                      value={editCostsInput.porcentajeDeBeneficio}
                     />
                   </div>
                 </div>

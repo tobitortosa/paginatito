@@ -7,6 +7,9 @@ import {
   createNewProduct,
   deleteProduct,
   editAumento,
+  deleteProductCost,
+  deleteProductDetails,
+  getAllSubPedidos,
 } from "../../redux/actions";
 import Loader from "../Loader";
 
@@ -23,6 +26,7 @@ export default function Productos() {
   const [inflacionState, setInflacionState] = useState(false);
   const [inflacionInput, setInflacionInput] = useState("");
   const [inflacionModal, setInflacionModal] = useState(false);
+  const [deleteErrorState, setDeleteErrorState] = useState(false);
   const [flag, setFlag] = useState(true);
   const [products, setProducts] = useState([]);
 
@@ -35,8 +39,13 @@ export default function Productos() {
       .filter((c) => !c.deleted)
   );
 
+  const allSubPedidos = useSelector((state) => state.allSubPedidos);
+
+  console.log(allSubPedidos)
+
   useEffect(() => {
     dispatch(getAllProducts());
+    dispatch(getAllSubPedidos());
   }, []);
 
   useEffect(() => {
@@ -55,12 +64,30 @@ export default function Productos() {
     }
   };
 
-  const handleDelete = (e, name) => {
+  const handleDelete = (e, name, productId) => {
     e.preventDefault();
     setVerBtnState(false);
-    let productName = products.filter((p) => p.name === name)[0].name;
-    setProducts([...products.filter((p) => p.name !== name)]);
-    dispatch(deleteProduct(productName));
+
+    let spExist = allSubPedidos.filter((sp) => sp.producto.name === name);
+
+    console.log(spExist);
+
+    if (spExist.length === 0) {
+      let productName = products.filter((p) => p.name === name)[0].name;
+      let productCostsId = products.filter((p) => p.name === name)[0].pcostId;
+      let productDetailsId = products.filter((p) => p.name === name)[0]
+        .pdetailId;
+      if ((productCostsId || productDetailsId) && spExist.length === 0) {
+        dispatch(deleteProduct(productName));
+        dispatch(deleteProductCost(productCostsId));
+        dispatch(deleteProductDetails(productDetailsId));
+        setProducts([...products.filter((p) => p.name !== name)]);
+      } else {
+        location.reload();
+      }
+    } else {
+      setDeleteErrorState(true);
+    }
   };
 
   const handleFormInputChange = (e) => {
@@ -85,9 +112,6 @@ export default function Productos() {
       inflacionInput < 100 &&
       inflacionInput.length > 0
     ) {
-      // alert(
-      //   `Se ah actualizado el precio de todos los productos un ${inflacionInput}`
-      // );
       handleInflacionModal();
       dispatch(editAumento(parseFloat(`1.${inflacionInput}`)));
     }
@@ -167,7 +191,7 @@ export default function Productos() {
                       <div className={s.btns}>
                         <button
                           id={s.eliminar}
-                          onClick={(e) => handleDelete(e, el.name)}
+                          onClick={(e) => handleDelete(e, el.name, el.id)}
                         >
                           Eliminar
                         </button>
@@ -224,6 +248,30 @@ export default function Productos() {
                   {`El precio de todos los productos aumento un ${inflacionInput}%`}
                 </div>
                 <button onClick={() => setInflacionModal(false)}>
+                  Aceptar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deleteErrorState && (
+        <div className={s.modal}>
+          <div className={s.modalContainer}>
+            <p onClick={() => setDeleteErrorState(false)}>✖</p>
+            <div id={s.deleteError} className={s.verContainer}>
+              <form>
+                <div id={s.text} className={s.deleteErrorTxt}>
+                  No se puede eliminar el producto ya que existen pedidos que lo
+                  utilizan. Por favor elimine el producto de los pedidos antes
+                  de eliminarlo.
+                </div>
+                <button
+                  id={s.errorBtn}
+                  className={s.deleteErrorTxt}
+                  onClick={() => setDeleteErrorState(false)}
+                >
                   Aceptar
                 </button>
               </form>

@@ -12,7 +12,7 @@ const main = async () => {
   try {
     conn.sync({ force: true }).then(async () => {
       await uploadAllClients(clients);
-      await uploadAllProducts(products);
+      // await uploadAllProducts(products);
       server.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);
       });

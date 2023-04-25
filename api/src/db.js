@@ -7,8 +7,8 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, POSTGRES_URL } =
   process.env;
 
 const sequelize = new Sequelize(
-  POSTGRES_URL,
-  // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+  // POSTGRES_URL,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
   {
     logging: false, // set to console.log to see the raw SQL queries
   }
@@ -39,7 +39,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Cliente, Pedido, SubPedido, Producto } = sequelize.models;
+const { Cliente, Pedido, SubPedido, Producto, Pdetails, Pcosts } =
+  sequelize.models;
 
 Cliente.hasMany(Pedido);
 Pedido.belongsTo(Cliente);
@@ -47,8 +48,8 @@ Pedido.hasMany(SubPedido);
 SubPedido.belongsTo(Pedido);
 SubPedido.belongsTo(Producto);
 
-// Aca vendrian las relaciones
-// Product.hasMany(Reviews);
+Pdetails.hasMany(Producto);
+Pcosts.hasMany(Producto);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

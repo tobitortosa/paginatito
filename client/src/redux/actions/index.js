@@ -23,11 +23,17 @@ import {
   EDIT_PRODUCT_STOCK,
   EDIT_AUMENTO,
   CLEAR_LOGIN,
+  EDIT_PCOSTS,
+  GET_ALL_PCOSTS,
+  GET_ALLPDETAILS,
+  EDIT_PDETAILS,
+  DELETE_PCOSTS,
+  DELETE_PDETAILS,
 } from "./actionsTypes";
 import axios from "axios";
 
-// const url = "http://localhost:3001";
-const url = "https://paginatito-production.up.railway.app";
+const url = "http://localhost:3001";
+// const url = "https://paginatito-production.up.railway.app";
 
 // Login
 
@@ -161,4 +167,42 @@ export const editAporteYGasto = (obj) => async (dispatch) => {
 export const deleteAporteYGasto = (id) => async (dispatch) => {
   await axios.post(`${url}/aporteYGasto/delete`, { id: id });
   return dispatch({ type: DELETE_APORTEYGASTO });
+};
+
+// Costos de Producto
+export const getProductCosts = () => async (dispatch) => {
+  let allProductsCosts = await axios.get(`${url}/pcosts`);
+  return dispatch({
+    type: GET_ALL_PCOSTS,
+    payload: allProductsCosts.data,
+  });
+};
+
+export const editProductCosts = (obj) => async (dispatch) => {
+  await axios.put(`${url}/pcosts`, obj);
+  return dispatch({ type: EDIT_PCOSTS });
+};
+
+export const deleteProductCost = (id) => async (dispatch) => {
+  await axios.post(`${url}/pcosts/delete`, { id });
+  return dispatch({ type: DELETE_PCOSTS });
+};
+
+// Detalles de Producto
+export const getProductDetails = () => async (dispatch) => {
+  let allProductsDetails = await axios.get(`${url}/pdetails`);
+  return dispatch({
+    type: GET_ALLPDETAILS,
+    payload: allProductsDetails.data,
+  });
+};
+
+export const editProductDetails = (id) => async (dispatch) => {
+  await axios.put(`${url}/pdetails`, id);
+  return dispatch({ type: EDIT_PDETAILS });
+};
+
+export const deleteProductDetails = (id) => async (dispatch) => {
+  await axios.post(`${url}/pdetails/delete`, { id });
+  return dispatch({ type: DELETE_PDETAILS });
 };
