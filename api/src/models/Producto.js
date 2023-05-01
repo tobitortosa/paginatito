@@ -45,17 +45,6 @@ module.exports = (sequelize) => {
         ]),
         allowNull: false,
       },
-      deleted: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      // costs: {
-      //   type: DataTypes.JSON,
-      // },
-      // details: {
-      //   type: DataTypes.JSON,
-      // },
     },
     {
       timestamps: false,
