@@ -23,21 +23,21 @@ export default function Stock() {
 
   return (
     <div className={s.container}>
-        <div>
-          <h2>Productos</h2>
+      <div>
+        <h2 id={s.title}>Productos</h2>
+        <div className={s.tableContainer}>
+          {allProducts.length ? (
+            allProducts.map((el, index) => {
+              return (
+                <div id={s.div} key={index}>
+                  <Link to={el.name}>{el.name}</Link>
+                </div>
+              );
+            })
+          ) : (
+            <Loader />
+          )}
         </div>
-      <div className={s.tableContainer}>
-        {allProducts.length ? (
-          allProducts.map((el, index) => {
-            return (
-              <div key={index}>
-                <Link to={el.name}>{el.name}</Link>
-              </div>
-            );
-          })
-        ) : (
-          <Loader />
-        )}
       </div>
     </div>
   );

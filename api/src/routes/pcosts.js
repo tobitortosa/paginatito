@@ -37,7 +37,6 @@ router.put("/pcosts", async (req, res) => {
 
 router.post("/pcosts/delete", async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   try {
     await Pcosts.destroy({ where: { id: id } });
     res.status(200).send(`pcosts con el id: ${id} eliminado correctamente`);

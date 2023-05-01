@@ -84,7 +84,6 @@ export default function Clientes() {
   const handleEdit = (e) => {
     e.preventDefault();
     setEditBtnState(false);
-    console.log(editBtnObj);
     dispatch(editClient(editBtnObj));
     setAllClients([
       ...allClients.filter((c) => c.id !== editBtnObj.id),

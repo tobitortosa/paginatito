@@ -43,12 +43,9 @@ router.post("/productos", async (req, res) => {
     "60",
   ];
 
-  console.log(req.body);
-
   const newPcosts = await Pcosts.create();
   const newPdetails = await Pdetails.create();
 
-  console.log(newPcosts.dataValues);
   try {
     if (req.body.type === "pantalon" || req.body.type === "camisa") {
       for (let i = 0; i < colores.length; i++) {
@@ -108,14 +105,10 @@ router.post("/productos/delete", async (req, res) => {
 router.put("/productos/aumento", async (req, res) => {
   const { aumento } = req.body;
   try {
-    console.log(aumento);
-
     const allDetails = await Pdetails.findAll();
     const allPcosts = await Pcosts.findAll();
 
     allDetails.forEach(async (pd) => {
-      console.log(pd["dataValues"]["id"]);
-
       await Pdetails.update(
         {
           tela: Math.ceil(pd["dataValues"]["tela"] * aumento),
@@ -153,8 +146,6 @@ router.put("/productos/aumento", async (req, res) => {
     });
 
     allPcosts.forEach(async (pc) => {
-      console.log(pc["dataValues"]);
-
       await Pcosts.update(
         {
           costoFinal: parseInt(pc["dataValues"]["costoFinal"] * aumento),

@@ -41,8 +41,6 @@ export default function Productos() {
 
   const allSubPedidos = useSelector((state) => state.allSubPedidos);
 
-  console.log(allSubPedidos)
-
   useEffect(() => {
     dispatch(getAllProducts());
     dispatch(getAllSubPedidos());
@@ -69,8 +67,6 @@ export default function Productos() {
     setVerBtnState(false);
 
     let spExist = allSubPedidos.filter((sp) => sp.producto.name === name);
-
-    console.log(spExist);
 
     if (spExist.length === 0) {
       let productName = products.filter((p) => p.name === name)[0].name;
