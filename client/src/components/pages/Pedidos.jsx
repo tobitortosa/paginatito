@@ -13,6 +13,7 @@ import {
   deleteSubPedido,
   editProductStock,
   getProductCosts,
+  getAllSubPedidos,
 } from "../../redux/actions";
 import Loader from "../Loader";
 
@@ -39,6 +40,7 @@ export default function Pedidos() {
     dispatch(getAllProducts());
     dispatch(getAllPedidos());
     dispatch(getProductCosts());
+    dispatch(getAllSubPedidos());
   }, []);
 
   useEffect(() => {
@@ -74,6 +76,8 @@ export default function Pedidos() {
 
   const [stockInsuficiente, setStockInsuficiente] = useState(false);
   const [productoExistente, setProductoExistente] = useState(false);
+
+  const [decimalError, setDecimalError] = useState(false);
 
   const handleEntrego = (el, entrego) => {
     if (el.id) {
@@ -163,39 +167,44 @@ export default function Pedidos() {
         allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]
           ?.stock
       ) -
-      parseInt(editBtnProductObj.cantidad) +
+      editBtnProductObj.cantidad +
       parseInt(editBtnProductObj.initialStock);
 
-    if (can >= 0) {
-      dispatch(editSubPedido({ ...editBtnProductObj, total: totalstr }));
-      setEditProductBtnState(false);
-      dispatch(editProductStock(editBtnProductObj.productoId, can));
-      allPedidos
-        .filter((p) => p.id === editBtnProductObj.pedidoId)[0]
-        .subPedidos.filter((c) => !c.deleted)
-        .filter(
-          (sp) => sp.productoId === editBtnProductObj.productoId
-        )[0].cantidad = editBtnProductObj.cantidad;
+    if (Number.isInteger(can)) {
+      if (can >= 0) {
+        dispatch(editSubPedido({ ...editBtnProductObj, total: totalstr }));
+        setEditProductBtnState(false);
+        dispatch(editProductStock(editBtnProductObj.productoId, can));
+        allPedidos
+          .filter((p) => p.id === editBtnProductObj.pedidoId)[0]
+          .subPedidos.filter((c) => !c.deleted)
+          .filter(
+            (sp) => sp.productoId === editBtnProductObj.productoId
+          )[0].cantidad = editBtnProductObj.cantidad;
 
-      allPedidos
-        .filter((p) => p.id === editBtnProductObj.pedidoId)[0]
-        .subPedidos.filter((c) => !c.deleted)
-        .filter(
-          (sp) => sp.productoId === editBtnProductObj.productoId
-        )[0].total =
-        editBtnProductObj.cantidad *
-        allPcosts.filter(
-          (pc) =>
-            pc.id ===
-            allProducts.filter((p) => p.id === editBtnProductObj.productoId)[0]
-              .pcostId
-        )[0].costoFinal;
+        allPedidos
+          .filter((p) => p.id === editBtnProductObj.pedidoId)[0]
+          .subPedidos.filter((c) => !c.deleted)
+          .filter(
+            (sp) => sp.productoId === editBtnProductObj.productoId
+          )[0].total =
+          editBtnProductObj.cantidad *
+          allPcosts.filter(
+            (pc) =>
+              pc.id ===
+              allProducts.filter(
+                (p) => p.id === editBtnProductObj.productoId
+              )[0].pcostId
+          )[0].costoFinal;
 
-      allProducts.filter(
-        (p) => p.id === editBtnProductObj.productoId
-      )[0].stock = can;
+        allProducts.filter(
+          (p) => p.id === editBtnProductObj.productoId
+        )[0].stock = can;
+      } else {
+        setStockInsuficiente(true);
+      }
     } else {
-      setStockInsuficiente(true);
+      setDecimalError(true);
     }
   };
 
@@ -230,48 +239,21 @@ export default function Pedidos() {
       );
 
     if (copy.length === 0) {
-      if (can >= 0) {
-        e.preventDefault();
-        setBtnProductoStateContainer(false);
-        dispatch(
-          createSubPedido({
-            ...subInput,
-            idProducto: allProducts.filter(
-              (p) =>
-                p.name === subInput.name &&
-                p.color === subInput.color &&
-                p.talle === subInput.talle
-            )[0]?.id,
-            total:
-              subInput.cantidad *
-              allPcosts.filter(
-                (pc) =>
-                  pc.id ===
-                  allProducts.filter(
-                    (p) =>
-                      p.name === subInput.name &&
-                      p.color === subInput.color &&
-                      p.talle === subInput.talle
-                  )[0].pcostId
-              )[0].costoFinal,
-          })
-        );
-
-        allPedidos
-          .filter((p) => p.id === subInput.idPedido)[0]
-          .subPedidos.push({
-            ...subInput,
-            pedidoId: subInput.idPedido,
-            deleted: false,
-            productoId: allProducts.filter(
-              (p) =>
-                p.name === subInput.name &&
-                p.color === subInput.color &&
-                p.talle === subInput.talle
-            )[0]?.id,
-
-            total: String(
-              subInput.cantidad *
+      if (Number.isInteger(can)) {
+        if (can >= 0) {
+          e.preventDefault();
+          setBtnProductoStateContainer(false);
+          dispatch(
+            createSubPedido({
+              ...subInput,
+              idProducto: allProducts.filter(
+                (p) =>
+                  p.name === subInput.name &&
+                  p.color === subInput.color &&
+                  p.talle === subInput.talle
+              )[0]?.id,
+              total:
+                subInput.cantidad *
                 allPcosts.filter(
                   (pc) =>
                     pc.id ===
@@ -281,22 +263,53 @@ export default function Pedidos() {
                         p.color === subInput.color &&
                         p.talle === subInput.talle
                     )[0].pcostId
-                )[0].costoFinal
-            ),
-          }),
-          dispatch(
-            editProductStock(
-              allProducts.filter(
+                )[0].costoFinal,
+            })
+          );
+
+          allPedidos
+            .filter((p) => p.id === subInput.idPedido)[0]
+            .subPedidos.push({
+              ...subInput,
+              pedidoId: subInput.idPedido,
+              deleted: false,
+              productoId: allProducts.filter(
                 (p) =>
                   p.name === subInput.name &&
                   p.color === subInput.color &&
                   p.talle === subInput.talle
               )[0]?.id,
-              can
-            )
-          );
+
+              total: String(
+                subInput.cantidad *
+                  allPcosts.filter(
+                    (pc) =>
+                      pc.id ===
+                      allProducts.filter(
+                        (p) =>
+                          p.name === subInput.name &&
+                          p.color === subInput.color &&
+                          p.talle === subInput.talle
+                      )[0].pcostId
+                  )[0].costoFinal
+              ),
+            }),
+            dispatch(
+              editProductStock(
+                allProducts.filter(
+                  (p) =>
+                    p.name === subInput.name &&
+                    p.color === subInput.color &&
+                    p.talle === subInput.talle
+                )[0]?.id,
+                can
+              )
+            );
+        } else {
+          setStockInsuficiente(true);
+        }
       } else {
-        setStockInsuficiente(true);
+        setDecimalError(true);
       }
     } else {
       setProductoExistente(true);
@@ -797,6 +810,17 @@ export default function Pedidos() {
               ✖
             </p>
             <p id={s.stockInsuficiente}>STOCK INSUFICIENTE</p>
+          </div>
+        </div>
+      )}
+
+      {decimalError && (
+        <div className={s.modal}>
+          <div className={s.modalContainer}>
+            <p id={s.xProducto} onClick={() => setDecimalError(false)}>
+              ✖
+            </p>
+            <p id={s.stockInsuficiente}>INGRESE UN NUMERO ENTERO</p>
           </div>
         </div>
       )}

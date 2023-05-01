@@ -23,8 +23,10 @@ export default function Stock() {
 
   return (
     <div className={s.container}>
+        <div>
+          <h2>Productos</h2>
+        </div>
       <div className={s.tableContainer}>
-        <h2>Productos</h2>
         {allProducts.length ? (
           allProducts.map((el, index) => {
             return (
