@@ -213,8 +213,6 @@ export default function Pedidos() {
     setBtnProductoStateContainer(true);
   };
 
-  console.log(allPcosts);
-
   const handleAddProducto = (e) => {
     let can =
       parseInt(

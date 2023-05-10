@@ -48,10 +48,6 @@ export default function ProductoComponent() {
 
   if (!product) location.reload();
 
-  console.log(
-    allPcosts.filter((pc) => pc.id === product.pcostId)[0]?.costoFinal
-  );
-
   const handleCostsInputChange = (e) => {
     setEditCostsInput({
       ...editCostsInput,
