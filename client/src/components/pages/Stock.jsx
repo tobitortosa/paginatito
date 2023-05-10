@@ -29,7 +29,7 @@ export default function Stock() {
           {allProducts.length ? (
             allProducts.map((el, index) => {
               return (
-                <div id={s.div} key={index}>
+                <div id={s.txt} key={index}>
                   <Link to={el.name}>{el.name}</Link>
                 </div>
               );
