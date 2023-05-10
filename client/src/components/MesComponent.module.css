@@ -1,0 +1,30 @@
+.container {
+  width: 90%;
+}
+
+.mesContainer {
+  border: 2px solid black;
+  height: 85vh;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#link {
+  border: 2px solid black;
+  margin: 10px 0px;
+  padding: 5px 50px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: black;
+  font-size: 22px;
+  transition: 0.2s;
+}
+
+#link:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: 0.2s;
+}

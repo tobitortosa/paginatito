@@ -28,6 +28,22 @@ module.exports = (sequelize) => {
       type: {
         type: DataTypes.ENUM(["Aporte", "Gasto"]),
       },
+      month: {
+        type: DataTypes.ENUM([
+          "enero",
+          "febrero",
+          "marzo",
+          "abril",
+          "mayo",
+          "junio",
+          "julio",
+          "agosto",
+          "septiembre",
+          "octubre",
+          "noviembre",
+          "diciembre",
+        ]),
+      },
     },
     {
       timestamps: false,

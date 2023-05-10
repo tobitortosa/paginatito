@@ -10,6 +10,7 @@ import Login from "./components/pages/Login";
 import Stock from "./components/pages/Stock";
 import StockComponent from "./components/StockComponent";
 import StockCantidadComponente from "./components/StockCantidadComponente";
+import MesComponent from "./components/MesComponent";
 
 function App() {
   let logged = localStorage.getItem("logged");
@@ -23,7 +24,8 @@ function App() {
             <NavBar />
             <Routes>
               <Route path="/" element={<Pedidos />} />
-              <Route path="/aportesygastos" element={<AportesYGastos />} />
+              <Route path="/aportesygastos" element={<MesComponent />} />
+              <Route path="/aportesygastos/:mes" element={<AportesYGastos />} />
               <Route path="/clientes" element={<Clientes />} />
               <Route path="/pedidos" element={<Pedidos />} />
               <Route path="/productos" element={<Productos />} />

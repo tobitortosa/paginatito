@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const router = Router();
 const { Cliente } = require("../db");
-const { getAllClients } = require("../controllers/index");
 
 router.get("/clientes", async (req, res) => {
   try {
-    res.status(200).json(await getAllClients());
+    const dbClients = await Cliente.findAll();
+    res.status(200).json(dbClients);
   } catch (error) {
     res.status(400).send(error.message);
   }

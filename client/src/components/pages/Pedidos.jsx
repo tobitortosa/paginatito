@@ -254,16 +254,18 @@ export default function Pedidos() {
               )[0]?.id,
               total:
                 subInput.cantidad *
-                allPcosts.filter(
-                  (pc) =>
-                    pc.id ===
-                    allProducts.filter(
-                      (p) =>
-                        p.name === subInput.name &&
-                        p.color === subInput.color &&
-                        p.talle === subInput.talle
-                    )[0].pcostId
-                )[0].costoFinal,
+                allPcosts
+                  .filter(
+                    (pc) =>
+                      pc.id ===
+                      allProducts.filter(
+                        (p) =>
+                          p.name === subInput.name &&
+                          p.color === subInput.color &&
+                          p.talle === subInput.talle
+                      )[0].pcostId
+                  )[0]
+                  .costoFinal.toString(),
             })
           );
 
@@ -282,16 +284,18 @@ export default function Pedidos() {
 
               total: String(
                 subInput.cantidad *
-                  allPcosts.filter(
-                    (pc) =>
-                      pc.id ===
-                      allProducts.filter(
-                        (p) =>
-                          p.name === subInput.name &&
-                          p.color === subInput.color &&
-                          p.talle === subInput.talle
-                      )[0].pcostId
-                  )[0].costoFinal
+                  allPcosts
+                    .filter(
+                      (pc) =>
+                        pc.id ===
+                        allProducts.filter(
+                          (p) =>
+                            p.name === subInput.name &&
+                            p.color === subInput.color &&
+                            p.talle === subInput.talle
+                        )[0].pcostId
+                    )[0]
+                    .costoFinal.toString()
               ),
             }),
             dispatch(
@@ -447,14 +451,14 @@ export default function Pedidos() {
                       ?.filter((sp) => !sp.deleted)
                       .reduce((acc, el) => {
                         return parseFloat(el.total) + acc;
-                      }, 0) * 1.21
+                      }, 0)
                   )
                     ? `$${Math.ceil(
                         el.subPedidos
                           ?.filter((sp) => !sp.deleted)
                           .reduce((acc, el) => {
                             return parseFloat(el.total) + acc;
-                          }, 0) * 1.21
+                          }, 0)
                       )}`
                     : "-"}
                 </p>
@@ -465,18 +469,14 @@ export default function Pedidos() {
                       ?.filter((sp) => !sp.deleted)
                       .reduce((acc, el) => {
                         return parseInt(el.total) + acc;
-                      }, 0) *
-                      1.21 -
-                      el.seña
+                      }, 0) - el.seña
                   )
                     ? `$${Math.ceil(
                         el.subPedidos
                           ?.filter((sp) => !sp.deleted)
                           .reduce((acc, el) => {
                             return parseInt(el.total) + acc;
-                          }, 0) *
-                          1.21 -
-                          el.seña
+                          }, 0) - el.seña
                       )}`
                     : "-"}
                 </p>
@@ -991,13 +991,6 @@ export default function Pedidos() {
                       Fecha de Entrega: {facturaObj.entregaDate || "__________"}
                     </h3>
                   </div>
-                </div>
-                <div className={s.observaciones}>
-                  <h4>
-                    Observaciones:{" "}
-                    {facturaObj.cliente?.observaciones ||
-                      "____________________________________________"}
-                  </h4>
                 </div>
               </div>
             </div>

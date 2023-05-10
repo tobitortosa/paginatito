@@ -113,6 +113,13 @@ export default function Productos() {
     }
   };
 
+  const verifyExisting = (name) => {
+    let exist = allProduct.filter((p) => p.name === name);
+    if (exist.length == 0) {
+      location.reload();
+    }
+  };
+
   return (
     <div className={s.container}>
       <button onClick={() => setModalBtnState(true)} id={s.addBtn}>
@@ -133,7 +140,9 @@ export default function Productos() {
             return (
               <div key={index} className={s.gridLines}>
                 <Link id={s.link} to={`/productos/${el.name}`}>
-                  <button id={s.btn}>{el.name}</button>
+                  <button onClick={() => verifyExisting(el.name)} id={s.btn}>
+                    {el.name}
+                  </button>
                 </Link>
               </div>
             );

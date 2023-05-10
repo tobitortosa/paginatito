@@ -8,13 +8,16 @@ import {
 } from "../../redux/actions";
 import { useEffect } from "react";
 import Loader from "../Loader";
+import { useParams } from "react-router-dom";
 
 export default function AportesYGastos() {
   const dispatch = useDispatch();
-
+  const { mes } = useParams();
   const [btnState, setBtnState] = useState(false);
   const stateAllAportesYGastos = useSelector((state) =>
-    state.allAportesYGastos.filter((a) => !a.deleted)
+    state.allAportesYGastos
+      .filter((a) => !a.deleted)
+      .filter((a) => a.month === mes.toLowerCase())
   );
 
   const [allAportesYGastos, setAllAportesYGastos] = useState([]);
@@ -48,7 +51,7 @@ export default function AportesYGastos() {
   const handleAdd = (e) => {
     e.preventDefault();
     setBtnState(false);
-    dispatch(createAporteYGasto(input));
+    dispatch(createAporteYGasto({ ...input, month: mes.toLowerCase() }));
     setAllAportesYGastos([...allAportesYGastos, input]);
   };
 
@@ -76,6 +79,7 @@ export default function AportesYGastos() {
 
   return (
     <div className={s.container}>
+      <h2 id={s.mes}>{mes}</h2>
       <button onClick={() => setBtnState(true)} id={s.addBtn}>
         Agregar Aporte o Gasto
       </button>

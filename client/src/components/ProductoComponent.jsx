@@ -599,7 +599,7 @@ export default function ProductoComponent() {
                     <p>Bolsa</p>
                     <p>Estampado</p>
                     <p>Bordado</p>
-                    <p>Cinta Reflexiva</p>
+                    <p>Cinta Reflectiva</p>
                     <p>Peliculas C/U</p>
                   </div>
                   <div className={s.modalLines}>
