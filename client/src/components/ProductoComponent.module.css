@@ -266,3 +266,8 @@
   background-color: rgba(0, 0, 0, 0.2);
   transition: 0.3s;
 }
+
+#aviso {
+  padding-top: 10px;
+  font-weight: 600;
+}

@@ -213,6 +213,8 @@ export default function Pedidos() {
     setBtnProductoStateContainer(true);
   };
 
+  console.log(allPcosts);
+
   const handleAddProducto = (e) => {
     let can =
       parseInt(
@@ -243,6 +245,18 @@ export default function Pedidos() {
         if (can >= 0) {
           e.preventDefault();
           setBtnProductoStateContainer(false);
+          let pcosto = allPcosts.filter(
+            (pc) =>
+              pc.id ===
+              allProducts.filter(
+                (p) =>
+                  p.name === subInput.name &&
+                  p.color === subInput.color &&
+                  p.talle === subInput.talle
+              )[0].pcostId
+          )[0].costoFinal;
+          let totalf = subInput.cantidad * pcosto;
+          let totalstr = String(totalf);
           dispatch(
             createSubPedido({
               ...subInput,
@@ -252,20 +266,7 @@ export default function Pedidos() {
                   p.color === subInput.color &&
                   p.talle === subInput.talle
               )[0]?.id,
-              total:
-                subInput.cantidad *
-                allPcosts
-                  .filter(
-                    (pc) =>
-                      pc.id ===
-                      allProducts.filter(
-                        (p) =>
-                          p.name === subInput.name &&
-                          p.color === subInput.color &&
-                          p.talle === subInput.talle
-                      )[0].pcostId
-                  )[0]
-                  .costoFinal.toString(),
+              total: totalstr,
             })
           );
 
@@ -282,21 +283,7 @@ export default function Pedidos() {
                   p.talle === subInput.talle
               )[0]?.id,
 
-              total: String(
-                subInput.cantidad *
-                  allPcosts
-                    .filter(
-                      (pc) =>
-                        pc.id ===
-                        allProducts.filter(
-                          (p) =>
-                            p.name === subInput.name &&
-                            p.color === subInput.color &&
-                            p.talle === subInput.talle
-                        )[0].pcostId
-                    )[0]
-                    .costoFinal.toString()
-              ),
+              total: totalstr,
             }),
             dispatch(
               editProductStock(

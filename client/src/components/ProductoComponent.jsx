@@ -48,6 +48,10 @@ export default function ProductoComponent() {
 
   if (!product) location.reload();
 
+  console.log(
+    allPcosts.filter((pc) => pc.id === product.pcostId)[0]?.costoFinal
+  );
+
   const handleCostsInputChange = (e) => {
     setEditCostsInput({
       ...editCostsInput,
@@ -535,6 +539,7 @@ export default function ProductoComponent() {
               ✖
             </p>
             <div className={s.inputsContainer}>
+              <p id={s.aviso}>Dejar 0 si no se utiliza</p>
               <div className={s.inputContainer}>
                 <div className={s.modalTitles}>
                   <div className={s.titleContainer}>
