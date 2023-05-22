@@ -63,6 +63,9 @@
 #total {
   color: black;
   background-color: rgba(255, 255, 0, 0.7);
+  width: auto;
+  padding: 3px 10px;
+  border-radius: 5px;
 }
 
 .tableLine button {
@@ -157,4 +160,20 @@ select {
 #mes {
   text-align: center;
   margin-top: 10px;
+}
+
+#totalAportes {
+  color: black;
+  background-color: rgba(0, 255, 21, 0.6);
+  width: auto;
+  border-radius: 5px;
+  padding: 3px 10px;
+}
+
+#totalGastos {
+  color: black;
+  background-color: rgba(255, 0, 0, 0.6);
+  width: auto;
+  padding: 3px 10px;
+  border-radius: 5px;
 }

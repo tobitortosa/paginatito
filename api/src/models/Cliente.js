@@ -55,9 +55,6 @@ module.exports = (sequelize) => {
       celular: {
         type: DataTypes.STRING,
       },
-      fax: {
-        type: DataTypes.STRING,
-      },
       paginaWeb: {
         type: DataTypes.STRING,
       },

@@ -38,6 +38,10 @@ export default function StockCantidadComponente() {
     });
   };
 
+  let total = product.reduce((acc, el) => {
+    return acc + parseInt(el.stock);
+  }, 0);
+
   const handleEditStock = (el) => {
     setEditObj({
       ...el,
@@ -73,11 +77,13 @@ export default function StockCantidadComponente() {
                 </p>
               );
             })}
+            <p className={s.total}>Total</p>
           </div>
           <div className={s.tallesTitles}>
             {product.map((el, index) => {
               return <p key={index}>{el.stock}</p>;
             })}
+            <p className={s.total}>{total}</p>
           </div>
           <div className={s.tallesTitles}>
             {product.map((el, index) => {
@@ -87,6 +93,7 @@ export default function StockCantidadComponente() {
                 </button>
               );
             })}
+            <p id={s.pVacio}></p>
           </div>
         </div>
       </div>

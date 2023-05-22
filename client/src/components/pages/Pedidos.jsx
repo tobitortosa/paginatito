@@ -845,7 +845,7 @@ export default function Pedidos() {
                       <p>11 38821606</p>
                     </div>
                   </div>
-                  <p>Email: e-portabales@hotmail.com</p>
+                  <p>Email: e.portabales@hotmail.com</p>
                 </div>
               </div>
               <div className={s.facturaBody}>

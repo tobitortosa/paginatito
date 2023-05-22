@@ -112,8 +112,28 @@ export default function AportesYGastos() {
         <div className={s.tableTitles}>
           <p></p>
           <p></p>
+          <p id={s.totalAportes} className={s.descriptionTitle}>
+            Total Aportes :
+          </p>
+          <p id={s.totalAportes}>{`$${aportes}`}</p>
+          <p></p>
+        </div>
+
+        <div className={s.tableTitles}>
+          <p></p>
+          <p></p>
+          <p id={s.totalGastos} className={s.descriptionTitle}>
+            Total Gastos:
+          </p>
+          <p id={s.totalGastos}>{`$${gastos}`}</p>
+          <p></p>
+        </div>
+
+        <div className={s.tableTitles}>
+          <p></p>
+          <p></p>
           <p id={s.total} className={s.descriptionTitle}>
-            Total :
+            Saldo Total:
           </p>
           <p id={s.total}>{`$${aportes - gastos}`}</p>
           <p></p>

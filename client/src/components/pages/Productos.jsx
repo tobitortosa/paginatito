@@ -109,7 +109,7 @@ export default function Productos() {
       inflacionInput.length > 0
     ) {
       handleInflacionModal();
-      dispatch(editAumento(parseFloat(`1.${inflacionInput}`)));
+      dispatch(editAumento(parseFloat(inflacionInput)));
     }
   };
 

@@ -104,6 +104,21 @@ router.post("/productos/delete", async (req, res) => {
 
 router.put("/productos/aumento", async (req, res) => {
   const { aumento } = req.body;
+
+  console.log(aumento);
+  console.log(aumento.toString().length);
+
+  let aumentoFinal;
+  if (aumento.toString().length == 1) {
+    aumentoFinal = parseFloat(`1.0${aumento.toString()}`);
+  }
+
+  if (aumento.toString().length == 2) {
+    aumentoFinal = parseFloat(`1.${aumento.toString()}`);
+  }
+
+  console.log(aumentoFinal);
+
   try {
     const allDetails = await Pdetails.findAll();
     const allPcosts = await Pcosts.findAll();
@@ -111,31 +126,35 @@ router.put("/productos/aumento", async (req, res) => {
     allDetails.forEach(async (pd) => {
       await Pdetails.update(
         {
-          tela: Math.ceil(pd["dataValues"]["tela"] * aumento),
-          corte: Math.ceil(pd["dataValues"]["corte"] * aumento),
-          costura: Math.ceil(pd["dataValues"]["costura"] * aumento),
+          tela: Math.ceil(pd["dataValues"]["tela"] * aumentoFinal),
+          corte: Math.ceil(pd["dataValues"]["corte"] * aumentoFinal),
+          costura: Math.ceil(pd["dataValues"]["costura"] * aumentoFinal),
           cierreDeCuello: Math.ceil(
-            pd["dataValues"]["cierreDeCuello"] * aumento
+            pd["dataValues"]["cierreDeCuello"] * aumentoFinal
           ),
           ribsPuñoCuello: Math.ceil(
-            pd["dataValues"]["ribsPuñoCuello"] * aumento
+            pd["dataValues"]["ribsPuñoCuello"] * aumentoFinal
           ),
-          tancaYCordon: Math.ceil(pd["dataValues"]["tancaYCordon"] * aumento),
-          velcro: Math.ceil(pd["dataValues"]["velcro"] * aumento),
+          tancaYCordon: Math.ceil(
+            pd["dataValues"]["tancaYCordon"] * aumentoFinal
+          ),
+          velcro: Math.ceil(pd["dataValues"]["velcro"] * aumentoFinal),
           cordonElastico: Math.ceil(
-            pd["dataValues"]["cordonElastico"] * aumento
+            pd["dataValues"]["cordonElastico"] * aumentoFinal
           ),
           hebillasLaterales: Math.ceil(
-            pd["dataValues"]["hebillasLaterales"] * aumento
+            pd["dataValues"]["hebillasLaterales"] * aumentoFinal
           ),
-          cierreLateral: Math.ceil(pd["dataValues"]["cierreLateral"] * aumento),
-          bolsa: Math.ceil(pd["dataValues"]["bolsa"] * aumento),
-          estampado: Math.ceil(pd["dataValues"]["estampado"] * aumento),
-          bordado: Math.ceil(pd["dataValues"]["bordado"] * aumento),
+          cierreLateral: Math.ceil(
+            pd["dataValues"]["cierreLateral"] * aumentoFinal
+          ),
+          bolsa: Math.ceil(pd["dataValues"]["bolsa"] * aumentoFinal),
+          estampado: Math.ceil(pd["dataValues"]["estampado"] * aumentoFinal),
+          bordado: Math.ceil(pd["dataValues"]["bordado"] * aumentoFinal),
           cintaReflexiva: Math.ceil(
-            pd["dataValues"]["cintaReflexiva"] * aumento
+            pd["dataValues"]["cintaReflexiva"] * aumentoFinal
           ),
-          peliculas: Math.ceil(pd["dataValues"]["peliculas"] * aumento),
+          peliculas: Math.ceil(pd["dataValues"]["peliculas"] * aumentoFinal),
         },
         {
           where: {
@@ -148,7 +167,7 @@ router.put("/productos/aumento", async (req, res) => {
     allPcosts.forEach(async (pc) => {
       await Pcosts.update(
         {
-          costoFinal: parseInt(pc["dataValues"]["costoFinal"] * aumento),
+          costoFinal: parseInt(pc["dataValues"]["costoFinal"] * aumentoFinal),
         },
         {
           where: {
@@ -158,7 +177,7 @@ router.put("/productos/aumento", async (req, res) => {
       );
     });
 
-    res.status(200).send(`Costos Actualizados por ${aumento}`);
+    res.status(200).send(`Costos Actualizados por ${aumentoFinal}`);
   } catch (error) {
     res.status(400).send(error.message);
   }

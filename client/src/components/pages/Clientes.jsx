@@ -43,7 +43,6 @@ export default function Clientes() {
   });
 
   const [btnState, setBtnState] = useState(false);
-  const [btnLineState, setBtnLineState] = useState(false);
   const [editBtnState, setEditBtnState] = useState(false);
   const [editBtnObj, setEditBtnObj] = useState({});
   const [allClients, setAllClients] = useState([]);
@@ -138,7 +137,6 @@ export default function Clientes() {
           <p>Tel1</p>
           <p>Tel2</p>
           <p>Celular</p>
-          <p>Fax</p>
           <p>Pagina Web</p>
           <p id={s.objTitle}>Observaciones</p>
         </div>
@@ -161,7 +159,6 @@ export default function Clientes() {
                   <p>{el.tel1 || "-"}</p>
                   <p>{el.tel2 || "-"}</p>
                   <p>{el.celular || "-"}</p>
-                  <p>{el.fax || "-"}</p>
                   <p>
                     <a
                       href={`https://${el.paginaWeb?.toLowerCase()}`}
@@ -218,7 +215,6 @@ export default function Clientes() {
                   <p>{el.tel1 || "-"}</p>
                   <p>{el.tel2 || "-"}</p>
                   <p>{el.celular || "-"}</p>
-                  <p>{el.fax || "-"}</p>
                   <p>
                     <a href={el.paginaWeb}>{el.paginaWeb || "-"}</a>
                   </p>
@@ -243,44 +239,12 @@ export default function Clientes() {
             <p onClick={() => setBtnState(false)}>✖</p>
             <form>
               <div className={s.lineForm}>
-                <label>Nombre</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="name"
-                />
-                <label>Apellido</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="lastName"
-                />
-                <label>Email</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="email"
-                />
-                <label>Rubro</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="rubro"
-                />
-                <label>Cargo</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="cargo"
-                />
-
                 <label>Red Social</label>
                 <input
                   onChange={(e) => handleInputChange(e)}
                   type="text"
                   name="redSocial"
                 />
-
                 <label>Direccion</label>
                 <input
                   onChange={(e) => handleInputChange(e)}
@@ -300,19 +264,53 @@ export default function Clientes() {
                   type="text"
                   name="localidad"
                 />
-              </div>
-              <div className={s.lineForm}>
+
                 <label>CP</label>
                 <input
                   onChange={(e) => handleInputChange(e)}
                   type="number"
                   name="cp"
                 />
+
                 <label>Provincia</label>
                 <input
                   onChange={(e) => handleInputChange(e)}
                   type="text"
                   name="provincia"
+                />
+                <label>Rubro</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="rubro"
+                />
+                <label>Cargo</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="cargo"
+                />
+              </div>
+              <div className={s.lineForm}>
+                <label>Nombre</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="name"
+                />
+
+                <label>Apellido</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="lastName"
+                />
+
+                <label>Email</label>
+                <input
+                  onChange={(e) => handleInputChange(e)}
+                  type="text"
+                  name="email"
                 />
                 <label>Tel1</label>
                 <input
@@ -333,12 +331,6 @@ export default function Clientes() {
                   name="celular"
                 />
 
-                <label>Fax</label>
-                <input
-                  onChange={(e) => handleInputChange(e)}
-                  type="text"
-                  name="fax"
-                />
                 <label>Pagina Web</label>
                 <input
                   onChange={(e) => handleInputChange(e)}
