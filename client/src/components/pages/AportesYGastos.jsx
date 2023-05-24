@@ -84,6 +84,14 @@ export default function AportesYGastos() {
         Agregar Aporte o Gasto
       </button>
       <div className={s.mainContainer}>
+        <div className={s.saldoTotal}>
+          <div className={s.tableTitles}>
+            <p id={s.total} className={s.descriptionTitle}>
+              Saldo Total:
+            </p>
+            <p id={s.total}>{`$${aportes - gastos}`}</p>
+          </div>
+        </div>
         <div className={s.allContainer}>
           <div className={s.a}>
             <h3>Aportes</h3>
@@ -160,15 +168,6 @@ export default function AportesYGastos() {
                 <p></p>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className={s.saldoTotal}>
-          <div className={s.tableTitles}>
-            <p id={s.total} className={s.descriptionTitle}>
-              Saldo Total:
-            </p>
-            <p id={s.total}>{`$${aportes - gastos}`}</p>
           </div>
         </div>
       </div>

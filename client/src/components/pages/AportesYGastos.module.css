@@ -16,19 +16,13 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.table {
-  border: 1px solid black;
-  margin: 20px;
-}
-
 .tableTitles {
-  padding: 10px 0px;
+  padding: 8px 0px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   font-size: 18px;
   font-weight: 600;
-  height: 30px;
 }
 
 .tableTitles p {
@@ -182,6 +176,7 @@ select {
   text-align: center;
   color: black;
   border-bottom: 2px solid black;
+  padding: 5px 0px;
 }
 
 .mainContainer {
