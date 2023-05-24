@@ -27,12 +27,12 @@ export default function PreciosDeProductos() {
         <div className={s.tableTitles}>
           <div className={s.tableColumn}>
             <div className={s.tableTxt}>
-              <h3>Producto</h3>
+              <h2>Producto</h2>
             </div>
           </div>
           <div className={s.tableColumn}>
             <div className={s.tableTxt}>
-              <h3>Precio</h3>
+              <h2>Precio</h2>
             </div>
           </div>
         </div>
@@ -48,10 +48,10 @@ export default function PreciosDeProductos() {
                 <div className={s.tableColumn}>
                   <div className={s.tableTxt}>
                     <h3>
-                      {
+                      {`$${
                         allPcosts.filter((pc) => el.pcostId == pc.id)[0]
                           ?.costoFinal
-                      }
+                      }`}
                     </h3>
                   </div>
                 </div>
