@@ -95,8 +95,8 @@ export const editProductStock = (id, stock) => async (dispatch) => {
   return dispatch({ type: EDIT_PRODUCT_STOCK });
 };
 
-export const editAumento = (aumento) => async (dispatch) => {
-  await axios.put(`${url}/productos/aumento`, { aumento });
+export const editAumento = (aumento, type) => async (dispatch) => {
+  await axios.put(`${url}/productos/aumento`, { aumento, type });
   return dispatch({ type: EDIT_AUMENTO });
 };
 

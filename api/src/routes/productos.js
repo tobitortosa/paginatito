@@ -103,21 +103,24 @@ router.post("/productos/delete", async (req, res) => {
 });
 
 router.put("/productos/aumento", async (req, res) => {
-  const { aumento } = req.body;
-
-  console.log(aumento);
-  console.log(aumento.toString().length);
+  const { aumento, type } = req.body;
 
   let aumentoFinal;
-  if (aumento.toString().length == 1) {
+
+  if (type === "aumento" && aumento.toString().length == 1) {
     aumentoFinal = parseFloat(`1.0${aumento.toString()}`);
   }
 
-  if (aumento.toString().length == 2) {
+  if (type === "aumento" && aumento.toString().length == 2) {
     aumentoFinal = parseFloat(`1.${aumento.toString()}`);
   }
+  if (type === "descuento" && aumento.toString().length == 1) {
+    aumentoFinal = parseFloat(`0.0${aumento.toString()}`);
+  }
 
-  console.log(aumentoFinal);
+  if (type === "descuento" && aumento.toString().length == 2) {
+    aumentoFinal = parseFloat(`0.${aumento.toString()}`);
+  }
 
   try {
     const allDetails = await Pdetails.findAll();

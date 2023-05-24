@@ -11,6 +11,7 @@ import Stock from "./components/pages/Stock";
 import StockComponent from "./components/StockComponent";
 import StockCantidadComponente from "./components/StockCantidadComponente";
 import MesComponent from "./components/MesComponent";
+import PreciosDeProductos from "./components/pages/PreciosDeProductos";
 
 function App() {
   let logged = localStorage.getItem("logged");
@@ -30,6 +31,7 @@ function App() {
               <Route path="/pedidos" element={<Pedidos />} />
               <Route path="/productos" element={<Productos />} />
               <Route path="/stock" element={<Stock />} />
+              <Route path="/precios" element={<PreciosDeProductos />} />
               <Route
                 path="/productos/:productName"
                 element={<ProductoComponent />}

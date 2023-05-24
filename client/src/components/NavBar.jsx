@@ -27,6 +27,9 @@ export default function NavBar() {
         <Link to={"/productos"}>
           <button className={s.btnElement}>Productos</button>
         </Link>
+        <Link to={"/precios"}>
+          <button className={s.btnElement}>Lista de Precios</button>
+        </Link>
         <button id={s.btn} onClick={() => handleCerrarSesion()}>
           Cerrar Sesion
         </button>

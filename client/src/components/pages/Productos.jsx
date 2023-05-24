@@ -24,11 +24,22 @@ export default function Productos() {
   });
 
   const [inflacionState, setInflacionState] = useState(false);
-  const [inflacionInput, setInflacionInput] = useState("");
+  const [inflacionInput, setInflacionInput] = useState({
+    type: "aumento",
+    aumento: "",
+  });
   const [inflacionModal, setInflacionModal] = useState(false);
   const [deleteErrorState, setDeleteErrorState] = useState(false);
   const [flag, setFlag] = useState(true);
   const [products, setProducts] = useState([]);
+
+  const handleAumentoState = () => {
+    setInflacionInput({
+      type: "aumento",
+      aumento: "",
+    });
+    setInflacionState(true);
+  };
 
   const allProduct = useSelector((state) =>
     state.allProducts
@@ -94,7 +105,10 @@ export default function Productos() {
   };
 
   const handleAumentoInputChange = (e) => {
-    setInflacionInput(e.target.value);
+    setInflacionInput({
+      ...inflacionInput,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleInflacionModal = () => {
@@ -104,12 +118,24 @@ export default function Productos() {
   const handleModificarAumento = (e) => {
     e.preventDefault();
     if (
-      inflacionInput > 0 &&
-      inflacionInput < 100 &&
-      inflacionInput.length > 0
+      inflacionInput.aumento > 0 &&
+      inflacionInput.aumento < 100 &&
+      inflacionInput.aumento.length > 0 &&
+      !inflacionInput.aumento.includes(".")
     ) {
       handleInflacionModal();
-      dispatch(editAumento(parseFloat(inflacionInput)));
+      if (inflacionInput.type === "descuento") {
+        dispatch(
+          editAumento(
+            100 - parseInt(inflacionInput.aumento),
+            inflacionInput.type
+          )
+        );
+      } else if (inflacionInput.type === "aumento") {
+        dispatch(
+          editAumento(parseInt(inflacionInput.aumento), inflacionInput.type)
+        );
+      }
     }
   };
 
@@ -128,7 +154,7 @@ export default function Productos() {
       <button onClick={() => setVerBtnState(true)} id={s.addBtn}>
         Ver Productos
       </button>
-      <button onClick={() => setInflacionState(true)} id={s.addBtn}>
+      <button onClick={() => handleAumentoState()} id={s.addBtn}>
         Modificar Costos Global
       </button>
       <div className={s.grid}>
@@ -216,21 +242,30 @@ export default function Productos() {
             <p onClick={() => setInflacionState(false)}>✖</p>
             <div className={s.verContainer}>
               <form>
-                <label>Ingresar Porcentaje de Aumento</label>
-                <h4 id={s.entre}>Entre 1% y 99%</h4>
+                <label>Seleccionar Tipo</label>
+                <select
+                  name="type"
+                  onChange={(e) => handleAumentoInputChange(e)}
+                >
+                  <option value="aumento">Aumento</option>
+                  <option value="descuento">Descuento</option>
+                </select>
+                <label>
+                  Ingresar Porcentaje<h4 id={s.entre}>Entre 1% y 99%</h4>
+                </label>
                 <div className={s.porcentajeContainer}>
                   <p>%</p>
                   <input
                     onChange={(e) => handleAumentoInputChange(e)}
                     type="number"
-                    name="name"
+                    name="aumento"
                     min="0"
-                    value={inflacionInput}
+                    value={inflacionInput.aumento}
                   />
                 </div>
 
                 <button onClick={(e) => handleModificarAumento(e)}>
-                  Aumentar Costos Globales
+                  Modificar Costos Globales
                 </button>
                 <br />
                 <div>
@@ -250,7 +285,7 @@ export default function Productos() {
             <div className={s.verContainer}>
               <form>
                 <div id={s.text}>
-                  {`El precio de todos los productos aumento un ${inflacionInput}%`}
+                  {`El precio de todos los productos aumento un ${inflacionInput.aumento}%`}
                 </div>
                 <button onClick={() => setInflacionModal(false)}>
                   Aceptar

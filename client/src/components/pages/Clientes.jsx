@@ -355,42 +355,6 @@ export default function Clientes() {
             <p onClick={() => setEditBtnState(false)}>✖</p>
             <form>
               <div className={s.lineForm}>
-                <label>Nombre</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="name"
-                  value={editBtnObj.name || ""}
-                />
-                <label>Apellido</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="lastName"
-                  value={editBtnObj.lastName || ""}
-                />
-                <label>Email</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="email"
-                  value={editBtnObj.email || ""}
-                />
-                <label>Rubro</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="rubro"
-                  value={editBtnObj.rubro || ""}
-                />
-                <label>Cargo</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="cargo"
-                  value={editBtnObj.cargo || ""}
-                />
-
                 <label>Red Social</label>
                 <input
                   onChange={(e) => handleEditInputChange(e)}
@@ -398,7 +362,6 @@ export default function Clientes() {
                   name="redSocial"
                   value={editBtnObj.redSocial || ""}
                 />
-
                 <label>Direccion</label>
                 <input
                   onChange={(e) => handleEditInputChange(e)}
@@ -421,8 +384,6 @@ export default function Clientes() {
                   name="localidad"
                   value={editBtnObj.localidad || ""}
                 />
-              </div>
-              <div className={s.lineForm}>
                 <label>CP</label>
                 <input
                   onChange={(e) => handleEditInputChange(e)}
@@ -430,12 +391,50 @@ export default function Clientes() {
                   name="cp"
                   value={editBtnObj.cp || ""}
                 />
+
                 <label>Provincia</label>
                 <input
                   onChange={(e) => handleEditInputChange(e)}
                   type="text"
                   name="provincia"
                   value={editBtnObj.provincia || ""}
+                />
+                <label>Rubro</label>
+                <input
+                  onChange={(e) => handleEditInputChange(e)}
+                  type="text"
+                  name="rubro"
+                  value={editBtnObj.rubro || ""}
+                />
+                <label>Cargo</label>
+                <input
+                  onChange={(e) => handleEditInputChange(e)}
+                  type="text"
+                  name="cargo"
+                  value={editBtnObj.cargo || ""}
+                />
+              </div>
+              <div className={s.lineForm}>
+                <label>Nombre</label>
+                <input
+                  onChange={(e) => handleEditInputChange(e)}
+                  type="text"
+                  name="name"
+                  value={editBtnObj.name || ""}
+                />
+                <label>Apellido</label>
+                <input
+                  onChange={(e) => handleEditInputChange(e)}
+                  type="text"
+                  name="lastName"
+                  value={editBtnObj.lastName || ""}
+                />
+                <label>Email</label>
+                <input
+                  onChange={(e) => handleEditInputChange(e)}
+                  type="text"
+                  name="email"
+                  value={editBtnObj.email || ""}
                 />
                 <label>Tel1</label>
                 <input
@@ -457,14 +456,6 @@ export default function Clientes() {
                   type="text"
                   name="celular"
                   value={editBtnObj.celular || ""}
-                />
-
-                <label>Fax</label>
-                <input
-                  onChange={(e) => handleEditInputChange(e)}
-                  type="text"
-                  name="fax"
-                  value={editBtnObj.fax || ""}
                 />
                 <label>Pagina Web</label>
                 <input

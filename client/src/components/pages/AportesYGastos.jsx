@@ -83,60 +83,93 @@ export default function AportesYGastos() {
       <button onClick={() => setBtnState(true)} id={s.addBtn}>
         Agregar Aporte o Gasto
       </button>
-
-      <div className={s.table}>
-        <div className={s.tableTitles}>
-          <p>Tipo</p>
-          <p>Fecha</p>
-          <p id={s.descriptionTitle}>Descripcion</p>
-          <p>Costo</p>
-          <p></p>
-        </div>
-        {allAportesYGastos.length ? (
-          allAportesYGastos.map((el, index) => {
-            return (
-              <div key={index} className={s.tableLine}>
-                <p>{el.type}</p>
-                <p>{el.date}</p>
-                <p className={s.descriptionTitle}>{el.description}</p>
-                <p>{`$${el.cost}`}</p>
-                <button onClick={(e) => handleDelete(e, el.id)}>
-                  Eliminar
-                </button>
+      <div className={s.mainContainer}>
+        <div className={s.allContainer}>
+          <div className={s.a}>
+            <h3>Aportes</h3>
+            <div className={s.table}>
+              <div className={s.tableTitles}>
+                <p>Fecha</p>
+                <p id={s.descriptionTitle}>Descripcion</p>
+                <p>Costo</p>
+                <p></p>
               </div>
-            );
-          })
-        ) : (
-          <Loader />
-        )}
-        <div className={s.tableTitles}>
-          <p></p>
-          <p></p>
-          <p id={s.totalAportes} className={s.descriptionTitle}>
-            Total Aportes :
-          </p>
-          <p id={s.totalAportes}>{`$${aportes}`}</p>
-          <p></p>
+              {allAportesYGastos.length ? (
+                allAportesYGastos
+                  .filter((ap) => ap.type === "Aporte")
+                  .map((el, index) => {
+                    return (
+                      <div key={index} className={s.tableLine}>
+                        <p>{el.date}</p>
+                        <p className={s.descriptionTitle}>{el.description}</p>
+                        <p>{`$${el.cost}`}</p>
+                        <button onClick={(e) => handleDelete(e, el.id)}>
+                          Eliminar
+                        </button>
+                      </div>
+                    );
+                  })
+              ) : (
+                <Loader />
+              )}
+              <div className={s.tableTitles}>
+                <p></p>
+                <p></p>
+                <p id={s.totalAportes} className={s.descriptionTitle}>
+                  Total Aportes :
+                </p>
+                <p id={s.totalAportes}>{`$${aportes}`}</p>
+                <p></p>
+              </div>
+            </div>
+          </div>
+          <div className={s.a}>
+            <h3>Gastos</h3>
+            <div className={s.table}>
+              <div className={s.tableTitles}>
+                <p>Fecha</p>
+                <p id={s.descriptionTitle}>Descripcion</p>
+                <p>Costo</p>
+                <p></p>
+              </div>
+              {allAportesYGastos.length ? (
+                allAportesYGastos
+                  .filter((ap) => ap.type === "Gasto")
+                  .map((el, index) => {
+                    return (
+                      <div key={index} className={s.tableLine}>
+                        <p>{el.date}</p>
+                        <p className={s.descriptionTitle}>{el.description}</p>
+                        <p>{`$${el.cost}`}</p>
+                        <button onClick={(e) => handleDelete(e, el.id)}>
+                          Eliminar
+                        </button>
+                      </div>
+                    );
+                  })
+              ) : (
+                <Loader />
+              )}
+              <div className={s.tableTitles}>
+                <p></p>
+                <p></p>
+                <p id={s.totalGastos} className={s.descriptionTitle}>
+                  Total Gastos:
+                </p>
+                <p id={s.totalGastos}>{`$${gastos}`}</p>
+                <p></p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className={s.tableTitles}>
-          <p></p>
-          <p></p>
-          <p id={s.totalGastos} className={s.descriptionTitle}>
-            Total Gastos:
-          </p>
-          <p id={s.totalGastos}>{`$${gastos}`}</p>
-          <p></p>
-        </div>
-
-        <div className={s.tableTitles}>
-          <p></p>
-          <p></p>
-          <p id={s.total} className={s.descriptionTitle}>
-            Saldo Total:
-          </p>
-          <p id={s.total}>{`$${aportes - gastos}`}</p>
-          <p></p>
+        <div className={s.saldoTotal}>
+          <div className={s.tableTitles}>
+            <p id={s.total} className={s.descriptionTitle}>
+              Saldo Total:
+            </p>
+            <p id={s.total}>{`$${aportes - gastos}`}</p>
+          </div>
         </div>
       </div>
 

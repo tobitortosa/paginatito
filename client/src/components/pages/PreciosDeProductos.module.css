@@ -1,0 +1,28 @@
+.container {
+  width: 90%;
+  text-transform: capitalize;
+}
+
+.tableContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.tableColumn {
+  border: 1px solid black;
+  width: 30vw;
+}
+
+.tableTxt {
+  text-align: center;
+  padding: 5px;
+}
+
+.tableTitles {
+  display: flex;
+  justify-content: center;
+}
+
+.mainContainer {
+  margin: 50px;
+}

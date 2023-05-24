@@ -18,13 +18,10 @@
 
 .table {
   border: 1px solid black;
-  height: auto;
-  width: 60vw;
-  margin: 20px 80px;
+  margin: 20px;
 }
 
 .tableTitles {
-  border: 1px solid black;
   padding: 10px 0px;
   display: flex;
   justify-content: space-around;
@@ -62,10 +59,9 @@
 
 #total {
   color: black;
-  background-color: rgba(255, 255, 0, 0.7);
+  background-color: rgba(245, 245, 0, 0.7);
   width: auto;
-  padding: 3px 10px;
-  border-radius: 5px;
+  padding: 10px;
 }
 
 .tableLine button {
@@ -118,10 +114,6 @@ select {
   font-size: 15px;
 }
 
-.modalContainer label {
-  margin: 30x 0px;
-}
-
 #x {
   position: absolute;
   right: 30px;
@@ -165,15 +157,35 @@ select {
 #totalAportes {
   color: black;
   background-color: rgba(0, 255, 21, 0.6);
-  width: auto;
-  border-radius: 5px;
+  width: max-content;
   padding: 3px 10px;
 }
 
 #totalGastos {
   color: black;
   background-color: rgba(255, 0, 0, 0.6);
-  width: auto;
+  width: max-content;
   padding: 3px 10px;
-  border-radius: 5px;
+}
+
+.allContainer {
+  display: flex;
+}
+
+.allContainer .a {
+  border: 1px solid black;
+  margin: 0px 10px;
+  border-radius: 10px;
+}
+
+.allContainer h3 {
+  text-align: center;
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

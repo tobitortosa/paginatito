@@ -21,11 +21,13 @@ export default function MesComponent() {
   return (
     <div className={s.container}>
       <div className={s.mesContainer}>
-        {meses.map((m) => {
+        {meses.map((m, index) => {
           return (
-            <Link id={s.link} to={`/aportesygastos/${m}`}>
-              {m}
-            </Link>
+            <div key={index}>
+              <Link id={s.link} to={`/aportesygastos/${m}`}>
+                {m}
+              </Link>
+            </div>
           );
         })}
       </div>
